@@ -1,2 +1,6 @@
 output/
 errors.txt
+dpd exporter.nbconvert.ipynb
+dpd_test.zip
+movedict.sh
+dpd_test_*.zip
