@@ -4,3 +4,5 @@ dpd exporter.nbconvert.ipynb
 dpd_test.zip
 movedict.sh
 dpd_test_*.zip
+share
+dpd exporter.py
