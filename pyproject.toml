@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "dpd-exporter"
+version = "0.1.0"
+description = ""
+authors = ["Digital Pāli Dicitonary <digitalpalidictionary@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pandas = "^1.4.0"
+simsapa = {version = "^0.1.7.dev4", allow-prereleases = true}
+typer = "^0.4.0"
+python-dotenv = "^0.17.1"
+Mako = "^1.1.6"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

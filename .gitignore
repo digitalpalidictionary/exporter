@@ -1,8 +1,40 @@
+# Project output
 output/
 errors.txt
-dpd exporter.nbconvert.ipynb
-dpd_test.zip
-movedict.sh
-dpd_test_*.zip
-share
-dpd exporter.py
+.env
+
+__pycache__/
+.pytest_cache
+.coverage
+.vscode/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Emacs temp files
+auto/
+.auctex-auto/
+*~
+\#*\#
+*.elc
+auto-save-list
+tramp
+.\#*
+.projectile
+TAGS
+
+# Vim temp files
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+[._]sw[a-p]
+*~
+tags
+
+# General macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+.idea
