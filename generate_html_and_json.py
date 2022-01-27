@@ -105,8 +105,8 @@ def generate_html_and_json(generate_roots: bool = True):
         if w.pos in declensions:
             html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="declension_{w.pali_}">declension</a>"""
 
-        if w.pos == "sandhi" or w.pos == "idiom":
-            html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="inflection_{w.pali_}">inflection</a>"""
+        # if w.pos == "sandhi" or w.pos == "idiom":
+        #     html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="inflection_{w.pali_}">inflection</a>"""
 
         if w.family != "":
             html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="root_family_{w.pali_}">root family</a>"""
@@ -268,11 +268,11 @@ def generate_html_and_json(generate_roots: bool = True):
 
                 html_string += f"""<div id="conjugation_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_{w.pali_}">close</a>"""
 
-            if w.pos == "sandhi" or w.pos == "idiom":
+            # if w.pos == "sandhi" or w.pos == "idiom":
 
-                html_string += f"""<div id="inflection_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="inflection_{w.pali_}">close</a>"""
+            #     html_string += f"""<div id="inflection_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="inflection_{w.pali_}">close</a>"""
 
-            html_string += f"""{table_data_read}"""
+            # html_string += f"""{table_data_read}"""
 
             if w.pos != "sandhi" and w.pos != "idiom":
 

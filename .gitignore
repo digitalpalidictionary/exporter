@@ -2,6 +2,9 @@
 output/
 errors.txt
 .env
+movedict.sh
+share/
+errorlogs/exporter errorlog.txt
 
 __pycache__/
 .pytest_cache
@@ -38,3 +41,5 @@ tags
 .AppleDouble
 .LSOverride
 .idea
+
+

@@ -70,10 +70,10 @@ def get_resource_paths() -> ResourcePaths:
         output_dir = Path("./output/"),
         output_html_dir = Path("./output/html/"),
         output_root_html_dir = Path("./output/root html/"),
-        output_share_dir = Path("./output/share/"),
+        output_share_dir = Path("./share/"),
         gd_json_path = Path("./output/gd.json"),
         output_stardict_zip_path = Path("dpd.zip"),
-        error_log_dir = dpd_dir.joinpath("errorlogs/"),
+        error_log_dir = Path("./errorlogs/"),
         # Project assets
         dpd_words_css_path = Path("./assets/dpd-words.css"),
         dpd_roots_css_path = Path("./assets/dpd-roots.css"),
