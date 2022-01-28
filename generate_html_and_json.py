@@ -272,7 +272,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
             #     html_string += f"""<div id="inflection_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="inflection_{w.pali_}">close</a>"""
 
-            # html_string += f"""{table_data_read}"""
+            html_string += f"""{table_data_read}"""
 
             if w.pos != "sandhi" and w.pos != "idiom":
 
