@@ -42,10 +42,10 @@ def run_generate_goldendict(move_to_dest: bool = True):
 
     ifo = ifo_from_opts(
         {
-            "bookname": "Digital Pāli Dictionary",
-            "author": "Bodhirasa Bhikkhu",
-            "description": "Digital Pāli Dictionary",
-            "website": "https://github.com/bdhrs",
+            "bookname": "Digital Pāḷi Dictionary",
+            "author": "Bodhirasa",
+            "description": "Digital Pāḷi Dictionary",
+            "website": "https://github.com/digitalpalidictionary",
         }
     )
 

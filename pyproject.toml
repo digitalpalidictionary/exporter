@@ -2,7 +2,7 @@
 name = "dpd-exporter"
 version = "0.1.0"
 description = ""
-authors = ["Digital Pāli Dicitonary <digitalpalidictionary@gmail.com>"]
+authors = ["Digital Pāḷi Dictionary <digitalpalidictionary@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
