@@ -31,6 +31,7 @@ p.sutta {
 table.table1 {
     border: 1px solid #fff;
     border-collapse: collapse;
+    width:100%;
 }
 
 table.table1 td, table.table1 th {
@@ -47,8 +48,16 @@ table.table1 td, table.table1 th {
 table.table1 th {
     color: #00A4CC;
     font-weight: 700;
-    white-space: nowrap;
+    min-width:30%;
+    width:40%;
+    max-width:70%;
     word-break: break-all;
+}
+
+table.table1 td {
+    min-width:10%;
+    max-width:70%;
+    word-break: normal;
 }
 
 table.dataframe {
