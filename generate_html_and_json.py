@@ -52,18 +52,17 @@ def generate_html_and_json(generate_roots: bool = True):
         if row % 5000 == 0 or row % df_length == 0:
             print(f"{row}/{df_length}\t{w.pali}")
 
-        # FIXME these variables are not accessed
-        # colour1 = "#00A4CC" #dark blue
-        # colour2 = "#65DBFF" #inbetween for rollover
-        # colour3 = "#E2FFFF" #light blue
+        # colour1 #00A4CC #dark blue
+        # colour2 #65DBFF #inbetween for rollover
+        # colour3 #E2FFFF #light blue
 
-        # root_colour0 = "#AB3C00"
-        # root_colour2 = "#F95700"
-        # root_colour3 = "#FFE2D2"
+        # root_colour0 #AB3C00
+        # root_colour2 #F95700
+        # root_colour3 #FFE2D2
 
-        # x_colour0 = "#AB3C00"
-        # x_colour2 = "#F95700"
-        # x_colour3 = "#FFE2D2"
+        # x_colour0 #AB3C00
+        # x_colour2 #F95700
+        # x_colour3 #FFE2D2
 
         indeclinables = ["abbrev", "abs", "ger", "ind", "inf", "prefix", "sandhi", "idiom"]
         conjugations = ["aor", "cond", "fut", "imp", "imperf", "opt", "perf", "pr"]
@@ -520,7 +519,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
                     html_string += f"""
                     <div id="root_family_{subfamily_}_{root_id}" class="root_content hidden"><a class="button root close" href="javascript:void(0);" onclick="button_click(this)" data-target="root_family_{subfamily_}_{root_id}">close</a>"""
 
-                    html_string += f"""<p class= "root_heading">all words which belong to the root family <b>{subfamily}</b></p>"""
+                    html_string += f"""<p class= "root_heading">all words which belong to the root family <b>{subfamily}</b> {root_meaning}</p>"""
 
                     p = rsc['root_families_dir'] \
                         .joinpath("output/subfamily html/") \
