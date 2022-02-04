@@ -48,6 +48,7 @@ table.table1 th {
     color: #00A4CC;
     font-weight: 700;
     white-space: nowrap;
+    word-break: break-all;
 }
 
 table.dataframe {
