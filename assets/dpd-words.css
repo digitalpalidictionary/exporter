@@ -15,8 +15,7 @@ p {
 }
 
 p.heading {
-    background-color: #E2FFFF;
-    color: black;
+    color: #00A4CC;
     border-radius: 5px;
     margin: 2px;
     padding: 2px 5px;
@@ -29,12 +28,12 @@ p.sutta {
 }
 
 table.table1 {
-    border: 1px solid #fff;
+    border: 1px solid transparent;
     border-collapse: collapse;
 }
 
 table.table1 td, table.table1 th {
-    border: 1px solid #fff;
+    border: 1px solid transparent;
     border-collapse: collapse;
     line-height: 150%;
     margin: 0px 0px;
@@ -52,12 +51,12 @@ table.table1 th {
 
 
 table.dataframe {
-    border: 2px solid #fff;
+    border: 1px solid #E2FFFF;
     border-collapse: collapse;
 }
 
 table.dataframe td,table.dataframe th {
-    border: 2px solid #fff;
+    border: 1px solid #E2FFFF;
     border-collapse: collapse;
     line-height: 150%;
     padding: 1px 5px;
@@ -66,10 +65,10 @@ table.dataframe td,table.dataframe th {
     vertical-align: middle;
 }
 
-table.dataframe td {
-    background-color: #E2FFFF;
+/* table.dataframe td {
+    background-color: #00A4CC;
     color: black;
-}
+} */
 
 table.dataframe th {
     color: #00A4CC;
@@ -91,7 +90,7 @@ div.content {
 
 a.button {
     text-decoration: none;
-    background-color: #E2FFFF;
+    background-color: #65DBFF;
     border-radius: 7px;
     box-shadow: 0 4px 4px -2px #888888;
     color: #000;

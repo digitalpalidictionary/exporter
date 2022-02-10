@@ -1,6 +1,6 @@
 p.root_heading {
-    background-color: #FFE2D2;
-    color: black;
+    /* background-color: #FFE2D2; */
+    color: #AB3C00;
     border-radius: 5px;
     margin: 2px;
     padding: 2px 5px;
@@ -8,7 +8,7 @@ p.root_heading {
 }
 
 table.root_table td,table.root_table th {
-    border: 1px solid #fff;
+    /* border: 1px solid #fff; */
     border-collapse: collapse;
     line-height: 150%;
     margin: 0px 0px;
@@ -33,13 +33,16 @@ div.root_content {
 }
 
 a.button.root {
-    background-color: #FFE2D2;
+    background-color: #F95700;
 }
 
 a.button.root:hover {
     background-color: #AB3C00;
+    color: white;
+    user-select: none;
 }
 
 a.button.root.active {
     background-color: #AB3C00;
+    color: white;
 }
