@@ -24,7 +24,7 @@ p.heading {
 }
 
 p.sutta_dps {
-    color: #18cc00;
+    color: #193d04;
     font-style: italic;
 }
 
@@ -45,7 +45,7 @@ table.table1_dps td, table.table1_dps th {
 }
 
 table.table1_dps th {
-    color: #00cc00;
+    color: #193d04;
     font-weight: 700;
     white-space: nowrap;
 }
@@ -82,7 +82,7 @@ input {
 }
 
 div.content_dps {
-    border: 2px solid #00cc0a;
+    border: 2px solid #193d04;
     border-radius: 5px;
     line-height: 150%;
     overflow: auto;
@@ -111,7 +111,7 @@ a.button_dps.close {
 }
 
 a.button_dps:hover {
-    background-color: #00cc00;
+    background-color: #193d04;
     color: white;
     user-select: none;
 }
@@ -127,7 +127,7 @@ a.button_dps:hover {
 }
 
 a.button_dps.active {
-    background-color: #07cc00;
+    background-color: #193d04;
     color: white;
     user-select: none;
 }
