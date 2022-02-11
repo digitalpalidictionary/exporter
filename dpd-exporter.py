@@ -45,7 +45,7 @@ def run_generate_goldendict(move_to_dest: bool = True):
             "bookname": "Digital Pāḷi Dictionary",
             "author": "Bodhirasa",
             "description": "Digital Pāḷi Dictionary",
-            "website": "https://github.com/digitalpalidictionary",
+            "website": "https://digitalpalidictionary.github.io",
         }
     )
 
