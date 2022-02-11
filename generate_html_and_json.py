@@ -95,6 +95,9 @@ def generate_html_and_json(generate_roots: bool = True):
         if w.eg1 != "" and w.eg2 == "":
             html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">example</a>"""
 
+        if w.eg1 == "" and w.eg2 != "":
+            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">example</a>"""
+
         if w.eg1 != "" and w.eg2 != "":
             html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">examples</a>"""
 
@@ -118,7 +121,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # grammar
 
-        html_string += f"""<div id="grammar_dps_{w.pali_}" class="content_dps hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_dps_{w.pali_}">close</a>"""
+        html_string += f"""<div id="grammar_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_dps_{w.pali_}">close</a>"""
 
         html_string += f"""<table class = "table1_dps"><tr><th>pāli</th><td>{w.pali}</td></tr>"""
         html_string += f"""<tr><th>grammar</th><td>{w.pos}"""
@@ -149,7 +152,7 @@ def generate_html_and_json(generate_roots: bool = True):
             text_full += f""" ({w.case})"""
 
         html_string += f"""</td></tr>"""
-        html_string += f"""<tr valign="top"><th>meaning</th><td><b>{w.meaning}</b>"""
+        html_string += f"""<tr valign="top"><th>english</th><td><b>{w.meaning}</b>"""
         text_full += f""". {w.meaning}"""
 
         html_string += f"""</td></tr>"""
@@ -243,7 +246,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         if w.eg1 != "" and w.eg2 != "":
 
-            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">close</a>"""
+            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">close</a>"""
 
             html_string += f"""<p>{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
             html_string += f"""<p>{w.eg2}<p class="sutta_dps">{w.source2} {w.sutta2}<br>{w.chapter}</p>"""
@@ -251,9 +254,16 @@ def generate_html_and_json(generate_roots: bool = True):
 
         elif w.eg1 != "" and w.eg2 == "":
 
-            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">close</a>"""
+            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">close</a>"""
 
             html_string += f"""<p>{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
+            html_string += f"""</div>"""
+
+        elif w.eg1 == "" and w.eg2 != "":
+
+            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">close</a>"""
+
+            html_string += f"""<p>{w.eg2}<p class="sutta_dps">{w.source2} {w.sutta2}<br>{w.chapter}</p>"""
             html_string += f"""</div>"""
 
         # inflection table
@@ -273,15 +283,15 @@ def generate_html_and_json(generate_roots: bool = True):
 
             if w.pos in declensions:
 
-                html_string += f"""<div id="declension_dps_{w.pali_}" class="content_dps hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="declension_dps_{w.pali_}">close</a>"""
+                html_string += f"""<div id="declension_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="declension_dps_{w.pali_}">close</a>"""
 
             if w.pos in conjugations:
 
-                html_string += f"""<div id="conjugation_dps_{w.pali_}" class="content_dps hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_dps_{w.pali_}">close</a>"""
+                html_string += f"""<div id="conjugation_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_dps_{w.pali_}">close</a>"""
 
             # if w.pos == "sandhi" or w.pos == "idiom":
 
-            #     html_string += f"""<div id="inflection_dps_{w.pali_}" class="content_dps hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="inflection_dps_{w.pali_}">close</a>"""
+            #     html_string += f"""<div id="inflection_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="inflection_dps_{w.pali_}">close</a>"""
 
             html_string += f"""{table_data_read}"""
 
@@ -314,7 +324,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # if w.family != "":
 
-        #     html_string += f"""<div id="root_family_dps_{w.pali_}" class="content_dps hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="root_family_dps_{w.pali_}">close</a>"""
+        #     html_string += f"""<div id="root_family_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="root_family_dps_{w.pali_}">close</a>"""
 
         #     html_string += f"""<p class ="heading"><b>{w.pali_clean}</b> belongs to the root family <b>{w.family}</b> ({w.root_meaning})</p>"""
         #     html_string += f"""<table class = "table1_dps">{table_data_read}</table>"""
@@ -324,7 +334,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # if w.family2 != "" and w.meaning != "":
 
-        #     html_string += f"""<div id="compound_family_dps_{w.pali_}" class="content_dps hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="compound_family_dps_{w.pali_}">close</a>"""
+        #     html_string += f"""<div id="compound_family_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="compound_family_dps_{w.pali_}">close</a>"""
 
         #     compound_family_list = []
         #     compound_family_list = list(w.family2.split())
@@ -348,7 +358,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # if w.family2 == "" and w.meaning != "" and w.pali_clean in cf_master_list:
 
-        #     html_string += f"""<div id="compound_family_dps_{w.pali_}" class="content_dps hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="compound_family_dps_{w.pali_}">close</a>"""
+        #     html_string += f"""<div id="compound_family_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="compound_family_dps_{w.pali_}">close</a>"""
 
         #     cf_path = rsc['compound_families_dir'] \
         #         .joinpath("output/") \

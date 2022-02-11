@@ -82,7 +82,7 @@ def get_resource_paths() -> ResourcePaths:
         # compound_families_dir = dpd_dir.joinpath("compound families generator/"),
         # root_families_dir = dpd_dir.joinpath("root families generator/"),
         inflections_dir = dpd_dir.joinpath("inflection-generator/"),
-        words_path = dpd_dir.joinpath("pali/vicara-full.csv"),
+        words_path = dpd_dir.joinpath("spreadsheets/dps-full.csv"),
         # roots_path = dpd_dir.joinpath("csvs/roots.csv"),
         icon_path = Path("./icon.png"),
     )
@@ -123,6 +123,7 @@ class DpdWord:
         self.pali_: str = "_" + re.sub(" ", "_", self.pali)
         # self.pali2: str = df.loc[row, "Pāli2"]
         self.pali_clean: str = re.sub(r" \d*$", "", self.pali)
+        self.fin: str = df.loc[row, "Fin"]
         self.pos: str = df.loc[row, "POS"]
         self.grammar: str = df.loc[row, "Grammar"]
         self.derived: str = df.loc[row, "Derived from"]

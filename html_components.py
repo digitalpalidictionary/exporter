@@ -35,16 +35,40 @@ def render_word_meaning(w: DpdWord) -> RenderResult:
         html_string += f"""<div class="content_dps"><p>{w.pos}"""
         text_concise += f"{w.pali}. {w.pos}."
 
-        if w.case != "":
-            html_string += f""" ({w.case})"""
-            text_concise += f""" ({w.case})"""
+        if w.fin == "n":
+            html_string += f""" [{w.fin}]"""
+            text_concise += f""" [{w.fin}]"""
 
-        html_string += f""". <b>{w.meaning}</b>"""
+        if w.fin == "nn":
+            html_string += f""" [{w.fin}]"""
+            text_concise += f""" [{w.fin}]"""
+
+        if w.fin == "np":
+            html_string += f""" [{w.fin}]"""
+            text_concise += f""" [{w.fin}]"""
+
+        if w.fin == "ns":
+            html_string += f""" [{w.fin}]"""
+            text_concise += f""" [{w.fin}]"""
+
+        if w.fin == "pn":
+            html_string += f""" [{w.fin}]"""
+            text_concise += f""" [{w.fin}]"""
+
+        if w.fin == "s":
+            html_string += f""" [{w.fin}]"""
+            text_concise += f""" [{w.fin}]"""
+
+        # if w.case != "":
+        #     html_string += f""" ({w.case})"""
+        #     text_concise += f""" ({w.case})"""
+
+        html_string += f""". (en) <b>{w.meaning}</b>"""
         text_concise += f""". {w.meaning}"""
 
         if w.russian != "":
-            html_string += f"""; <br>{w.russian}"""
-            text_concise += f"""; <br>{w.russian}"""
+            html_string += f"""; (рус) <b>{w.russian}</b>"""
+            text_concise += f"""; {w.russian}"""
 
         # if w.base == "":
         #     construction_simple = re.sub(r" \[.+\] \+", "", w.construction)

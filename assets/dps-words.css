@@ -15,8 +15,7 @@ p {
 }
 
 p.heading {
-    background-color: #E2FFFF;
-    color: black;
+    color: #00A4CC;
     border-radius: 5px;
     margin: 2px;
     padding: 2px 5px;
@@ -24,7 +23,7 @@ p.heading {
 }
 
 p.sutta_dps {
-    color: #193d04;
+    color: #358109;
     font-style: italic;
 }
 
@@ -45,19 +44,19 @@ table.table1_dps td, table.table1_dps th {
 }
 
 table.table1_dps th {
-    color: #193d04;
+    color: #358109;
     font-weight: 700;
     white-space: nowrap;
 }
 
 
 table.dataframe {
-    border: 2px solid #fff;
+    border: 1px solid #E2FFFF;
     border-collapse: collapse;
 }
 
 table.dataframe td,table.dataframe th {
-    border: 2px solid #fff;
+    border: 1px solid #E2FFFF;
     border-collapse: collapse;
     line-height: 150%;
     padding: 1px 5px;
@@ -66,13 +65,13 @@ table.dataframe td,table.dataframe th {
     vertical-align: middle;
 }
 
-table.dataframe td {
-    background-color: #E2FFFF;
+/* table.dataframe td {
+    background-color: #00A4CC;
     color: black;
-}
+} */
 
 table.dataframe th {
-    color: #00becc;
+    color: #00A4CC;
     font-weight: 700;
     white-space: nowrap;
 }
@@ -82,7 +81,7 @@ input {
 }
 
 div.content_dps {
-    border: 2px solid #193d04;
+    border: 2px solid #358109;
     border-radius: 5px;
     line-height: 150%;
     overflow: auto;
@@ -91,9 +90,9 @@ div.content_dps {
 
 a.button_dps {
     text-decoration: none;
-    background-color: #E2FFFF;
+    background-color: #9ff16f;
     border-radius: 3px;
-    box-shadow: 0 4px 4px -2px #11460f;
+    box-shadow: 0 4px 4px -2px #358109;
     color: #000;
     cursor: pointer;
     display: inline-block;
@@ -111,14 +110,14 @@ a.button_dps.close {
 }
 
 a.button_dps:hover {
-    background-color: #193d04;
+    background-color: #358109;
     color: white;
     user-select: none;
 }
 
 .link {
     border-radius: 5px;
-    color: #1400cc;
+    color: #00A4CC;
     font-weight: 700;
 }
 
@@ -127,7 +126,7 @@ a.button_dps:hover {
 }
 
 a.button_dps.active {
-    background-color: #193d04;
+    background-color: #358109;
     color: white;
     user-select: none;
 }
