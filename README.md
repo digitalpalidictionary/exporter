@@ -1,2 +1,2 @@
-# dpd-exporter
-exporting dpd into various formats
+# dps-exporter
+exporting dps into various formats

@@ -15,24 +15,25 @@ p {
 }
 
 p.heading {
-    color: #00A4CC;
+    background-color: #E2FFFF;
+    color: black;
     border-radius: 5px;
     margin: 2px;
     padding: 2px 5px;
     user-select: none;
 }
 
-p.sutta {
-    color: #00A4CC;
+p.sutta_dps {
+    color: #18cc00;
     font-style: italic;
 }
 
-table.table1 {
+table.table1_dps {
     border: 1px solid transparent;
     border-collapse: collapse;
 }
 
-table.table1 td, table.table1 th {
+table.table1_dps td, table.table1_dps th {
     border: 1px solid transparent;
     border-collapse: collapse;
     line-height: 150%;
@@ -43,20 +44,20 @@ table.table1 td, table.table1 th {
     vertical-align: top;
 }
 
-table.table1 th {
-    color: #00A4CC;
+table.table1_dps th {
+    color: #00cc00;
     font-weight: 700;
     white-space: nowrap;
 }
 
 
 table.dataframe {
-    border: 1px solid #E2FFFF;
+    border: 2px solid #fff;
     border-collapse: collapse;
 }
 
 table.dataframe td,table.dataframe th {
-    border: 1px solid #E2FFFF;
+    border: 2px solid #fff;
     border-collapse: collapse;
     line-height: 150%;
     padding: 1px 5px;
@@ -65,13 +66,13 @@ table.dataframe td,table.dataframe th {
     vertical-align: middle;
 }
 
-/* table.dataframe td {
-    background-color: #00A4CC;
+table.dataframe td {
+    background-color: #E2FFFF;
     color: black;
-} */
+}
 
 table.dataframe th {
-    color: #00A4CC;
+    color: #00becc;
     font-weight: 700;
     white-space: nowrap;
 }
@@ -80,19 +81,19 @@ input {
     display: none;
 }
 
-div.content {
-    border: 2px solid #00A4CC;
+div.content_dps {
+    border: 2px solid #00cc0a;
     border-radius: 5px;
     line-height: 150%;
     overflow: auto;
     text-align: left;
 }
 
-a.button {
+a.button_dps {
     text-decoration: none;
-    background-color: #65DBFF;
-    border-radius: 7px;
-    box-shadow: 0 4px 4px -2px #888888;
+    background-color: #E2FFFF;
+    border-radius: 3px;
+    box-shadow: 0 4px 4px -2px #11460f;
     color: #000;
     cursor: pointer;
     display: inline-block;
@@ -104,20 +105,20 @@ a.button {
     user-select: none;
 }
 
-a.button.close {
+a.button_dps.close {
     float: right;
     margin: 10px;
 }
 
-a.button:hover {
-    background-color: #00A4CC;
+a.button_dps:hover {
+    background-color: #00cc00;
     color: white;
     user-select: none;
 }
 
 .link {
     border-radius: 5px;
-    color: #00A4CC;
+    color: #1400cc;
     font-weight: 700;
 }
 
@@ -125,8 +126,8 @@ a.button:hover {
     display: none;
 }
 
-a.button.active {
-    background-color: #00A4CC;
+a.button_dps.active {
+    background-color: #07cc00;
     color: white;
     user-select: none;
 }

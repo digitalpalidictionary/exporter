@@ -25,14 +25,14 @@ def render_word_meaning(w: DpdWord) -> RenderResult:
     text_full = ""
     text_concise = ""
 
-    if w.meaning == "":
-        html_string += f"""<div class="content"><p>{w.pos}. <b>{w.buddhadatta}</b> [under construction]</p></div>"""
-        text_full += f"""{w.pali}. {w.grammar}. {w.buddhadatta}. [under construction]"""
-        text_concise += f"""{w.pali}. {w.pos}. {w.buddhadatta}."""
+    if w.russian == "":
+        html_string += f"""<div class="content_dps"><p>{w.pos}. <b>{w.meaning}</b> [в процессе]</p></div>"""
+        text_full += f"""{w.pali}. {w.pos}. {w.meaning}. [в процессе]"""
+        text_concise += f"""{w.pali}. {w.pos}. {w.meaning}."""
 
 
     else:
-        html_string += f"""<div class="content"><p>{w.pos}"""
+        html_string += f"""<div class="content_dps"><p>{w.pos}"""
         text_concise += f"{w.pali}. {w.pos}."
 
         if w.case != "":
@@ -42,30 +42,30 @@ def render_word_meaning(w: DpdWord) -> RenderResult:
         html_string += f""". <b>{w.meaning}</b>"""
         text_concise += f""". {w.meaning}"""
 
-        if w.lit != "":
-            html_string += f"""; lit. {w.lit}"""
-            text_concise += f"""; lit. {w.lit}"""
+        if w.russian != "":
+            html_string += f"""; <br>{w.russian}"""
+            text_concise += f"""; <br>{w.russian}"""
 
-        if w.base == "":
-            construction_simple = re.sub(r" \[.+\] \+", "", w.construction)
-            construction_simple = re.sub("> .+? ", "", construction_simple)
-            construction_simple = re.sub("<br/>.+", "", construction_simple)
-            if construction_simple != "":
-                html_string += f""". [{construction_simple}]"""
-                text_concise += f""". [{construction_simple}]"""
+        # if w.base == "":
+        #     construction_simple = re.sub(r" \[.+\] \+", "", w.construction)
+        #     construction_simple = re.sub("> .+? ", "", construction_simple)
+        #     construction_simple = re.sub("<br/>.+", "", construction_simple)
+        #     if construction_simple != "":
+        #         html_string += f""". [{construction_simple}]"""
+        #         text_concise += f""". [{construction_simple}]"""
 
-        if w.base != "":
-            family_plus = re.sub(" ", " + ", w.family)
-            construction_oneline = re.sub("<br/>.+", "", w.construction)
-            construction_truncated = re.sub(r"(.+)(\+ .{1,7}$)", "\\2", construction_oneline)
-            if re.match("^na ", w.construction):
-                construction_na = re.sub("^(na )(.+)$", "\\1 + ", w.construction)
-            else:
-                construction_na = ""
+        # if w.base != "":
+        #     family_plus = re.sub(" ", " + ", w.family)
+        #     construction_oneline = re.sub("<br/>.+", "", w.construction)
+        #     construction_truncated = re.sub(r"(.+)(\+ .{1,7}$)", "\\2", construction_oneline)
+        #     if re.match("^na ", w.construction):
+        #         construction_na = re.sub("^(na )(.+)$", "\\1 + ", w.construction)
+        #     else:
+        #         construction_na = ""
 
-            construction_reconstructed = f"{construction_na}{family_plus} + {w.root_sign} {construction_truncated}"
-            html_string += f""" [{construction_reconstructed}]"""
-            text_concise += f""" [{construction_reconstructed}]"""
+        #     construction_reconstructed = f"{construction_na}{family_plus} + {w.root_sign} {construction_truncated}"
+        #     html_string += f""" [{construction_reconstructed}]"""
+        #     text_concise += f""" [{construction_reconstructed}]"""
 
         html_string += f"""</p></div>"""
 

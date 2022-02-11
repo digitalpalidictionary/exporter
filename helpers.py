@@ -16,22 +16,22 @@ load_dotenv()
 
 class DataFrames(TypedDict):
     words_df: DataFrame
-    roots_df: DataFrame
+    # roots_df: DataFrame
 
 
 class ResourcePaths(TypedDict):
     output_dir: Path
     output_html_dir: Path
-    output_root_html_dir: Path
+    # output_root_html_dir: Path
     output_share_dir: Path
     error_log_dir: Path
-    compound_families_dir: Path
-    root_families_dir: Path
+    # compound_families_dir: Path
+    # root_families_dir: Path
     inflections_dir: Path
     words_path: Path
-    roots_path: Path
-    dpd_words_css_path: Path
-    dpd_roots_css_path: Path
+    # roots_path: Path
+    dps_words_css_path: Path
+    # dpd_roots_css_path: Path
     buttons_js_path: Path
     gd_json_path: Path
     icon_path: Path
@@ -44,16 +44,16 @@ def parse_data_frames(rsc: ResourcePaths) -> DataFrames:
     words_df = pd.read_csv(rsc['words_path'], sep = "\t", dtype=str)
     words_df = words_df.fillna("")
 
-    roots_df = pd.read_csv(rsc['roots_path'], sep="\t", dtype=str)
-    roots_df.fillna("", inplace=True)
+    # roots_df = pd.read_csv(rsc['roots_path'], sep="\t", dtype=str)
+    # roots_df.fillna("", inplace=True)
 
     # roots_df.replace("\.0$", "", inplace=True, regex=True)
     # roots_df = roots_df[roots_df["Count"] != "0"] # remove roots with no examples
-    roots_df = roots_df[roots_df["Fin"] != ""] # remove extra iines
+    # roots_df = roots_df[roots_df["Fin"] != ""] # remove extra iines
 
     return DataFrames(
         words_df = words_df,
-        roots_df = roots_df,
+        # roots_df = roots_df,
     )
 
 
@@ -69,28 +69,28 @@ def get_resource_paths() -> ResourcePaths:
         # Project output
         output_dir = Path("./output/"),
         output_html_dir = Path("./output/html/"),
-        output_root_html_dir = Path("./output/root html/"),
+        # output_root_html_dir = Path("./output/root html/"),
         output_share_dir = Path("./share/"),
         gd_json_path = Path("./output/gd.json"),
-        output_stardict_zip_path = Path("dpd.zip"),
+        output_stardict_zip_path = Path("dps.zip"),
         error_log_dir = Path("./errorlogs/"),
         # Project assets
-        dpd_words_css_path = Path("./assets/dpd-words.css"),
-        dpd_roots_css_path = Path("./assets/dpd-roots.css"),
+        dps_words_css_path = Path("./assets/dps-words.css"),
+        # dpd_roots_css_path = Path("./assets/dpd-roots.css"),
         buttons_js_path = Path("./assets/buttons.js"),
         # Project input
-        compound_families_dir = dpd_dir.joinpath("compound families generator/"),
-        root_families_dir = dpd_dir.joinpath("root families generator/"),
-        inflections_dir = dpd_dir.joinpath("inflection generator/"),
-        words_path = dpd_dir.joinpath("csvs/dpd-full.csv"),
-        roots_path = dpd_dir.joinpath("csvs/roots.csv"),
-        icon_path = dpd_dir.joinpath("favicon/favicon_io nu circle/favicon.ico"),
+        # compound_families_dir = dpd_dir.joinpath("compound families generator/"),
+        # root_families_dir = dpd_dir.joinpath("root families generator/"),
+        inflections_dir = dpd_dir.joinpath("inflection-generator/"),
+        words_path = dpd_dir.joinpath("pali/vicara-full.csv"),
+        # roots_path = dpd_dir.joinpath("csvs/roots.csv"),
+        icon_path = Path("./icon.png"),
     )
 
     # ensure write dirs exist
     for d in [rsc['output_dir'],
               rsc['output_html_dir'],
-              rsc['output_root_html_dir'],
+            #   rsc['output_root_html_dir'],
               rsc['output_share_dir'],
               rsc['error_log_dir']]:
         d.mkdir(parents=True, exist_ok=True)
@@ -121,50 +121,53 @@ class DpdWord:
     def __init__(self, df: DataFrame, row: int):
         self.pali: str = df.loc[row, "Pāli1"]
         self.pali_: str = "_" + re.sub(" ", "_", self.pali)
-        self.pali2: str = df.loc[row, "Pāli2"]
+        # self.pali2: str = df.loc[row, "Pāli2"]
         self.pali_clean: str = re.sub(r" \d*$", "", self.pali)
         self.pos: str = df.loc[row, "POS"]
         self.grammar: str = df.loc[row, "Grammar"]
+        self.derived: str = df.loc[row, "Derived from"]
         self.neg: str = df.loc[row, "Neg"]
         self.verb: str = df.loc[row, "Verb"]
         self.trans: str = df.loc[row, "Trans"]
         self.case: str = df.loc[row, "Case"]
         self.meaning: str = df.loc[row, "Meaning IN CONTEXT"]
-        self.lit: str = df.loc[row, "Literal Meaning"]
-        self.buddhadatta: str = df.loc[row, "Buddhadatta"]
-        self.non_ia: str = df.loc[row, "Non IA"]
+        # self.lit: str = df.loc[row, "Literal Meaning"]
+        self.russian: str = df.loc[row, "Meaning in native language"]
+        # self.buddhadatta: str = df.loc[row, "Buddhadatta"]
+        # self.non_ia: str = df.loc[row, "Non IA"]
         self.sk: str = df.loc[row, "Sanskrit"]
         self.sk_root: str = df.loc[row, "Sk Root"]
-        self.sk_root_mn: str = df.loc[row, "Sk Root Mn"]
-        self.sk_root_cl: str = df.loc[row, "Cl"]
+        # self.sk_root_mn: str = df.loc[row, "Sk Root Mn"]
+        # self.sk_root_cl: str = df.loc[row, "Cl"]
         self.root: str = df.loc[row, "Pāli Root"]
-        self.root_in_comps: str = df.loc[row, "Root In Comps"]
-        self.root_verb: str = df.loc[row, "V"]
-        self.root_grp: str = df.loc[row, "Grp"]
-        self.root_sign: str = df.loc[row, "Sgn"]
-        self.root_meaning: str = df.loc[row, "Root Meaning"]
+        # self.root_in_comps: str = df.loc[row, "Root In Comps"]
+        # self.root_verb: str = df.loc[row, "V"]
+        # self.root_grp: str = df.loc[row, "Grp"]
+        # self.root_sign: str = df.loc[row, "Sgn"]
+        # self.root_meaning: str = df.loc[row, "Root Meaning"]
         self.base: str = df.loc[row, "Base"]
-        self.family: str = df.loc[row, "Family"]
-        self.family2: str = df.loc[row, "Family2"]
+        # self.family: str = df.loc[row, "Family"]
+        # self.family2: str = df.loc[row, "Family2"]
         self.construction: str =  df.loc[row, "Construction"]
-        self.derivative: str = df.loc[row, "Derivative"]
-        self.suffix: str = df.loc[row, "Suffix"]
-        self.pc: str = df.loc[row, "Phonetic Changes"]
-        self.comp: str = df.loc[row, "Compound"]
-        self.comp_constr: str = df.loc[row, "Compound Construction"]
+        # self.derivative: str = df.loc[row, "Derivative"]
+        # self.suffix: str = df.loc[row, "Suffix"]
+        # self.pc: str = df.loc[row, "Phonetic Changes"]
+        # self.comp: str = df.loc[row, "Compound"]
+        # self.comp_constr: str = df.loc[row, "Compound Construction"]
         self.source1: str = df.loc[row, "Source1"]
         self.sutta1: str = df.loc[row, "Sutta1"]
         self.eg1: str = df.loc[row, "Example1"]
         self.source2: str = df.loc[row, "Source 2"]
         self.sutta2: str = df.loc[row, "Sutta2"]
         self.eg2: str = df.loc[row, "Example 2"]
-        self.ant: str = df.loc[row, "Antonyms"]
-        self.syn: str = df.loc[row, "Synonyms – different word"]
-        self.var: str = df.loc[row, "Variant – same constr or diff reading"]
+        self.chapter: str = df.loc[row, "Chapter"]
+        # self.ant: str = df.loc[row, "Antonyms"]
+        # self.syn: str = df.loc[row, "Synonyms – different word"]
+        self.var: str = df.loc[row, "Variant"]
         self.comm: str = df.loc[row, "Commentary"]
         self.comm: str = re.sub(r"(.+)\.$", "\\1", self.comm)
         self.notes: str = df.loc[row, "Notes"]
-        self.cognate: str = df.loc[row, "Cognate"]
-        self.category: str = df.loc[row, "Category"]
+        # self.cognate: str = df.loc[row, "Cognate"]
+        # self.category: str = df.loc[row, "Category"]
         self.metadata: str = df.loc[row, "Metadata"]
-        self.link: str = df.loc[row, "Link"]
+        # self.link: str = df.loc[row, "Link"]

@@ -6,7 +6,7 @@ function button_click(el) {
 
     if (el.classList.contains('close')) {
         // close button should toggle active highlight on the button which controls the same target
-        target_control = document.querySelector('a.button[data-target="'+target_id+'"]');
+        target_control = document.querySelector('a.button_dps[data-target="'+target_id+'"]');
         target_control.classList.toggle('active');
     } else {
         // close button doesn't need active highlight
