@@ -120,8 +120,8 @@ def generate_html_and_json(generate_roots: bool = True):
 
         html_string += f"""<div id="grammar_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_{w.pali_}">close</a>"""
 
-        html_string += f"""<table class = "table1"><tr><th>pāli</th><td>{w.pali2}</td></tr>"""
-        html_string += f"""<tr><th>grammar</th><td>{w.grammar}"""
+        html_string += f"""<table class = "table1"><tr><th>Pāḷi</th><td>{w.pali2}</td></tr>"""
+        html_string += f"""<tr><th>Grammar</th><td>{w.grammar}"""
         text_full += f"{w.pali}. {w.grammar}"
 
         if w.neg != "":
@@ -141,7 +141,7 @@ def generate_html_and_json(generate_roots: bool = True):
             text_full += f""" ({w.case})"""
 
         html_string += f"""</td></tr>"""
-        html_string += f"""<tr valign="top"><th>meaning</th><td><b>{w.meaning}</b>"""
+        html_string += f"""<tr valign="top"><th>Meaning</th><td><b>{w.meaning}</b>"""
         text_full += f""". {w.meaning}"""
 
         if w.lit != "":
@@ -150,7 +150,7 @@ def generate_html_and_json(generate_roots: bool = True):
         html_string += f"""</td></tr>"""
 
         if w.root != "":
-            html_string += f"""<tr valign="top"><th>root</th><td>{w.root}<sup>{w.root_verb}</sup>{w.root_grp} {w.root_sign} ({w.root_meaning})</td></tr>"""
+            html_string += f"""<tr valign="top"><th>Root</th><td>{w.root}<sup>{w.root_verb}</sup>{w.root_grp} {w.root_sign} ({w.root_meaning})</td></tr>"""
             text_full += f""". root: {w.root} {w.root_grp} {w.root_sign} ({w.root_meaning})"""
 
         if w.root_in_comps != "" and w.root_in_comps != "0":
@@ -158,69 +158,69 @@ def generate_html_and_json(generate_roots: bool = True):
             text_full += f""", {w.root_in_comps} in comps"""
 
         if w.base != "":
-            html_string += f"""<tr valign="top"><th>base</th><td>{w.base}</td></tr>"""
+            html_string += f"""<tr valign="top"><th>Base</th><td>{w.base}</td></tr>"""
             text_full += f""". base: {w.base}"""
 
         if w.construction != "":
-            html_string += f"""<tr valign="top"><th>construction</th><td>{w.construction}</td></tr>"""
+            html_string += f"""<tr valign="top"><th>Construction</th><td>{w.construction}</td></tr>"""
             construction_text = re.sub("<br/>", ", ", w.construction)
             text_full += f""". constr: {construction_text}"""
 
         if w.derivative != "":
-            html_string += f"""<tr valign="top"><th>derivative</th><td>{w.derivative} ({w.suffix})</td></tr>"""
+            html_string += f"""<tr valign="top"><th>Derivative</th><td>{w.derivative} ({w.suffix})</td></tr>"""
             text_full += f""". derivative: {w.derivative} ({w.suffix})"""
 
         if w.pc != "":
-            html_string += f"""<tr valign="top"><th>phonetic</th><td>{w.pc}</td></tr>"""
+            html_string += f"""<tr valign="top"><th>Phonetic</th><td>{w.pc}</td></tr>"""
             pc_text = re.sub("<br/>", ", ", w.pc)
             text_full += f""". phonetic: {pc_text}"""
 
         if w.comp != "" and re.findall(r"\d", w.comp) == []:
-            html_string += f"""<tr valign="top"><th>compound</th><td>{w.comp} ({w.comp_constr})</td></tr>"""
+            html_string += f"""<tr valign="top"><th>Compound</th><td>{w.comp} ({w.comp_constr})</td></tr>"""
             text_full += f""". compound: {w.comp} ({w.comp_constr})"""
 
         if w.ant != "":
-            html_string += f"""<tr valign="top"><th>antonym</th><td>{w.ant}</td></tr>"""
+            html_string += f"""<tr valign="top"><th>Antonym</th><td>{w.ant}</td></tr>"""
             text_full += f""". antonym: {w.ant}"""
 
         if w.syn != "":
-            html_string += f"""<tr valign="top"><th>synonym</th><td>{w.syn}</td></tr>"""
+            html_string += f"""<tr valign="top"><th>Aynonym</th><td>{w.syn}</td></tr>"""
             text_full += f""". synonym: {w.syn}"""
 
         if w.var != "":
-            html_string += f"""<tr valign="top"><th>variant</th><td>{w.var}</td></tr>"""
+            html_string += f"""<tr valign="top"><th>Variant</th><td>{w.var}</td></tr>"""
             text_full += f"""variant: {w.var}"""
 
         if w.comm != "":
-            html_string += f"""<tr valign="top"><th>commentary</th><td>{w.comm}</td></tr>"""
+            html_string += f"""<tr valign="top"><th>Commentary</th><td>{w.comm}</td></tr>"""
             comm_text = re.sub("<br/>", " ", w.comm)
             comm_text = re.sub("<b>", "", comm_text)
             comm_text = re.sub("</b>", "", comm_text)
             text_full += f""". commentary: {comm_text}"""
 
         if w.notes != "":
-            html_string += f"""<tr valign="top"><th>notes</th><td>{w.notes}</td></tr>"""
+            html_string += f"""<tr valign="top"><th>Notes</th><td>{w.notes}</td></tr>"""
             text_full += f""". notes: {w.notes}"""
 
         if w.cognate != "":
-            html_string += f"""<tr valign="top"><th>cognate</th><td>{w.cognate}</td></tr>"""
+            html_string += f"""<tr valign="top"><th>Cognate</th><td>{w.cognate}</td></tr>"""
             text_full += f""". eng congante: {w.cognate}"""
 
         if w.link != "":
-            html_string += f"""<tr valign="top"><th>link</th><td><a href="{w.link}">{w.link}</a></td></tr>"""
+            html_string += f"""<tr valign="top"><th>Link</th><td><a href="{w.link}">{w.link}</a></td></tr>"""
             text_full += f""". link: {w.link}"""
 
         if w.non_ia != "":
-            html_string += f"""<tr valign="top"><th>non ia</th><td>{w.non_ia}</td></tr>"""
+            html_string += f"""<tr valign="top"><th>Non IA</th><td>{w.non_ia}</td></tr>"""
             text_full += f""". non IA: {w.non_ia}"""
 
         if w.sk != "":
-            html_string += f"""<tr valign="top"><th>sanskrit</th><td><i>{w.sk}</i></td></tr>"""
+            html_string += f"""<tr valign="top"><th>Sanskrit</th><td><i>{w.sk}</i></td></tr>"""
             text_full += f""". sanskrit: {w.sk}"""
 
         sk_root_mn = re.sub("'", "", w.sk_root_mn)
         if w.sk_root != "":
-            html_string += f"""<tr valign="top"><th>sk root</th><td><i>{w.sk_root} {w.sk_root_cl} ({sk_root_mn})</i></td></tr>"""
+            html_string += f"""<tr valign="top"><th>Sk root</th><td><i>{w.sk_root} {w.sk_root_cl} ({sk_root_mn})</i></td></tr>"""
             text_full += f""". sk root: {w.sk_root} {w.sk_root_cl} ({sk_root_mn})"""
 
         html_string += f"""</table>"""
