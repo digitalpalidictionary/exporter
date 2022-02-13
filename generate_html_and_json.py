@@ -519,7 +519,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
                     html_string += f"""
                     <div id="root_family_{subfamily_}_{root_id}" class="root_content hidden"><a class="button root close" href="javascript:void(0);" onclick="button_click(this)" data-target="root_family_{subfamily_}_{root_id}">close</a>"""
 
-                    html_string += f"""<p class= "root_heading">all words which belong to the root family <b>{subfamily}</b> {root_meaning}</p>"""
+                    html_string += f"""<p class= "root_heading">all words which belong to the root family <b>{subfamily}</b> ({root_meaning})</p>"""
 
                     p = rsc['root_families_dir'] \
                         .joinpath("output/subfamily html/") \
