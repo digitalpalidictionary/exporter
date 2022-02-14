@@ -90,22 +90,22 @@ def generate_html_and_json(generate_roots: bool = True):
         html_string += f"""<div class="button-box">"""
 
         if w.meaning != "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_dps_{w.pali_}">grammar</a>"""
+            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_dps_{w.pali_}">грамматика</a>"""
 
         if w.eg1 != "" and w.eg2 == "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">example</a>"""
+            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">пример</a>"""
 
         if w.eg1 == "" and w.eg2 != "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">example</a>"""
+            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">пример</a>"""
 
         if w.eg1 != "" and w.eg2 != "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">examples</a>"""
+            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">примеры</a>"""
 
         if w.pos in conjugations:
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_dps_{w.pali_}">conjugation</a>"""
+            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_dps_{w.pali_}">спряжения</a>"""
 
         if w.pos in declensions:
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="declension_dps_{w.pali_}">declension</a>"""
+            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="declension_dps_{w.pali_}">склонения</a>"""
 
         # if w.pos == "sandhi" or w.pos == "idiom":
         #     html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="inflection_dps_{w.pali_}">inflection</a>"""
@@ -116,15 +116,15 @@ def generate_html_and_json(generate_roots: bool = True):
         # if (w.family2 != "" and w.meaning != "") or (w.pali_clean in cf_master_list and w.meaning != ""):
         #     html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="compound_family_dps_{w.pali_}">compound family</a>"""
 
-        html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="feedback_dps_{w.pali_}">feedback</a>"""
+        html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="feedback_dps_{w.pali_}">о словаре</a>"""
         html_string += f"""</div>"""
 
         # grammar
 
-        html_string += f"""<div id="grammar_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_dps_{w.pali_}">close</a>"""
+        html_string += f"""<div id="grammar_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_dps_{w.pali_}">закрыть</a>"""
 
         html_string += f"""<table class = "table1_dps"><tr><th>pāli</th><td>{w.pali}</td></tr>"""
-        html_string += f"""<tr><th>grammar</th><td>{w.pos}"""
+        html_string += f"""<tr><th>часть речи</th><td>{w.pos}"""
         text_full += f"{w.pali}. {w.pos}"
 
         if w.grammar != "":
@@ -156,7 +156,7 @@ def generate_html_and_json(generate_roots: bool = True):
         text_full += f""". {w.meaning}"""
 
         html_string += f"""</td></tr>"""
-        html_string += f"""<tr valign="top"><th>russian</th><td><b>{w.russian}</b>"""
+        html_string += f"""<tr valign="top"><th>русский</th><td><b>{w.russian}</b>"""
         text_full += f""". {w.russian}"""
 
         # if w.lit != "":
@@ -165,21 +165,21 @@ def generate_html_and_json(generate_roots: bool = True):
         html_string += f"""</td></tr>"""
 
         if w.root != "":
-            html_string += f"""<tr valign="top"><th>root</th><td>{w.root}</td></tr>"""
-            text_full += f""". root: {w.root}"""
+            html_string += f"""<tr valign="top"><th>корень</th><td>{w.root}</td></tr>"""
+            text_full += f""". корень: {w.root}"""
 
         # if w.root_in_comps != "" and w.root_in_comps != "0":
         #     html_string += f"""<tr valign="top"><th>√ in comps</th><td>{w.root_in_comps}</td></tr>"""
         #     text_full += f""", {w.root_in_comps} in comps"""
 
         if w.base != "":
-            html_string += f"""<tr valign="top"><th>base</th><td>{w.base}</td></tr>"""
-            text_full += f""". base: {w.base}"""
+            html_string += f"""<tr valign="top"><th>основа</th><td>{w.base}</td></tr>"""
+            text_full += f""". основа: {w.base}"""
 
         if w.construction != "":
-            html_string += f"""<tr valign="top"><th>construction</th><td>{w.construction}</td></tr>"""
+            html_string += f"""<tr valign="top"><th>конструкция</th><td>{w.construction}</td></tr>"""
             construction_text = re.sub("<br/>", ", ", w.construction)
-            text_full += f""". constr: {construction_text}"""
+            text_full += f""". конструкция: {construction_text}"""
 
         # if w.derivative != "":
         #     html_string += f"""<tr valign="top"><th>derivative</th><td>{w.derivative} ({w.suffix})</td></tr>"""
@@ -203,19 +203,19 @@ def generate_html_and_json(generate_roots: bool = True):
         #     text_full += f""". synonym: {w.syn}"""
 
         if w.var != "":
-            html_string += f"""<tr valign="top"><th>variant</th><td>{w.var}</td></tr>"""
-            text_full += f"""variant: {w.var}"""
+            html_string += f"""<tr valign="top"><th>вариант</th><td>{w.var}</td></tr>"""
+            text_full += f"""вариант: {w.var}"""
 
         if w.comm != "":
-            html_string += f"""<tr valign="top"><th>commentary</th><td>{w.comm}</td></tr>"""
+            html_string += f"""<tr valign="top"><th>комментарий</th><td>{w.comm}</td></tr>"""
             comm_text = re.sub("<br/>", " ", w.comm)
             comm_text = re.sub("<b>", "", comm_text)
             comm_text = re.sub("</b>", "", comm_text)
-            text_full += f""". commentary: {comm_text}"""
+            text_full += f""". комментарий: {comm_text}"""
 
         if w.notes != "":
-            html_string += f"""<tr valign="top"><th>notes</th><td>{w.notes}</td></tr>"""
-            text_full += f""". notes: {w.notes}"""
+            html_string += f"""<tr valign="top"><th>заметки</th><td>{w.notes}</td></tr>"""
+            text_full += f""". заметки: {w.notes}"""
 
         # if w.cognate != "":
         #     html_string += f"""<tr valign="top"><th>cognate</th><td>{w.cognate}</td></tr>"""
@@ -230,23 +230,23 @@ def generate_html_and_json(generate_roots: bool = True):
         #     text_full += f""". non IA: {w.non_ia}"""
 
         if w.sk != "":
-            html_string += f"""<tr valign="top"><th>sanskrit</th><td><i>{w.sk}</i></td></tr>"""
-            text_full += f""". sanskrit: {w.sk}"""
+            html_string += f"""<tr valign="top"><th>санскрит</th><td><i>{w.sk}</i></td></tr>"""
+            text_full += f""". санскрит: {w.sk}"""
 
         # sk_root_mn = re.sub("'", "", w.sk_root_mn)
         if w.sk_root != "":
-            html_string += f"""<tr valign="top"><th>sk root</th><td><i>{w.sk_root}</i></td></tr>"""
-            text_full += f""". sk root: {w.sk_root}"""
+            html_string += f"""<tr valign="top"><th>санск. корень</th><td><i>{w.sk_root}</i></td></tr>"""
+            text_full += f""". санск. корень: {w.sk_root}"""
 
         html_string += f"""</table>"""
-        html_string += f"""<p>Did you spot a mistake? <a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Correct it here. Пожалуйста, сообщите об ошибке.</a></p>"""
+        html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>"""
         html_string += f"""</div>"""
 
         # examples
 
         if w.eg1 != "" and w.eg2 != "":
 
-            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">close</a>"""
+            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">закрыть</a>"""
 
             html_string += f"""<p>{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
             html_string += f"""<p>{w.eg2}<p class="sutta_dps">{w.source2} {w.sutta2}<br>{w.chapter}</p>"""
@@ -254,14 +254,14 @@ def generate_html_and_json(generate_roots: bool = True):
 
         elif w.eg1 != "" and w.eg2 == "":
 
-            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">close</a>"""
+            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">закрыть</a>"""
 
             html_string += f"""<p>{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
             html_string += f"""</div>"""
 
         elif w.eg1 == "" and w.eg2 != "":
 
-            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">close</a>"""
+            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">закрыть</a>"""
 
             html_string += f"""<p>{w.eg2}<p class="sutta_dps">{w.source2} {w.sutta2}<br>{w.chapter}</p>"""
             html_string += f"""</div>"""
@@ -287,7 +287,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
             if w.pos in conjugations:
 
-                html_string += f"""<div id="conjugation_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_dps_{w.pali_}">close</a>"""
+                html_string += f"""<div id="conjugation_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_dps_{w.pali_}">закрыть</a>"""
 
             # if w.pos == "sandhi" or w.pos == "idiom":
 
@@ -299,13 +299,11 @@ def generate_html_and_json(generate_roots: bool = True):
 
                 if w.pos in declensions:
 
-                    html_string += f"""<p>Spot a mistake in the declension table? Something missing? """
-                    html_string += f"""<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Correct it here. Пожалуйста, сообщите об ошибке.</a></p>"""
+                    html_string += f"""<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>"""
 
                 if w.pos in conjugations:
 
-                    html_string += f"""<p>Spot a mistake in the conjugation table? Something missing? """
-                    html_string += f"""<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Correct it here. Пожалуйста, сообщите об ошибке.</a></p>"""
+                    html_string += f"""<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>"""
             html_string += f"""</div>"""
 
         # root family
