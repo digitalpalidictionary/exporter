@@ -110,10 +110,10 @@ def generate_html_and_json(generate_roots: bool = True):
         # if w.pos == "sandhi" or w.pos == "idiom":
         #     html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="inflection_dps_{w.pali_}">inflection</a>"""
 
-        # if w.family != "":
+        # if w.family != "" and w.metadata == "":
         #     html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="root_family_dps_{w.pali_}">root family</a>"""
 
-        # if (w.family2 != "" and w.meaning != "") or (w.pali_clean in cf_master_list and w.meaning != ""):
+        # if (w.family2 != "" and w.meaning != "" and w.metadata == "") or (w.pali_clean in cf_master_list and w.meaning != ""):
         #     html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="compound_family_dps_{w.pali_}">compound family</a>"""
 
         html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="feedback_dps_{w.pali_}">о словаре</a>"""
@@ -268,7 +268,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # inflection table
 
-        if w.pos not in indeclinables:
+        if w.pos not in indeclinables and w.metadata == "":
             table_path = rsc['inflections_dir'] \
                 .joinpath("output/html tables/") \
                 .joinpath(w.pali + ".html")
@@ -316,11 +316,11 @@ def generate_html_and_json(generate_roots: bool = True):
         #     with open(subfamily_path) as f:
         #         table_data_read = f.read()
 
-        # elif w.root != "":
+        # elif w.root != "" and w.metadata == "":
         #     subfamily_error_string += w.pali +", "
         #     error_log.write(f"""error reading subfamily - {w.pali} - {w.root} {w.root_grp} {w.root_meaning} {w.family}\n""")
 
-        # if w.family != "":
+        # if w.family != "" and w.metadata == "":
 
         #     html_string += f"""<div id="root_family_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="root_family_dps_{w.pali_}">close</a>"""
 
@@ -330,7 +330,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # compound families
 
-        # if w.family2 != "" and w.meaning != "":
+        # if w.family2 != "" and w.meaning != "" and w.metadata == "":
 
         #     html_string += f"""<div id="compound_family_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="compound_family_dps_{w.pali_}">close</a>"""
 
