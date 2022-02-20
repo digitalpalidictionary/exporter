@@ -179,7 +179,7 @@ def generate_html_and_json(generate_roots: bool = True):
         if w.construction != "":
             html_string += f"""<tr valign="top"><th>конструкция</th><td>{w.construction}</td></tr>"""
             construction_text = re.sub("<br/>", ", ", w.construction)
-            text_full += f""". конструкция: {construction_text}"""
+            text_full += f""". словообраз.: {construction_text}"""
 
         # if w.derivative != "":
         #     html_string += f"""<tr valign="top"><th>derivative</th><td>{w.derivative} ({w.suffix})</td></tr>"""
