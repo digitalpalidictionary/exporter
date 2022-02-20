@@ -81,7 +81,7 @@ def get_resource_paths() -> ResourcePaths:
         # Project input
         # compound_families_dir = dpd_dir.joinpath("compound families generator/"),
         # root_families_dir = dpd_dir.joinpath("root families generator/"),
-        inflections_dir = dpd_dir.joinpath("inflection-generator/"),
+        inflections_dir = dpd_dir.joinpath("inflection/"),
         words_path = dpd_dir.joinpath("spreadsheets/dps-full.csv"),
         # roots_path = dpd_dir.joinpath("csvs/roots.csv"),
         icon_path = Path("./icon.png"),
