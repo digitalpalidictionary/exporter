@@ -58,9 +58,9 @@ def parse_data_frames(rsc: ResourcePaths) -> DataFrames:
 
 
 def get_resource_paths() -> ResourcePaths:
-    s = os.getenv('DPD_DIR')
+    s = os.getenv('DPS_DIR')
     if s is None:
-        print("ERROR! DPD_DIR is not set.")
+        print("ERROR! DPS_DIR is not set.")
         sys.exit(2)
     else:
         dpd_dir = Path(s)
