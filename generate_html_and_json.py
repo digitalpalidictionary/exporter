@@ -299,10 +299,12 @@ def generate_html_and_json(generate_roots: bool = True):
 
                 if w.pos in declensions:
 
+                    html_string += f"""<p>У вас есть предложение?"""
                     html_string += f"""<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>"""
 
                 if w.pos in conjugations:
 
+                    html_string += f"""<p>У вас есть предложение?"""
                     html_string += f"""<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>"""
             html_string += f"""</div>"""
 
