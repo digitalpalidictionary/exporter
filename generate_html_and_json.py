@@ -27,6 +27,7 @@ def generate_html_and_json(generate_roots: bool = True):
     inflection_table_error_string = ""
     subfamily_error_string = ""
     synonyms_error_string = ""
+    frequency_error_string = ""
 
     # setup compound families list to search
 
@@ -45,7 +46,7 @@ def generate_html_and_json(generate_roots: bool = True):
     with open(rsc['buttons_js_path'], 'r') as f:
         buttons_js = f.read()
 
-    for row in range(df_length):
+    for row in range(df_length): #df_length
 
         w = DpdWord(df, row)
 
@@ -112,6 +113,9 @@ def generate_html_and_json(generate_roots: bool = True):
 
         if (w.family2 != "" and w.meaning != "" and w.metadata == "") or (w.pali_clean in cf_master_list and w.meaning != "" and w.metadata == ""):
             html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="compound_family_{w.pali_}">compound family</a>"""
+
+        if w.pos != "idiom":
+            html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="frequency_{w.pali_}">frequency</a>"""
 
         html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="feedback_{w.pali_}">feedback</a>"""
         html_string += f"""</div>"""
@@ -348,6 +352,34 @@ def generate_html_and_json(generate_roots: bool = True):
                 compound_family_error_string += w.pali +", "
                 error_log.write(f"""error reading compound family - {w.pali} - {w.family2}\n""")
 
+            html_string += f"""</div>"""
+
+        if w.pos != "idiom":
+
+            html_string += f"""<div id="frequency_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="frequency_{w.pali_}">close</a>"""
+
+            frequency_path = rsc['frequency_dir'] \
+                .joinpath("output/html") \
+                .joinpath(f"{w.pali}.html")
+
+            if frequency_path.exists():
+                with open(frequency_path, "r") as f:
+                    data_read = f.read()
+                    #move unused classes and ids
+                    data_read = re.sub(r"-1", "-", data_read)
+                    data_read = re.sub(r'.+\n.+#f7fbff;\n.+\n.+', "", data_read)
+                    data_read = re.sub(r'th class.\[^>\]+', "th", data_read)
+                    data_read = re.sub(r'th id.\[^>\]+', "th", data_read)
+                    data_read = re.sub(r'(td id.+) class.\[^>\]+', r"\\1", data_read)
+                    html_string += f"""<p class="heading">frequency of <b>{w.pali_clean}</b> and its inflections in the Chaṭṭha Saṅgāyana corpus.</b></p>"""
+                    html_string += f"""{data_read}"""
+                    html_string += f"""<p>For a detailed explanation of how this word frequency chart is calculated, it's accuracies and inaccuracies, please """
+                    html_string += f"""<a class="link" href="https://digitalpalidictionary.github.io/frequency.html">refer to the website.</a>"""
+                    
+            else:
+                frequency_error_string += w.pali +", "
+                error_log.write(f"""error reading frequency for {w.pali}\n""")
+        
             html_string += f"""</div>"""
 
         html_string += render_feedback_tmpl(w)

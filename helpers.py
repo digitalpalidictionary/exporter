@@ -26,6 +26,7 @@ class ResourcePaths(TypedDict):
     output_share_dir: Path
     error_log_dir: Path
     compound_families_dir: Path
+    frequency_dir: Path
     root_families_dir: Path
     inflections_dir: Path
     words_path: Path
@@ -80,6 +81,7 @@ def get_resource_paths() -> ResourcePaths:
         buttons_js_path = Path("./assets/buttons.js"),
         # Project input
         compound_families_dir = dpd_dir.joinpath("compound families generator/"),
+        frequency_dir = dpd_dir.joinpath("word frequency maps/"),
         root_families_dir = dpd_dir.joinpath("root families generator/"),
         inflections_dir = dpd_dir.joinpath("inflection generator/"),
         words_path = dpd_dir.joinpath("csvs/dpd-full.csv"),
