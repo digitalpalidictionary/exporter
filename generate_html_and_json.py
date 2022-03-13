@@ -1,11 +1,12 @@
 import pickle
 import re
 from datetime import date
-
+from datetime import datetime
 import pandas as pd
 
-from helpers import DataFrames, DpdWord, ResourcePaths, get_resource_paths, parse_data_frames
+from helpers import DataFrames, DpdWord, ResourcePaths, get_resource_paths, parse_data_frames, timeis, red, yellow, green
 from html_components import render_header_tmpl, render_feedback_tmpl, render_word_meaning
+
 
 def generate_html_and_json(generate_roots: bool = True):
     rsc = get_resource_paths()
@@ -13,9 +14,9 @@ def generate_html_and_json(generate_roots: bool = True):
     data = parse_data_frames(rsc)
     today = date.today()
 
-    print("~" * 40)
-    print("generating html & json files")
-    print("~" * 40)
+    print(f"{timeis()} {yellow}generate html and json")
+    print(f"{timeis()} ----------------------------------------")
+    print(f"{timeis()} {green}generating dpd html")
 
     error_log = open(rsc['error_log_dir'].joinpath("exporter errorlog.txt"), "w")
 
@@ -51,7 +52,7 @@ def generate_html_and_json(generate_roots: bool = True):
         w = DpdWord(df, row)
 
         if row % 5000 == 0 or row % df_length == 0:
-            print(f"{row}/{df_length}\t{w.pali}")
+            print(f"{timeis()} {row}/{df_length}\t{w.pali}")
 
         # colour1 #00A4CC #dark blue
         # colour2 #65DBFF #inbetween for rollover
@@ -365,12 +366,16 @@ def generate_html_and_json(generate_roots: bool = True):
             if frequency_path.exists():
                 with open(frequency_path, "r") as f:
                     data_read = f.read()
-                    #move unused classes and ids
-                    data_read = re.sub(r"-1", "-", data_read)
+
+                    # remove unused classes and ids
+                    data_read = re.sub(r"-1", "", data_read)
+                    data_read = re.sub(r"\b0\b", "-", data_read)
+                    data_read = re.sub(r"</style>", "td { text-align: center; }</style>", data_read)
                     data_read = re.sub(r'.+\n.+#f7fbff;\n.+\n.+', "", data_read)
                     data_read = re.sub(r'th class.\[^>\]+', "th", data_read)
                     data_read = re.sub(r'th id.\[^>\]+', "th", data_read)
                     data_read = re.sub(r'(td id.+) class.\[^>\]+', r"\\1", data_read)
+                    
                     html_string += f"""<p class="heading">frequency of <b>{w.pali_clean}</b> and its inflections in the Chaṭṭha Saṅgāyana corpus.</b></p>"""
                     html_string += f"""{data_read}"""
                     html_string += f"""<p>For a detailed explanation of how this word frequency chart is calculated, it's accuracies and inaccuracies, please """
@@ -416,13 +421,13 @@ def generate_html_and_json(generate_roots: bool = True):
     error_log.close()
 
     if compound_family_error_string != "":
-        print(f"compound family errors: {compound_family_error_string}\n")
+        print(f"{timeis()} {red}compound family errors: {compound_family_error_string}")
     if inflection_table_error_string != "":
-        print(f"inflection table errors: {inflection_table_error_string}\n")
+        print(f"{timeis()} {red}inflection table errors: {inflection_table_error_string}")
     if subfamily_error_string != "":
-        print(f"root subfamily errors: {subfamily_error_string}\n")
+        print(f"{timeis()} {red}root subfamily errors: {subfamily_error_string}")
     if synonyms_error_string != "":
-        print(f"synonym errors: {synonyms_error_string}\n")
+       print(f"{timeis()} {red}synonym errors: {synonyms_error_string}")
 
 
     # write text versions
@@ -440,9 +445,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
 def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data_list):
 
-    print("~" * 40)
-    print("generating roots html & json")
-    print("~" * 40)
+    print(f"{timeis()} {green}generating roots html")
 
     # html list > dataframe
 
@@ -484,7 +487,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         if root_count != "0":
 
             if row % 100 == 0 or row % roots_df_length == 0:
-                print(f"{row}/{roots_df_length}\t{root} {root_group} {root_meaning}")
+                print(f"{timeis()} {row}/{roots_df_length}\t{root} {root_group} {root_meaning}")
 
             css = f"{words_css}\n\n{roots_css}"
             html_string += render_header_tmpl(css=css, js=buttons_js)
@@ -561,7 +564,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
                         # FIXME pali is undefined
                         # root_html_error_string += pali +", "
                         root_html_error_string += "unknown" +", "
-                        print(f"error\t{root} {root_group} {root_meaning} {subfamily}.html")
+                        print(f"{timeis()} {red}error\t{root} {root_group} {root_meaning} {subfamily}.html")
 
                     html_string += "</div>"
 
@@ -580,12 +583,15 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
             root_data_list += [[f"{root}", f"""{html_string}""", "", synonyms]]
 
     if root_html_error_string != "":
-        print(f"root html errors: {root_html_error_string}")
+        print(f"{timeis()} {red}root html errors: {root_html_error_string}")
 
     # roots > dataframe > json
+    print(f"{timeis()} {green}saving html to .json")
 
     root_data_df = pd.DataFrame(root_data_list)
     root_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
 
     pali_data_df = pd.concat([pali_data_df, root_data_df])
     pali_data_df.to_json(rsc['gd_json_path'], force_ascii=False, orient="records", indent=6)
+
+    print(f"{timeis()} ----------------------------------------")
