@@ -94,10 +94,10 @@ def generate_html_and_json(generate_roots: bool = True):
         if w.meaning != "":
             html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_{w.pali_}">grammar</a>"""
 
-        if w.eg1 != "" and w.eg2 == "":
+        if w.meaning != "" and w.eg1 != "" and w.eg2 == "":
             html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="example_{w.pali_}">example</a>"""
 
-        if w.eg1 != "" and w.eg2 != "":
+        if w.meaning != "" and w.eg1 != "" and w.eg2 != "":
             html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="example_{w.pali_}">examples</a>"""
 
         if w.pos in conjugations:
@@ -105,9 +105,6 @@ def generate_html_and_json(generate_roots: bool = True):
 
         if w.pos in declensions:
             html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="declension_{w.pali_}">declension</a>"""
-
-        # if w.pos == "sandhi" or w.pos == "idiom":
-        #     html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="inflection_{w.pali_}">inflection</a>"""
 
         if w.family != "" and w.metadata == "":
             html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="root_family_{w.pali_}">root family</a>"""
@@ -225,7 +222,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         sk_root_mn = re.sub("'", "", w.sk_root_mn)
         if w.sk_root != "":
-            html_string += f"""<tr valign="top"><th>Sk root</th><td><i>{w.sk_root} {w.sk_root_cl} ({sk_root_mn})</i></td></tr>"""
+            html_string += f"""<tr valign="top"><th>Sanskrit Root</th><td><i>{w.sk_root} {w.sk_root_cl} ({sk_root_mn})</i></td></tr>"""
             text_full += f""". sk root: {w.sk_root} {w.sk_root_cl} ({sk_root_mn})"""
 
         html_string += f"""</table>"""
@@ -234,19 +231,21 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # examples
 
-        if w.eg1 != "" and w.eg2 != "":
+        if w.meaning != "" and w.eg1 != "" and w.eg2 != "":
 
             html_string += f"""<div id="example_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_{w.pali_}">close</a>"""
 
             html_string += f"""<p>{w.eg1}<p class="sutta">{w.source1} {w.sutta1}</p>"""
             html_string += f"""<p>{w.eg2}<p class="sutta">{w.source2} {w.sutta2}</p>"""
+            html_string += f"""<p>Can you think of a better example? <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Example1&entry.1433863141=GoldenDict {today}" target="_blank">Add it here.</a></p>"""
             html_string += f"""</div>"""
 
-        elif w.eg1 != "" and w.eg2 == "":
+        elif w.meaning != "" and w.eg1 != "" and w.eg2 == "":
 
             html_string += f"""<div id="example_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_{w.pali_}">close</a>"""
 
             html_string += f"""<p>{w.eg1}<p class="sutta">{w.source1} {w.sutta1}</p>"""
+            html_string += f"""<p>Can you think of a better example? <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Example1&entry.1433863141=GoldenDict {today}" target="_blank">Add it here.</a></p>"""
             html_string += f"""</div>"""
 
         # inflection table
@@ -279,12 +278,12 @@ def generate_html_and_json(generate_roots: bool = True):
                 if w.pos in declensions:
 
                     html_string += f"""<p>Spot a mistake in the declension table? Something missing? """
-                    html_string += f"""<a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSdAL2PzavyrtXgGmtNrZAMyh3hV6g3fU0chxhWFxunQEZtH0g/viewform?usp=pp_url&entry.1932605469={w.pali}&entry.1433863141=GoldenDict+{today}" target="_blank">Report it here!</a>"""
+                    html_string += f"""<a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSdAL2PzavyrtXgGmtNrZAMyh3hV6g3fU0chxhWFxunQEZtH0g/viewform?usp=pp_url&entry.1932605469={w.pali}&entry.1433863141=GoldenDict+{today}" target="_blank">Report it here.</a>"""
 
                 if w.pos in conjugations:
 
                     html_string += f"""<p>Spot a mistake in the conjugation table? Something missing? """
-                    html_string += f"""<a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSdAL2PzavyrtXgGmtNrZAMyh3hV6g3fU0chxhWFxunQEZtH0g/viewform?usp=pp_url&entry.1932605469={w.pali}&entry.1433863141=GoldenDict+{today}" target="_blank">Report it here!</a>"""
+                    html_string += f"""<a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSdAL2PzavyrtXgGmtNrZAMyh3hV6g3fU0chxhWFxunQEZtH0g/viewform?usp=pp_url&entry.1932605469={w.pali}&entry.1433863141=GoldenDict+{today}" target="_blank">Report it here.</a>"""
             html_string += f"""</div>"""
 
         # root family
@@ -307,6 +306,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
             html_string += f"""<p class ="heading"><b>{w.pali_clean}</b> belongs to the root family <b>{w.family}</b> ({w.root_meaning})</p>"""
             html_string += f"""<table class = "table1">{table_data_read}</table>"""
+            html_string += f"""<p>Do all the words belong to this family? Please report any cuckoos in the nest <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Root+Family&entry.1433863141=GoldenDict {today}" target="_blank">here.</a></p>"""
             html_string += f"""</div>"""
 
         # compound families
@@ -333,6 +333,7 @@ def generate_html_and_json(generate_roots: bool = True):
                     compound_family_error_string += w.pali +", "
                     error_log.write(f"""error reading compound family - {w.pali} - {cf}\n""")
 
+            html_string += f"""<p>Do all the words belong to this family? Please report something amiss <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Compound+Family&entry.1433863141=GoldenDict {today}" target="_blank">here.</a></p>"""
             html_string += f"""</div>"""
 
         if w.family2 == "" and w.meaning != "" and w.pali_clean in cf_master_list:
@@ -353,11 +354,29 @@ def generate_html_and_json(generate_roots: bool = True):
                 compound_family_error_string += w.pali +", "
                 error_log.write(f"""error reading compound family - {w.pali} - {w.family2}\n""")
 
+            html_string += f"""<p>Did you spot a mistake? Something missing? <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Compound+Family&entry.1433863141=GoldenDict {today}" target="_blank">Correct it here.</a></p>"""
             html_string += f"""</div>"""
+
+        # frequency
 
         if w.pos != "idiom":
 
             html_string += f"""<div id="frequency_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="frequency_{w.pali_}">close</a>"""
+
+            if w.pos in indeclinables or re.match(r"^!", w.stem):
+                
+                html_string += f"""<p class="heading">frequency of the exact word <b>{w.pali_clean}</b> in the Chaṭṭha Saṅgāyana corpus.</b></p>"""
+
+            elif w.pos in conjugations:
+
+                html_string += f"""<p class="heading">frequency of <b>{w.pali_clean} and its conjugations</b> in the Chaṭṭha Saṅgāyana corpus.</b></p>"""
+
+            elif w.pos in declensions:
+
+                html_string += f"""<p class="heading">frequency of <b>{w.pali_clean} and its declensions</b> in the Chaṭṭha Saṅgāyana corpus.</b></p>"""
+
+            else:
+                print(f"{timeis()} {red}{w.pali} problem in frequency heading")
 
             frequency_path = rsc['frequency_dir'] \
                 .joinpath("output/html") \
@@ -368,6 +387,7 @@ def generate_html_and_json(generate_roots: bool = True):
                     data_read = f.read()
 
                     # remove unused classes and ids
+                    
                     data_read = re.sub(r"-1", "", data_read)
                     data_read = re.sub(r"\b0\b", "-", data_read)
                     data_read = re.sub(r"</style>", "td { text-align: center; }</style>", data_read)
@@ -376,10 +396,10 @@ def generate_html_and_json(generate_roots: bool = True):
                     data_read = re.sub(r'th id.\[^>\]+', "th", data_read)
                     data_read = re.sub(r'(td id.+) class.\[^>\]+', r"\\1", data_read)
                     
-                    html_string += f"""<p class="heading">frequency of <b>{w.pali_clean}</b> and its inflections in the Chaṭṭha Saṅgāyana corpus.</b></p>"""
                     html_string += f"""{data_read}"""
                     html_string += f"""<p>For a detailed explanation of how this word frequency chart is calculated, it's accuracies and inaccuracies, please """
                     html_string += f"""<a class="link" href="https://digitalpalidictionary.github.io/frequency.html">refer to the website.</a>"""
+                    html_string += f"""<p>If something looks out of place <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Frequency&entry.1433863141=GoldenDict {today}" target="_blank">log it here.</a></p>"""      
                     
             else:
                 frequency_error_string += w.pali +", "
@@ -429,6 +449,11 @@ def generate_html_and_json(generate_roots: bool = True):
     if synonyms_error_string != "":
        print(f"{timeis()} {red}synonym errors: {synonyms_error_string}")
 
+    # convert ṃ to ṁ
+
+    text_data_full = re.sub("ṃ", "ṁ", text_data_full)
+    text_data_concise = re.sub("ṃ", "ṁ", text_data_concise)
+
 
     # write text versions
 
@@ -446,6 +471,7 @@ def generate_html_and_json(generate_roots: bool = True):
 def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data_list):
 
     print(f"{timeis()} {green}generating roots html")
+    today = date.today()
 
     # html list > dataframe
 
@@ -537,6 +563,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
                     root_info_read = f.read()
 
                     html_string += f"""<table class="root_table">{root_info_read}</table>"""
+                    html_string += f"""<p>Did you spot a mistake? <a class="rootlink" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={root} {root_group} {root_meaning}&entry.326955045=Root+Info&entry.1433863141=GoldenDict {today}" target="_blank">Correct it here.</a></p>"""
                     html_string += """</div>"""
 
             # root families
@@ -566,6 +593,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
                         root_html_error_string += "unknown" +", "
                         print(f"{timeis()} {red}error\t{root} {root_group} {root_meaning} {subfamily}.html")
 
+                    html_string += f"""<p>Do all the words belong to this family? Please report any cuckoos in the nest <a class="rootlink" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={subfamily} {root_group} {root_meaning}&entry.326955045=Root+Family&entry.1433863141=GoldenDict {today}" target="_blank">here.</a></p>"""
                     html_string += "</div>"
 
             html_string += f"""</body></html>"""

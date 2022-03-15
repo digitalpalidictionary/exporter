@@ -45,3 +45,15 @@ a.button.root.active {
     background-color: #AB3C00;
     color: white;
 }
+
+.rootlink {
+    border-radius: 5px;
+    color: #AB3C00;
+    font-weight: 700;
+}
+
+.rootlink:hover {
+    border-radius: 5px;
+    color: #F95700;
+    font-weight: 700;
+}
