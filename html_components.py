@@ -63,12 +63,8 @@ def render_word_meaning(w: DpdWord) -> RenderResult:
         #     html_string += f""" ({w.case})"""
         #     text_concise += f""" ({w.case})"""
 
-        html_string += f""". (en) <b>{w.meaning}</b>"""
-        text_concise += f""". {w.meaning}"""
-
-        if w.russian != "":
-            html_string += f"""; (рус) <b>{w.russian}</b>"""
-            text_concise += f"""; {w.russian}"""
+        html_string += f""". <b>{w.russian}</b>"""
+        text_concise += f""". {w.russian}"""
 
         # if w.base == "":
         #     construction_simple = re.sub(r" \[.+\] \+", "", w.construction)
