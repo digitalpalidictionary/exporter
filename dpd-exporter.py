@@ -42,10 +42,10 @@ def run_generate_goldendict(move_to_dest: bool = True):
 
     ifo = ifo_from_opts(
         {
-            "bookname": "DPS",
-            "author": "Devamitta Bhikkhu",
-            "description": "Devamitta Pāḷi Study",
-            "website": "rusdevamitta@gmail.com",
+            "bookname": "Пали-Русский Словарь",
+            "author": "<Бхиккху Дэвамитта",
+            "description": "Пали-Русский Словарь",
+            "website": "devamitta@sasanarakkha.org",
         }
     )
 
