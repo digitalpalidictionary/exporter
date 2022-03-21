@@ -122,10 +122,10 @@ def generate_html_and_json(generate_roots: bool = True):
         # grammar
 
         html_string += f"""<div id="grammar_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_dps_{w.pali_}">закрыть</a>"""
-
-        html_string += f"""<table class = "table1_dps"><tr><th>pāli</th><td>{w.pali}</td></tr>"""
-        html_string += f"""<tr><th>часть речи</th><td>{w.pos}"""
-        text_full += f"{w.pali}. {w.pos}"
+        html_string += f"""<table class = "table1_dps">"""
+        if w.pos != "":
+            html_string += f"""<tr><th>часть речи</th><td>{w.pos}"""
+            text_full += f"{w.pali}. {w.pos}"
 
         if w.grammar != "":
             html_string += f""", {w.grammar}"""
@@ -155,9 +155,10 @@ def generate_html_and_json(generate_roots: bool = True):
         html_string += f"""<tr valign="top"><th>english</th><td><b>{w.meaning}</b>"""
         text_full += f""". {w.meaning}"""
 
-        html_string += f"""</td></tr>"""
-        html_string += f"""<tr valign="top"><th>русский</th><td><b>{w.russian}</b>"""
-        text_full += f""". {w.russian}"""
+        if w.russian != "":
+            html_string += f"""</td></tr>"""
+            html_string += f"""<tr valign="top"><th>русский</th><td><b>{w.russian}</b>"""
+            text_full += f""". {w.russian}"""
 
         # if w.lit != "":
         #     html_string += f"""; lit. {w.lit}"""
