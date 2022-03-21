@@ -84,7 +84,7 @@ def get_resource_paths() -> ResourcePaths:
         inflections_dir = dpd_dir.joinpath("inflection/"),
         words_path = dpd_dir.joinpath("spreadsheets/dps-full.csv"),
         # roots_path = dpd_dir.joinpath("csvs/roots.csv"),
-        icon_path = Path("./icon.png"),
+        icon_path = Path("./dps_icon.png"),
     )
 
     # ensure write dirs exist
