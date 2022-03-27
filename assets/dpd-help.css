@@ -1,0 +1,23 @@
+h3 {
+    font-size: 130%;
+    margin-top: 10px;
+    margin-bottom: 1px;
+}
+
+body {
+    font-family: "Noto Sans", "DejaVu Serif", "Verajja Serif";
+}
+
+p {
+    line-height: 150%;
+    margin: 3px 5px;
+    vertical-align: middle;
+}
+
+div.help {
+    border: 2px solid #0ab33d;
+    border-radius: 5px;
+    line-height: 150%;
+    overflow: auto;
+    text-align: left;
+}

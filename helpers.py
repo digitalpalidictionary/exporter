@@ -18,12 +18,15 @@ load_dotenv()
 class DataFrames(TypedDict):
     words_df: DataFrame
     roots_df: DataFrame
+    abbrev_df: DataFrame
+    help_df: DataFrame
 
 
 class ResourcePaths(TypedDict):
     output_dir: Path
     output_html_dir: Path
     output_root_html_dir: Path
+    output_help_html_dir: Path
     output_share_dir: Path
     error_log_dir: Path
     compound_families_dir: Path
@@ -32,8 +35,11 @@ class ResourcePaths(TypedDict):
     inflections_dir: Path
     words_path: Path
     roots_path: Path
+    abbrev_path: Path
+    help_path: Path
     dpd_words_css_path: Path
     dpd_roots_css_path: Path
+    dpd_help_css_path: Path
     buttons_js_path: Path
     gd_json_path: Path
     icon_path: Path
@@ -53,9 +59,17 @@ def parse_data_frames(rsc: ResourcePaths) -> DataFrames:
     # roots_df = roots_df[roots_df["Count"] != "0"] # remove roots with no examples
     roots_df = roots_df[roots_df["Fin"] != ""] # remove extra iines
 
+    abbrev_df = pd.read_csv(rsc['abbrev_path'], sep="\t", dtype=str)
+    abbrev_df.fillna("", inplace=True)
+
+    help_df = pd.read_csv(rsc['help_path'], sep="\t", dtype=str)
+    help_df.fillna("", inplace=True)
+
     return DataFrames(
         words_df = words_df,
         roots_df = roots_df,
+        abbrev_df = abbrev_df,
+        help_df = help_df
     )
 
 
@@ -72,6 +86,7 @@ def get_resource_paths() -> ResourcePaths:
         output_dir = Path("./output/"),
         output_html_dir = Path("./output/html/"),
         output_root_html_dir = Path("./output/root html/"),
+        output_help_html_dir = Path("./output/help html/"),
         output_share_dir = Path("./share/"),
         gd_json_path = Path("./output/gd.json"),
         output_stardict_zip_path = Path("dpd.zip"),
@@ -79,7 +94,10 @@ def get_resource_paths() -> ResourcePaths:
         # Project assets
         dpd_words_css_path = Path("./assets/dpd-words.css"),
         dpd_roots_css_path = Path("./assets/dpd-roots.css"),
+        dpd_help_css_path = Path("./assets/dpd-help.css"),
         buttons_js_path = Path("./assets/buttons.js"),
+        abbrev_path = Path("./assets/abbreviations.csv"),
+        help_path = Path("./assets/help.csv"),
         # Project input
         compound_families_dir = dpd_dir.joinpath("compound families generator/"),
         frequency_dir = dpd_dir.joinpath("frequency maps/"),
@@ -87,6 +105,7 @@ def get_resource_paths() -> ResourcePaths:
         inflections_dir = dpd_dir.joinpath("inflection generator/"),
         words_path = dpd_dir.joinpath("csvs/dpd-full.csv"),
         roots_path = dpd_dir.joinpath("csvs/roots.csv"),
+        
         icon_path = dpd_dir.joinpath("favicon/favicon_io nu circle/favicon.ico"),
     )
 

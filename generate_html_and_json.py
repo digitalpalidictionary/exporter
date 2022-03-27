@@ -2,7 +2,10 @@ import pickle
 import re
 from datetime import date
 from datetime import datetime
+import stat
+import time
 import pandas as pd
+import os
 
 from helpers import DataFrames, DpdWord, ResourcePaths, get_resource_paths, parse_data_frames, timeis, red, yellow, green
 from html_components import render_header_tmpl, render_feedback_tmpl, render_word_meaning
@@ -186,7 +189,7 @@ def generate_html_and_json(generate_roots: bool = True):
             text_full += f""". antonym: {w.ant}"""
 
         if w.syn != "":
-            html_string += f"""<tr valign="top"><th>Aynonym</th><td>{w.syn}</td></tr>"""
+            html_string += f"""<tr valign="top"><th>Synonym</th><td>{w.syn}</td></tr>"""
             text_full += f""". synonym: {w.syn}"""
 
         if w.var != "":
@@ -206,7 +209,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         if w.cognate != "":
             html_string += f"""<tr valign="top"><th>Cognate</th><td>{w.cognate}</td></tr>"""
-            text_full += f""". eng congante: {w.cognate}"""
+            text_full += f""". eng cognate: {w.cognate}"""
 
         if w.link != "":
             html_string += f"""<tr valign="top"><th>Link</th><td><a href="{w.link}">{w.link}</a></td></tr>"""
@@ -306,7 +309,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
             html_string += f"""<p class ="heading"><b>{w.pali_clean}</b> belongs to the root family <b>{w.family}</b> ({w.root_meaning})</p>"""
             html_string += f"""<table class = "table1">{table_data_read}</table>"""
-            html_string += f"""<p>Do all the words belong to this family? Please report any cuckoos in the nest <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Root+Family&entry.1433863141=GoldenDict {today}" target="_blank">here.</a></p>"""
+            html_string += f"""<p>Something out of place? <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Root+Family&entry.1433863141=GoldenDict {today}" target="_blank">Report it here</a>.</p>"""
             html_string += f"""</div>"""
 
         # compound families
@@ -333,7 +336,7 @@ def generate_html_and_json(generate_roots: bool = True):
                     compound_family_error_string += w.pali +", "
                     error_log.write(f"""error reading compound family - {w.pali} - {cf}\n""")
 
-            html_string += f"""<p>Do all the words belong to this family? Please report something amiss <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Compound+Family&entry.1433863141=GoldenDict {today}" target="_blank">here.</a></p>"""
+            html_string += f"""<p>Some word out of place? <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Compound+Family&entry.1433863141=GoldenDict {today}" target="_blank">Report it here</a>.</p>"""
             html_string += f"""</div>"""
 
         if w.family2 == "" and w.meaning != "" and w.pali_clean in cf_master_list:
@@ -365,18 +368,18 @@ def generate_html_and_json(generate_roots: bool = True):
 
             if w.pos in indeclinables or re.match(r"^!", w.stem):
                 
-                html_string += f"""<p class="heading">frequency of the exact word <b>{w.pali_clean}</b> in the Chaṭṭha Saṅgāyana corpus.</b></p>"""
+                html_string += f"""<p class="heading">exact matches of the word <b>{w.pali_clean}</b> in the Chaṭṭha Saṅgāyana corpus.</b></p>"""
 
             elif w.pos in conjugations:
 
-                html_string += f"""<p class="heading">frequency of <b>{w.pali_clean} and its conjugations</b> in the Chaṭṭha Saṅgāyana corpus.</b></p>"""
+                html_string += f"""<p class="heading">exact matches of <b>{w.pali_clean} and its conjugations</b> in the Chaṭṭha Saṅgāyana corpus.</b></p>"""
 
             elif w.pos in declensions:
 
-                html_string += f"""<p class="heading">frequency of <b>{w.pali_clean} and its declensions</b> in the Chaṭṭha Saṅgāyana corpus.</b></p>"""
+                html_string += f"""<p class="heading">exact matches of <b>{w.pali_clean} and its declensions</b> in the Chaṭṭha Saṅgāyana corpus.</b></p>"""
 
-            else:
-                print(f"{timeis()} {red}{w.pali} problem in frequency heading")
+            elif w.metadata == "":
+                print(f"{timeis()} {red}problem in frequency heading: {w.pali}")
 
             frequency_path = rsc['frequency_dir'] \
                 .joinpath("output/html") \
@@ -397,9 +400,8 @@ def generate_html_and_json(generate_roots: bool = True):
                     data_read = re.sub(r'(td id.+) class.\[^>\]+', r"\\1", data_read)
                     
                     html_string += f"""{data_read}"""
-                    html_string += f"""<p>For a detailed explanation of how this word frequency chart is calculated, it's accuracies and inaccuracies, please """
-                    html_string += f"""<a class="link" href="https://digitalpalidictionary.github.io/frequency.html">refer to the website.</a>"""
-                    html_string += f"""<p>If something looks out of place <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Frequency&entry.1433863141=GoldenDict {today}" target="_blank">log it here.</a></p>"""      
+                    html_string += f"""<p>For a detailed explanation of how this word frequency chart is calculated, it's accuracies and inaccuracies, refer to """
+                    html_string += f"""<a class="link" href="https://digitalpalidictionary.github.io/frequency.html">this webpage</a>. Something look out of place? <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Frequency&entry.1433863141=GoldenDict {today}" target="_blank">Log it here.</a></p>"""
                     
             else:
                 frequency_error_string += w.pali +", "
@@ -467,6 +469,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
     if generate_roots:
         generate_roots_html_and_json(data, rsc, html_data_list)
+        # delete_unused_html_files()
 
 def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data_list):
 
@@ -593,7 +596,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
                         root_html_error_string += "unknown" +", "
                         print(f"{timeis()} {red}error\t{root} {root_group} {root_meaning} {subfamily}.html")
 
-                    html_string += f"""<p>Do all the words belong to this family? Please report any cuckoos in the nest <a class="rootlink" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={subfamily} {root_group} {root_meaning}&entry.326955045=Root+Family&entry.1433863141=GoldenDict {today}" target="_blank">here.</a></p>"""
+                    html_string += f"""<p>Does something look wrong? <a class="rootlink" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={subfamily} {root_group} {root_meaning}&entry.326955045=Root+Family&entry.1433863141=GoldenDict {today}" target="_blank">Report it here</a>.</p>"""
                     html_string += "</div>"
 
             html_string += f"""</body></html>"""
@@ -613,13 +616,125 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     if root_html_error_string != "":
         print(f"{timeis()} {red}root html errors: {root_html_error_string}")
 
+# generate abbreviations html
+
+    print(f"{timeis()} {green}generating abbreviations html")
+
+    abbrev_data_list = []
+
+    with open(rsc['dpd_help_css_path'], 'r') as f:
+        abbrev_css = f.read()
+
+    abbrev_df = data['abbrev_df']
+    abbrev_df_length = len(abbrev_df)
+
+    for row in range(abbrev_df_length):
+        
+        html_string = ""
+
+        abbrev = abbrev_df.iloc[row,0]
+        meaning = abbrev_df.iloc[row,1]
+        
+        css = f"{abbrev_css}"
+        html_string += render_header_tmpl(css=css, js="")
+
+        html_string += "<body>"
+
+        # summary
+
+        # html_string += f"""<div class="help"><p>Abbreviation. <b>{abbrev}</b>. {meaning}</p></div>"""
+        html_string += f"""<div class="help"><p>Abbreviation: {meaning}</p></div>"""
+        
+        p = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
+
+        with open(p, 'w') as f:
+            f.write(html_string)
+        
+        # compile root data into list
+        synonyms = [abbrev,meaning]
+        abbrev_data_list += [[f"{abbrev}", f"""{html_string}""", "", synonyms]]
+
+# generate help html
+
+    print(f"{timeis()} {green}generating help html")
+
+    help_data_list = []
+
+    with open(rsc['dpd_help_css_path'], 'r') as f:
+        help_css = f.read()
+
+    help_df = data['help_df']
+    help_df_length = len(help_df)
+
+    for row in range(help_df_length):
+        
+        html_string = ""
+
+        help_title = help_df.iloc[row,0]
+        meaning = help_df.iloc[row,1]
+        
+        css = f"{help_css}"
+        html_string += render_header_tmpl(css=css, js="")
+
+        html_string += "<body>"
+
+        # summary
+
+        # html_string += f"""<div class="help"><p>Help. <b>{help_title}</b>. {meaning}</p></div>"""
+        html_string += f"""<div class="help"><p>{meaning}</p></div>"""
+        
+        p = rsc['output_help_html_dir'].joinpath(f"{help_title}.html")
+
+        with open(p, 'w') as f:
+            f.write(html_string)
+        
+        # compile root data into list
+        synonyms = [help_title]
+        help_data_list += [[f"{help_title}", f"""{html_string}""", "", synonyms]]
+
     # roots > dataframe > json
-    print(f"{timeis()} {green}saving html to .json")
+    print(f"{timeis()} {green}saving html to json")
 
     root_data_df = pd.DataFrame(root_data_list)
     root_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
 
-    pali_data_df = pd.concat([pali_data_df, root_data_df])
+    abbrev_data_df = pd.DataFrame(abbrev_data_list)
+    abbrev_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+
+    help_data_df = pd.DataFrame(help_data_list)
+    help_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+
+    pali_data_df = pd.concat([pali_data_df, root_data_df, abbrev_data_df, help_data_df])
     pali_data_df.to_json(rsc['gd_json_path'], force_ascii=False, orient="records", indent=6)
 
     print(f"{timeis()} ----------------------------------------")
+
+
+def delete_unused_html_files():
+    print(f"{timeis()} {green}deleting unused html files")
+    now = datetime.now()
+    date = now.strftime("%d")
+    for root, dirs, files in os.walk("output/html/", topdown=True):
+        for file in files:
+            stats = os.stat(f"output/html/{file}")
+            mod_time = time.ctime (stats [stat.ST_CTIME])
+            mod_time_date = re.sub("(.[^ ]+) (.[^ ]+) (.[^ ]+).+", r"\3", mod_time)
+            if date != int(mod_time_date):
+                try:
+                    os.remove(f"output/html/{file}")
+                    print(f"{timeis()} {file}")
+                except:
+                    print(f"{timeis()} {red}{file} not found")
+    
+    print(f"{timeis()} {green}deleting unused roots html files")
+    for root, dirs, files in os.walk("output/root html/", topdown=True):
+        for file in files:
+            stats = os.stat(f"output/root html/{file}")
+            mod_time = time.ctime (stats [stat.ST_CTIME])
+            mod_time_date = re.sub("(.[^ ]+) (.[^ ]+) (.[^ ]+).+", r"\3", mod_time)
+            if date != int(mod_time_date):
+                try:
+                    os.remove(f"output/root html/{file}")
+                    print(f"{timeis()} {file}")
+                except:
+                    print(f"{timeis()} {red}{file} not found")
