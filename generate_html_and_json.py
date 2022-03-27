@@ -252,8 +252,6 @@ def generate_html_and_json(generate_roots: bool = True):
             html_string += f"""<p>{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
             html_string += f"""<p>{w.eg2}<p class="sutta_dps">{w.source2} {w.sutta2}"""
 
-            if w.chapter != "":
-                html_string += f"""<br>SBS: {w.chapter}</p>"""
             html_string += f"""<p>Пожалуйста, подскажите более подходящий <a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}" target="_blank">пример.</a></p>"""
             html_string += f"""</div>"""
 
@@ -272,8 +270,6 @@ def generate_html_and_json(generate_roots: bool = True):
             html_string += f"""<p>{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
             html_string += f"""<p>{w.eg2}<p class="sutta_dps">{w.source2} {w.sutta2}"""
 
-            if w.chapter != "":
-                html_string += f"""<br>SBS: {w.chapter}</p>"""
             html_string += f"""<p>Пожалуйста, подскажите более подходящий <a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}" target="_blank">пример.</a></p>"""
             html_string += f"""</div>"""
 
