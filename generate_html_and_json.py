@@ -290,7 +290,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
             if w.pos in declensions:
 
-                html_string += f"""<div id="declension_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="declension_dps_{w.pali_}">close</a>"""
+                html_string += f"""<div id="declension_dps_{w.pali_}" class="content_dps hidden">"""
 
             if w.pos in conjugations:
 
@@ -298,7 +298,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
             # if w.pos == "sandhi" or w.pos == "idiom":
 
-            #     html_string += f"""<div id="inflection_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="inflection_dps_{w.pali_}">close</a>"""
+            #     html_string += f"""<div id="inflection_dps_{w.pali_}" class="content_dps hidden">"""
 
             html_string += f"""{table_data_read}"""
 
@@ -331,7 +331,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # if w.family != "" and w.metadata == "":
 
-        #     html_string += f"""<div id="root_family_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="root_family_dps_{w.pali_}">close</a>"""
+        #     html_string += f"""<div id="root_family_dps_{w.pali_}" class="content_dps hidden">>"""
 
         #     html_string += f"""<p class ="heading"><b>{w.pali_clean}</b> belongs to the root family <b>{w.family}</b> ({w.root_meaning})</p>"""
         #     html_string += f"""<table class = "table1_dps">{table_data_read}</table>"""
@@ -341,7 +341,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # if w.family2 != "" and w.meaning != "" and w.metadata == "":
 
-        #     html_string += f"""<div id="compound_family_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="compound_family_dps_{w.pali_}">close</a>"""
+        #     html_string += f"""<div id="compound_family_dps_{w.pali_}" class="content_dps hidden">e</a>"""
 
         #     compound_family_list = []
         #     compound_family_list = list(w.family2.split())
@@ -365,7 +365,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # if w.family2 == "" and w.meaning != "" and w.pali_clean in cf_master_list:
 
-        #     html_string += f"""<div id="compound_family_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="compound_family_dps_{w.pali_}">close</a>"""
+        #     html_string += f"""<div id="compound_family_dps_{w.pali_}" class="content_dps hidden">e</a>"""
 
         #     cf_path = rsc['compound_families_dir'] \
         #         .joinpath("output/") \
@@ -524,7 +524,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
     #         # root info
 
-    #         html_string += f"""<div id="root_info_{root_}_{root_id}" class="root_content_dps hidden"><a class="button root close" href="javascript:void(0);" onclick="button_click(this)" data-target="root_info_{root_}_{root_id}">close</a>"""
+    #         html_string += f"""<div id="root_info_{root_}_{root_id}" class="root_content_dps hidden">"""
 
     #         p = rsc['root_families_dir'] \
     #             .joinpath("output/root info/") \
@@ -546,7 +546,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     #                 subfamily_ = re.sub("√", "", subfamily_)
 
     #                 html_string += f"""
-    #                 <div id="root_family_{subfamily_}_{root_id}" class="root_content_dps hidden"><a class="button root close" href="javascript:void(0);" onclick="button_click(this)" data-target="root_family_{subfamily_}_{root_id}">close</a>"""
+    #                 <div id="root_family_{subfamily_}_{root_id}" class="root_content_dps hidden">ose</a>"""
 
     #                 html_string += f"""<p class= "root_heading">all words which belong to the root family <b>{subfamily}</b> {root_meaning}</p>"""
 
