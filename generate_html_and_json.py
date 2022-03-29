@@ -121,7 +121,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # grammar
 
-        html_string += f"""<div id="grammar_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_dps_{w.pali_}">закрыть</a>"""
+        html_string += f"""<div id="grammar_dps_{w.pali_}" class="content_dps hidden">"""
         html_string += f"""<table class = "table1_dps">"""
         if w.pos != "":
             html_string += f"""<tr><th>часть речи</th><td>{w.pos}"""
@@ -247,7 +247,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         if w.eg1 != "" and w.eg2 != "":
 
-            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">закрыть</a>"""
+            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden">"""
 
             html_string += f"""<p>{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
             html_string += f"""<p>{w.eg2}<p class="sutta_dps">{w.source2} {w.sutta2}"""
@@ -257,7 +257,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         elif w.eg1 != "" and w.eg2 == "":
 
-            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">закрыть</a>"""
+            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden">"""
 
             html_string += f"""<p>{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
             html_string += f"""<p>Пожалуйста, подскажите более подходящий <a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}" target="_blank">пример.</a></p>"""
@@ -265,7 +265,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         elif w.eg1 == "" and w.eg2 != "":
 
-            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">закрыть</a>"""
+            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden">"""
 
             html_string += f"""<p>{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
             html_string += f"""<p>{w.eg2}<p class="sutta_dps">{w.source2} {w.sutta2}"""
@@ -294,7 +294,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
             if w.pos in conjugations:
 
-                html_string += f"""<div id="conjugation_dps_{w.pali_}" class="content_dps hidden"><a class="button_dps close" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_dps_{w.pali_}">закрыть</a>"""
+                html_string += f"""<div id="conjugation_dps_{w.pali_}" class="content_dps hidden">"""
 
             # if w.pos == "sandhi" or w.pos == "idiom":
 
