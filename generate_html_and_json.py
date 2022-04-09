@@ -6,8 +6,9 @@ import stat
 import time
 import pandas as pd
 import os
+from timeis import timeis, yellow, green, red, line
 
-from helpers import DataFrames, DpdWord, ResourcePaths, get_resource_paths, parse_data_frames, timeis, red, yellow, green
+from helpers import DataFrames, DpdWord, ResourcePaths, get_resource_paths, parse_data_frames
 from html_components import render_header_tmpl, render_feedback_tmpl, render_word_meaning
 
 
@@ -18,7 +19,7 @@ def generate_html_and_json(generate_roots: bool = True):
     today = date.today()
 
     print(f"{timeis()} {yellow}generate html and json")
-    print(f"{timeis()} ----------------------------------------")
+    print(f"{timeis()} {line}")
     print(f"{timeis()} {green}generating dpd html")
 
     error_log = open(rsc['error_log_dir'].joinpath("exporter errorlog.txt"), "w")
@@ -114,6 +115,12 @@ def generate_html_and_json(generate_roots: bool = True):
 
         if (w.family2 != "" and w.meaning != "" and w.metadata == "") or (w.pali_clean in cf_master_list and w.meaning != "" and w.metadata == ""):
             html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="compound_family_{w.pali_}">compound family</a>"""
+
+        if w.sets != "" and w.meaning != "":
+            if re.findall(";", w.sets):
+                html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="sets_{w.pali_}">sets</a>"""
+            else:
+                html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="sets_{w.pali_}">set</a>"""
 
         if w.pos != "idiom":
             html_string += f"""<a class="button" href="javascript:void(0);" onclick="button_click(this)" data-target="frequency_{w.pali_}">frequency</a>"""
@@ -360,6 +367,34 @@ def generate_html_and_json(generate_roots: bool = True):
             html_string += f"""<p>Did you spot a mistake? Something missing? <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Compound+Family&entry.1433863141=GoldenDict {today}" target="_blank">Correct it here.</a></p>"""
             html_string += f"""</div>"""
 
+        # sets
+
+        if w.sets != "" and w.meaning != "":
+            
+            html_string += f"""<div id="sets_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="sets_{w.pali_}">close</a>"""
+
+            sets_list = []
+            sets_list = list(w.sets.split(";"))
+            
+            for set in sets_list:
+                set = re.sub("^ ", "", set)
+                set_path = rsc['sets_dir'] \
+                .joinpath("output/html/") \
+                .joinpath(f"{set}.html")
+
+                if set_path.exists():
+                    
+                    with open(set_path) as f:
+                        set_data_read = f.read()
+                        html_string += f"""<p class="heading">{w.pali} belongs to the set of <b>{set}</b></p>"""
+                        html_string += f"""{set_data_read}"""
+                else:
+                    print(f"{timeis()} {red}{row}/{df_length}\t{w.pali} set dir not found for {set}.html")
+
+            html_string += f"""<p>Spot a mistake? Can you think of a set you'd like to see here? <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Note it here</a>.</p>"""
+            html_string += f"""</div>"""
+
+
         # frequency
 
         if w.pos != "idiom":
@@ -515,9 +550,6 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         if root_count != "0":
 
-            if row % 100 == 0 or row % roots_df_length == 0:
-                print(f"{timeis()} {row}/{roots_df_length}\t{root} {root_group} {root_meaning}")
-
             css = f"{words_css}\n\n{roots_css}"
             html_string += render_header_tmpl(css=css, js=buttons_js)
 
@@ -544,8 +576,8 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
                 root_families_df = None
 
             if root_families_df is not None:
-                for line in range(root_families_length):
-                    subfamily_button = root_families_df.iloc[line, 0]
+                for line_no in range(root_families_length):
+                    subfamily_button = root_families_df.iloc[line_no, 0]
                     subfamily_button_ = "_" + re.sub(" ", "_", subfamily_button)
                     subfamily_button_ = re.sub("√", "", subfamily_button_)
 
@@ -572,8 +604,8 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
             # root families
 
             if root_families_df is not None:
-                for line in range(root_families_length):
-                    subfamily = root_families_df.iloc[line, 0]
+                for line_no in range(root_families_length):
+                    subfamily = root_families_df.iloc[line_no, 0]
                     subfamily_ = "_" + re.sub(" ", "_", subfamily)
                     subfamily_ = re.sub("√", "", subfamily_)
 
@@ -642,8 +674,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # summary
 
-        # html_string += f"""<div class="help"><p>Abbreviation. <b>{abbrev}</b>. {meaning}</p></div>"""
-        html_string += f"""<div class="help"><p>Abbreviation: {meaning}</p></div>"""
+        html_string += f"""<div class="help"><p>abbreviation. <b>{abbrev}</b>. {meaning}</p></div>"""
         
         p = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
 
@@ -680,8 +711,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # summary
 
-        # html_string += f"""<div class="help"><p>Help. <b>{help_title}</b>. {meaning}</p></div>"""
-        html_string += f"""<div class="help"><p>{meaning}</p></div>"""
+        html_string += f"""<div class="help"><p>help. <b>{help_title}</b>. {meaning}</p></div>"""
         
         p = rsc['output_help_html_dir'].joinpath(f"{help_title}.html")
 
@@ -691,9 +721,58 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         # compile root data into list
         synonyms = [help_title]
         help_data_list += [[f"{help_title}", f"""{html_string}""", "", synonyms]]
+    
+
+    # generate epd html
+
+    print(f"{timeis()} {green}generating epd html")
+    
+    df = data['words_df']
+    df_length = data['words_df'].shape[0]
+
+    epd = {}
+
+    for row in range(df_length): #df_length
+        w = DpdWord(df, row)
+        meanings_list = []
+        w.meaning = re.sub("\?\?", "", w.meaning)
+
+        if row % 10000 == 0:
+            print(f"{timeis()} {row}/{df_length}\t{w.pali}")
+
+        if w.meaning != "":
+            meanings_clean = re.sub(fr"\(comm\).+$", "", w.meaning)
+            meanings_clean = re.sub(fr" \(.+?\)", "", meanings_clean)
+            meanings_clean = re.sub(fr"\(.+?\) ", "", meanings_clean)
+            meanings_clean = re.sub(fr"(^ | $)", "", meanings_clean)
+            meanings_clean = re.sub(fr"  ", " ", meanings_clean)
+            meanings_clean = re.sub(fr" ;|; ", ";", meanings_clean)
+            meanings_list = meanings_clean.split(";")
+            
+            for meaning in meanings_list:
+                if meaning in epd.keys() and w.case =="":
+                    epd[meaning] = f"{epd[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {w.meaning}"
+                if meaning in epd.keys() and w.case !="":
+                    epd[meaning] = f"{epd[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {w.meaning} ({w.case})"
+                if meaning not in epd.keys() and w.case =="":
+                    epd.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {w.meaning}"})
+                if meaning not in epd.keys() and w.case !="":
+                    epd.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {w.meaning} ({w.case})"})
+    
+    with open(rsc['epd_css_path'], 'r') as f:
+        epd_css = f.read()
+    
+    epd_data_list = []
+
+    for key, value in epd.items():
+        html_string = ""
+        html_string = epd_css
+        html_string += f"<body><div class ='epd'><p>{value}</p></div></body></html>"
+        epd_data_list += [[f"{key}", f"""{html_string}""", "", ""]]
 
     # roots > dataframe > json
-    print(f"{timeis()} {green}saving html to json")
+
+    print(f"{timeis()} {green}generating json")
 
     root_data_df = pd.DataFrame(root_data_list)
     root_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
@@ -704,10 +783,16 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     help_data_df = pd.DataFrame(help_data_list)
     help_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
 
-    pali_data_df = pd.concat([pali_data_df, root_data_df, abbrev_data_df, help_data_df])
+    epd_data_df = pd.DataFrame(epd_data_list)
+    epd_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+
+    pali_data_df = pd.concat([pali_data_df, root_data_df, abbrev_data_df, help_data_df, epd_data_df])
+
+    print(f"{timeis()} {green}saving html to json")
+
     pali_data_df.to_json(rsc['gd_json_path'], force_ascii=False, orient="records", indent=6)
 
-    print(f"{timeis()} ----------------------------------------")
+    print(f"{timeis()} {line}")
 
 
 def delete_unused_html_files():

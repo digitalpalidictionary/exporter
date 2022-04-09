@@ -4,9 +4,10 @@
 import json
 import typer
 from datetime import datetime
+from timeis import timeis, yellow, green, line
 
 from generate_html_and_json import generate_html_and_json
-from helpers import copy_goldendict, get_resource_paths, timeis, yellow, green, red
+from helpers import copy_goldendict, get_resource_paths
 
 
 app = typer.Typer()
@@ -27,7 +28,7 @@ def run_generate_goldendict(move_to_dest: bool = True):
     from simsapa.app.stardict import export_words_as_stardict_zip, ifo_from_opts, DictEntry
 
     print(f"{timeis()} {yellow}generate goldendict")
-    print(f"{timeis()} ----------------------------------------")
+    print(f"{timeis()} {line}")
 
     print(f"{timeis()} {green}reading json")
     with open(rsc['gd_json_path'], "r") as f:
@@ -59,7 +60,7 @@ def run_generate_goldendict(move_to_dest: bool = True):
     if move_to_dest:
         copy_goldendict(rsc['output_stardict_zip_path'], rsc['output_share_dir'])
     
-    print(f"{timeis()} {red}----------------------------------------")
+    print(f"{timeis()} {line}")
 
 def main():
     # Process cli with typer.

@@ -4,8 +4,10 @@ from pathlib import Path
 from typing import TypedDict
 from datetime import date
 from datetime import datetime
+from timeis import timeis, green, red
 import subprocess
 import re
+
 
 from dotenv import load_dotenv
 
@@ -33,6 +35,7 @@ class ResourcePaths(TypedDict):
     frequency_dir: Path
     root_families_dir: Path
     inflections_dir: Path
+    sets_dir: Path
     words_path: Path
     roots_path: Path
     abbrev_path: Path
@@ -40,6 +43,7 @@ class ResourcePaths(TypedDict):
     dpd_words_css_path: Path
     dpd_roots_css_path: Path
     dpd_help_css_path: Path
+    epd_css_path: Path
     buttons_js_path: Path
     gd_json_path: Path
     icon_path: Path
@@ -95,6 +99,7 @@ def get_resource_paths() -> ResourcePaths:
         dpd_words_css_path = Path("./assets/dpd-words.css"),
         dpd_roots_css_path = Path("./assets/dpd-roots.css"),
         dpd_help_css_path = Path("./assets/dpd-help.css"),
+        epd_css_path = Path("./assets/epd.css"),
         buttons_js_path = Path("./assets/buttons.js"),
         abbrev_path = Path("./assets/abbreviations.csv"),
         help_path = Path("./assets/help.csv"),
@@ -103,6 +108,7 @@ def get_resource_paths() -> ResourcePaths:
         frequency_dir = dpd_dir.joinpath("frequency maps/"),
         root_families_dir = dpd_dir.joinpath("root families generator/"),
         inflections_dir = dpd_dir.joinpath("inflection generator/"),
+        sets_dir = dpd_dir.joinpath("sets/"),
         words_path = dpd_dir.joinpath("csvs/dpd-full.csv"),
         roots_path = dpd_dir.joinpath("csvs/roots.csv"),
         
@@ -186,24 +192,7 @@ class DpdWord:
         self.comm: str = re.sub(r"(.+)\.$", "\\1", self.comm)
         self.notes: str = df.loc[row, "Notes"]
         self.cognate: str = df.loc[row, "Cognate"]
-        self.category: str = df.loc[row, "Category"]
+        self.sets: str = df.loc[row, "Category"]
         self.stem: str = df.loc[row, "Stem"]
         self.metadata: str = df.loc[row, "Metadata"]
         self.link: str = df.loc[row, "Link"]
-
-def timeis():
-	global blue
-	global yellow
-	global green
-	global red
-	global white
-
-	blue = "\033[38;5;33m" #blue
-	green = "\033[38;5;34m" #green
-	red= "\033[38;5;160m" #red
-	yellow = "\033[38;5;220m" #yellow
-	white = "\033[38;5;251m" #white
-	now = datetime.now()
-	current_time = now.strftime("%Y-%m-%d %H:%M:%S")
-	return (f"{blue}{current_time}{white}")
-timeis()
