@@ -4,7 +4,7 @@ from datetime import date
 
 import pandas as pd
 
-from helpers import DataFrames, DpdWord, ResourcePaths, get_resource_paths, parse_data_frames
+from helpers import DataFrames, DpsWord, ResourcePaths, get_resource_paths, parse_data_frames
 from html_components import render_header_tmpl, render_feedback_tmpl, render_word_meaning
 
 def generate_html_and_json(generate_roots: bool = True):
@@ -47,7 +47,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
     for row in range(df_length):
 
-        w = DpdWord(df, row)
+        w = DpsWord(df, row)
 
         if row % 5000 == 0 or row % df_length == 0:
             print(f"{row}/{df_length}\t{w.pali}")
@@ -456,7 +456,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     # with open(rsc['dps_words_css_path'], 'r') as f:
     #     words_css = f.read()
 
-    # with open(rsc['dpd_roots_css_path'], 'r') as f:
+    # with open(rsc['dps_roots_css_path'], 'r') as f:
     #     roots_css = f.read()
 
     # with open(rsc['buttons_js_path'], 'r') as f:

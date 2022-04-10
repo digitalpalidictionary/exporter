@@ -2,7 +2,7 @@ import re
 
 from datetime import date
 from typing import TypedDict
-from helpers import DpdWord
+from helpers import DpsWord
 from mako.template import Template
 
 header_tmpl = Template(filename='./assets/templates/header.html')
@@ -11,7 +11,7 @@ feedback_tmpl = Template(filename='./assets/templates/feedback.html')
 def render_header_tmpl(css: str, js: str) -> str:
     return str(header_tmpl.render(css=css, js=js))
 
-def render_feedback_tmpl(w: DpdWord) -> str:
+def render_feedback_tmpl(w: DpsWord) -> str:
     today = date.today()
     return str(feedback_tmpl.render(w=w, today=today))
 
@@ -20,7 +20,7 @@ class RenderResult(TypedDict):
   full: str
   concise: str
 
-def render_word_meaning(w: DpdWord) -> RenderResult:
+def render_word_meaning(w: DpsWord) -> RenderResult:
     html_string = ""
     text_full = ""
     text_concise = ""

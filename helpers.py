@@ -31,7 +31,7 @@ class ResourcePaths(TypedDict):
     words_path: Path
     # roots_path: Path
     dps_words_css_path: Path
-    # dpd_roots_css_path: Path
+    # dps_roots_css_path: Path
     buttons_js_path: Path
     gd_json_path: Path
     icon_path: Path
@@ -63,7 +63,7 @@ def get_resource_paths() -> ResourcePaths:
         print("ERROR! DPS_DIR is not set.")
         sys.exit(2)
     else:
-        dpd_dir = Path(s)
+        dps_dir = Path(s)
 
     rsc = ResourcePaths(
         # Project output
@@ -76,14 +76,14 @@ def get_resource_paths() -> ResourcePaths:
         error_log_dir = Path("./errorlogs/"),
         # Project assets
         dps_words_css_path = Path("./assets/dps-words.css"),
-        # dpd_roots_css_path = Path("./assets/dpd-roots.css"),
+        # dps_roots_css_path = Path("./assets/dps-roots.css"),
         buttons_js_path = Path("./assets/buttons.js"),
         # Project input
-        # compound_families_dir = dpd_dir.joinpath("compound families generator/"),
-        # root_families_dir = dpd_dir.joinpath("root families generator/"),
-        inflections_dir = dpd_dir.joinpath("inflection/"),
-        words_path = dpd_dir.joinpath("spreadsheets/dps-full.csv"),
-        # roots_path = dpd_dir.joinpath("csvs/roots.csv"),
+        # compound_families_dir = dps_dir.joinpath("compound families generator/"),
+        # root_families_dir = dps_dir.joinpath("root families generator/"),
+        inflections_dir = dps_dir.joinpath("inflection/"),
+        words_path = dps_dir.joinpath("spreadsheets/dps-full.csv"),
+        # roots_path = dps_dir.joinpath("csvs/roots.csv"),
         icon_path = Path("./dps_icon.bmp"),
     )
 
@@ -117,7 +117,7 @@ def copy_goldendict(src_path: Path, dest_dir: Path):
         sys.exit(2)
 
 
-class DpdWord:
+class DpsWord:
     def __init__(self, df: DataFrame, row: int):
         self.pali: str = df.loc[row, "Pāli1"]
         self.pali_: str = "_" + re.sub(" ", "_", self.pali)

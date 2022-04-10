@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "dpd-exporter"
+name = "dps-exporter"
 version = "0.1.0"
 description = ""
 authors = ["Digital Pāḷi Dictionary <digitalpalidictionary@gmail.com>"]
