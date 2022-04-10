@@ -3,8 +3,11 @@ import sys
 from pathlib import Path
 from typing import TypedDict
 from datetime import date
+from datetime import datetime
+from timeis import timeis, green, red
 import subprocess
 import re
+
 
 from dotenv import load_dotenv
 
@@ -17,12 +20,15 @@ load_dotenv()
 class DataFrames(TypedDict):
     words_df: DataFrame
     # roots_df: DataFrame
+    abbrev_df: DataFrame
+    help_df: DataFrame
 
 
 class ResourcePaths(TypedDict):
     output_dir: Path
     output_html_dir: Path
     # output_root_html_dir: Path
+    output_help_html_dir: Path
     output_share_dir: Path
     error_log_dir: Path
     # compound_families_dir: Path
@@ -30,8 +36,12 @@ class ResourcePaths(TypedDict):
     inflections_dir: Path
     words_path: Path
     # roots_path: Path
+    abbrev_path: Path
+    help_path: Path
     dps_words_css_path: Path
     # dps_roots_css_path: Path
+    dps_help_css_path: Path
+    rpd_css_path: Path
     buttons_js_path: Path
     gd_json_path: Path
     icon_path: Path
@@ -50,17 +60,25 @@ def parse_data_frames(rsc: ResourcePaths) -> DataFrames:
     # roots_df.replace("\.0$", "", inplace=True, regex=True)
     # roots_df = roots_df[roots_df["Count"] != "0"] # remove roots with no examples
     # roots_df = roots_df[roots_df["Fin"] != ""] # remove extra iines
+    
+    abbrev_df = pd.read_csv(rsc['abbrev_path'], sep="\t", dtype=str)
+    abbrev_df.fillna("", inplace=True)
+
+    help_df = pd.read_csv(rsc['help_path'], sep="\t", dtype=str)
+    help_df.fillna("", inplace=True)
 
     return DataFrames(
         words_df = words_df,
         # roots_df = roots_df,
+        abbrev_df = abbrev_df,
+        help_df = help_df
     )
 
 
 def get_resource_paths() -> ResourcePaths:
     s = os.getenv('DPS_DIR')
     if s is None:
-        print("ERROR! DPS_DIR is not set.")
+        print(f"{timeis()} {red}ERROR! dps_DIR is not set.")
         sys.exit(2)
     else:
         dps_dir = Path(s)
@@ -70,21 +88,26 @@ def get_resource_paths() -> ResourcePaths:
         output_dir = Path("./output/"),
         output_html_dir = Path("./output/html/"),
         # output_root_html_dir = Path("./output/root html/"),
+        output_help_html_dir = Path("./output/help html/"),
         output_share_dir = Path("./share/"),
         gd_json_path = Path("./output/gd.json"),
-        output_stardict_zip_path = Path("pl-ru.zip"),
+        output_stardict_zip_path = Path("prp.zip"),
         error_log_dir = Path("./errorlogs/"),
         # Project assets
         dps_words_css_path = Path("./assets/dps-words.css"),
         # dps_roots_css_path = Path("./assets/dps-roots.css"),
+        dps_help_css_path = Path("./assets/dps-help.css"),
+        rpd_css_path = Path("./assets/rpd.css"),
         buttons_js_path = Path("./assets/buttons.js"),
+        abbrev_path = Path("./assets/abbreviations.csv"),
+        help_path = Path("./assets/help.csv"),
         # Project input
         # compound_families_dir = dps_dir.joinpath("compound families generator/"),
         # root_families_dir = dps_dir.joinpath("root families generator/"),
         inflections_dir = dps_dir.joinpath("inflection/"),
         words_path = dps_dir.joinpath("spreadsheets/dps-full.csv"),
         # roots_path = dps_dir.joinpath("csvs/roots.csv"),
-        icon_path = Path("./dps_icon.bmp"),
+        icon_path = Path("./book.bmp"),
     )
 
     # ensure write dirs exist
@@ -98,8 +121,7 @@ def get_resource_paths() -> ResourcePaths:
     return rsc
 
 def copy_goldendict(src_path: Path, dest_dir: Path):
-    print("~" * 40)
-    print("copying stardict")
+    print(f"{timeis()} {green}copying goldendict to share")
 
     today = date.today()
 
@@ -113,7 +135,7 @@ def copy_goldendict(src_path: Path, dest_dir: Path):
             ['mv', '--backup=numbered', src_path, dest_path],
             check=True)
     except Exception as e:
-        print(e)
+        print(f"{timeis()} {red}{e}")
         sys.exit(2)
 
 
@@ -173,5 +195,6 @@ class DpsWord:
         self.notes: str = df.loc[row, "Notes"]
         # self.cognate: str = df.loc[row, "Cognate"]
         # self.category: str = df.loc[row, "Category"]
+        self.stem: str = df.loc[row, "Stem"]
         self.metadata: str = df.loc[row, "Metadata"]
         # self.link: str = df.loc[row, "Link"]

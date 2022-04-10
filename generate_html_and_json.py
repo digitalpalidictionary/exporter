@@ -1,11 +1,16 @@
 import pickle
 import re
 from datetime import date
-
+from datetime import datetime
+import stat
+import time
 import pandas as pd
+import os
+from timeis import timeis, yellow, green, red, line
 
 from helpers import DataFrames, DpsWord, ResourcePaths, get_resource_paths, parse_data_frames
 from html_components import render_header_tmpl, render_feedback_tmpl, render_word_meaning
+
 
 def generate_html_and_json(generate_roots: bool = True):
     rsc = get_resource_paths()
@@ -13,9 +18,9 @@ def generate_html_and_json(generate_roots: bool = True):
     data = parse_data_frames(rsc)
     today = date.today()
 
-    print("~" * 40)
-    print("generating html & json files")
-    print("~" * 40)
+    print(f"{timeis()} {yellow}generate html and json")
+    print(f"{timeis()} {line}")
+    print(f"{timeis()} {green}generating dps html")
 
     error_log = open(rsc['error_log_dir'].joinpath("exporter errorlog.txt"), "w")
 
@@ -50,7 +55,7 @@ def generate_html_and_json(generate_roots: bool = True):
         w = DpsWord(df, row)
 
         if row % 5000 == 0 or row % df_length == 0:
-            print(f"{row}/{df_length}\t{w.pali}")
+            print(f"{timeis()} {row}/{df_length}\t{w.pali}")
 
         # colour1 #00A4CC #dark blue
         # colour2 #65DBFF #inbetween for rollover
@@ -152,7 +157,7 @@ def generate_html_and_json(generate_roots: bool = True):
             text_full += f""" ({w.case})"""
 
         html_string += f"""</td></tr>"""
-        html_string += f"""<tr valign="top"><th>english</th><td><b>{w.meaning}</b>"""
+        html_string += f"""<tr valign="top"><th>английский</th><td><b>{w.meaning}</b>"""
         text_full += f""". {w.meaning}"""
 
         if w.russian != "":
@@ -419,11 +424,16 @@ def generate_html_and_json(generate_roots: bool = True):
     # if compound_family_error_string != "":
     #     print(f"compound family errors: {compound_family_error_string}\n")
     if inflection_table_error_string != "":
-        print(f"inflection table errors: {inflection_table_error_string}\n")
+        print(f"{timeis()} {red}inflection table errors: {inflection_table_error_string}")
     # if subfamily_error_string != "":
     #     print(f"root subfamily errors: {subfamily_error_string}\n")
     if synonyms_error_string != "":
-        print(f"synonym errors: {synonyms_error_string}\n")
+        print(f"{timeis()} {red}synonym errors: {synonyms_error_string}")
+        
+# convert ṃ to ṁ
+
+    text_data_full = re.sub("ṃ", "ṁ", text_data_full)
+    text_data_concise = re.sub("ṃ", "ṁ", text_data_concise)
 
 
     # write text versions
@@ -438,12 +448,12 @@ def generate_html_and_json(generate_roots: bool = True):
 
     if generate_roots:
         generate_roots_html_and_json(data, rsc, html_data_list)
+        # delete_unused_html_files()
 
 def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data_list):
 
-    # print("~" * 40)
-    # print("generating roots html & json")
-    # print("~" * 40)
+    # print(f"{timeis()} {green}generating roots html")
+    # today = date.today()
 
     # html list > dataframe
 
@@ -583,10 +593,180 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     # if root_html_error_string != "":
     #     print(f"root html errors: {root_html_error_string}")
 
+    # generate abbreviations html
+
+    print(f"{timeis()} {green}generating abbreviations html")
+
+    abbrev_data_list = []
+
+    with open(rsc['dps_help_css_path'], 'r') as f:
+        abbrev_css = f.read()
+
+    abbrev_df = data['abbrev_df']
+    abbrev_df_length = len(abbrev_df)
+
+    for row in range(abbrev_df_length):
+        
+        html_string = ""
+
+        abbrev = abbrev_df.iloc[row,0]
+        meaning = abbrev_df.iloc[row,1]
+        ru_meaning = abbrev_df.iloc[row,2]
+        
+        css = f"{abbrev_css}"
+        html_string += render_header_tmpl(css=css, js="")
+
+        html_string += "<body>"
+
+        # summary
+
+        html_string += f"""<div class="help_ru"><p>условное сокращение. <b>{abbrev}</b>. {meaning}. {ru_meaning}</p></div>"""
+        
+        p = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
+
+        with open(p, 'w') as f:
+            f.write(html_string)
+        
+        # compile root data into list
+        synonyms = [abbrev,meaning]
+        abbrev_data_list += [[f"{abbrev}", f"""{html_string}""", "", synonyms]]
+
+# generate help html
+
+    print(f"{timeis()} {green}generating help html")
+
+    help_data_list = []
+
+    with open(rsc['dps_help_css_path'], 'r') as f:
+        help_css = f.read()
+
+    help_df = data['help_df']
+    help_df_length = len(help_df)
+
+    for row in range(help_df_length):
+        
+        html_string = ""
+
+        help_title = help_df.iloc[row,0]
+        meaning = help_df.iloc[row,1]
+        
+        css = f"{help_css}"
+        html_string += render_header_tmpl(css=css, js="")
+
+        html_string += "<body>"
+
+        # summary
+
+        html_string += f"""<div class="help_ru"><p>помощь. <b>{help_title}</b>. {meaning}</p></div>"""
+        
+        p = rsc['output_help_html_dir'].joinpath(f"{help_title}.html")
+
+        with open(p, 'w') as f:
+            f.write(html_string)
+        
+        # compile root data into list
+        synonyms = [help_title]
+        help_data_list += [[f"{help_title}", f"""{html_string}""", "", synonyms]]
+
+
+        # generate rpd html
+
+    print(f"{timeis()} {green}generating rpd html")
+    
+    df = data['words_df']
+    df_length = data['words_df'].shape[0]
+
+    rpd = {}
+
+    for row in range(df_length): #df_length
+        w = DpsWord(df, row)
+        meanings_list = []
+        w.russian = re.sub("\?\?", "", w.russian)
+
+        if row % 10000 == 0:
+            print(f"{timeis()} {row}/{df_length}\t{w.pali}")
+
+        if w.russian != "":
+            meanings_clean = re.sub(fr"\(комм\).+$", "", w.russian)
+            meanings_clean = re.sub(fr"досл.+$", "", meanings_clean)
+            meanings_clean = re.sub(fr" \(.+?\)", "", meanings_clean)
+            meanings_clean = re.sub(fr"\(.+?\) ", "", meanings_clean)
+            meanings_clean = re.sub(fr"(^ | $)", "", meanings_clean)
+            meanings_clean = re.sub(fr"  ", " ", meanings_clean)
+            meanings_clean = re.sub(fr" ;|; ", ";", meanings_clean)
+            meanings_list = meanings_clean.split(";")
+            
+            for russian in meanings_list:
+                if russian in rpd.keys() and w.case =="":
+                    rpd[russian] = f"{rpd[russian]}<br><b>{w.pali_clean}</b> {w.pos}. {w.russian}"
+                if russian in rpd.keys() and w.case !="":
+                    rpd[russian] = f"{rpd[russian]}<br><b>{w.pali_clean}</b> {w.pos}. {w.russian} ({w.case})"
+                if russian not in rpd.keys() and w.case =="":
+                    rpd.update({russian: f"<b>{w.pali_clean}</b> {w.pos}. {w.russian}"})
+                if russian not in rpd.keys() and w.case !="":
+                    rpd.update({russian: f"<b>{w.pali_clean}</b> {w.pos}. {w.russian} ({w.case})"})
+    
+    with open(rsc['rpd_css_path'], 'r') as f:
+        rpd_css = f.read()
+    
+    rpd_data_list = []
+
+    for key, value in rpd.items():
+        html_string = ""
+        html_string = rpd_css
+        html_string += f"<body><div class ='rpd'><p>{value}</p></div></body></html>"
+        rpd_data_list += [[f"{key}", f"""{html_string}""", "", ""]]
+
     # roots > dataframe > json
 
-    #root_data_df = pd.DataFrame(root_data_list)
-    #root_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+    print(f"{timeis()} {green}generating json")
 
-    #pali_data_df = pd.concat([pali_data_df, root_data_df])
+    # root_data_df = pd.DataFrame(root_data_list)
+    # root_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+
+    abbrev_data_df = pd.DataFrame(abbrev_data_list)
+    abbrev_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+
+    help_data_df = pd.DataFrame(help_data_list)
+    help_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+
+    rpd_data_df = pd.DataFrame(rpd_data_list)
+    rpd_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+
+    pali_data_df = pd.concat([pali_data_df, abbrev_data_df, help_data_df, rpd_data_df])
+
+    print(f"{timeis()} {green}saving html to json")
+
     pali_data_df.to_json(rsc['gd_json_path'], force_ascii=False, orient="records", indent=6)
+
+    print(f"{timeis()} {line}")
+
+
+def delete_unused_html_files():
+    print(f"{timeis()} {green}deleting unused html files")
+    now = datetime.now()
+    date = now.strftime("%d")
+    for root, dirs, files in os.walk("output/html/", topdown=True):
+        for file in files:
+            stats = os.stat(f"output/html/{file}")
+            mod_time = time.ctime (stats [stat.ST_CTIME])
+            mod_time_date = re.sub("(.[^ ]+) (.[^ ]+) (.[^ ]+).+", r"\3", mod_time)
+            if date != int(mod_time_date):
+                try:
+                    os.remove(f"output/html/{file}")
+                    print(f"{timeis()} {file}")
+                except:
+                    print(f"{timeis()} {red}{file} not found")
+    
+    print(f"{timeis()} {green}deleting unused roots html files")
+    for root, dirs, files in os.walk("output/root html/", topdown=True):
+        for file in files:
+            stats = os.stat(f"output/root html/{file}")
+            mod_time = time.ctime (stats [stat.ST_CTIME])
+            mod_time_date = re.sub("(.[^ ]+) (.[^ ]+) (.[^ ]+).+", r"\3", mod_time)
+            if date != int(mod_time_date):
+                try:
+                    os.remove(f"output/root html/{file}")
+                    print(f"{timeis()} {file}")
+                except:
+                    print(f"{timeis()} {red}{file} not found")
