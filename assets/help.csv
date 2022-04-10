@@ -1,48 +1,29 @@
 Помощь	перевод
-часть речи	"Grammatical information including 
-<br/>- part of speech
-<br/>- gender
-<br/>- verbal information (passive, causative, denominative)
-<br/>- word derived from
-<br/>- negatives
-<br/>- syntax case which the word takes"
-english	English meaning of the word within the context of the given example(s), as well as a literal meaning, where relevant. 
-русский	Russian meaning of the word within the context of the given example(s), as well as a literal meaning, where relevant. 
-корень	"All root-related information, e.g. <b>√gam<sup>･</sup>1 a (to go)</b>
-<br/><b>√</b> root symbol
-<br/><b>√gam</b> Pāḷi root
-<br/><b><sup>･</sup></b> root has an associated verb 
-<br/><b><sup>×</sup></b> root has no associated verb
-<br/><b>1</b> root group
-<br/><b>a</b> conjugational sign
-<br/><b>(to go)</b> root meaning
-<br/>
-<br/><b>Root Groups</b>
-<br/>1  √bhū etc. (+ a) bhūvāddigaṇa
-<br/>2  √rudh etc. (+ ṃ-a) rudhādigaṇa 
-<br/>3  √div etc. (+ ya) divādigaṇa 
-<br/>4  √su etc. (+ ṇo + ṇā + uṇā) svādigaṇa 
-<br/>5  √ki etc. (+ nā) kiyādigaṇa
-<br/>6  √gah etc. (+ ṇhā) gahādigaṇa
-<br/>7  √tan etc. (+ o) tanādigaṇa
-<br/>8  √cur etc. (+ *e + *aya) curādigaṇa"
-санскрит	Closest Sanskrit cognate of the headword
-санск. корень	Equivalent Sanskrit root, root class and root meaning
-основа	"Root + Conjugational sign > Base.
-<br/>Extra information includes the causative, passive, denominative, future and irregular forms"
-образование	"For words derived from a root, e.g. <b>na > a + √kar + ta + tta</b>
-<br/>prefix(es) + root or base + primary derivative + secondary derivative(s) + case endings
-<br/>
-<br/>For compound words, e.g. <b>abhi + okāsa + *ika</b>
-<br/>component word 1 + component word 2 + secondary derivative(s) + case endings"
-вариант	Different form of the same word, either by morphology, different spelling, or a variant reading found in texts
-комментарий	Meaning in context according to the Aṭṭhakathā or Ṭīkā
-заметки	Notes, comments and information from other sources
-склонения	Inflected forms of a noun, pronoun, adjective or participle, according to case, number and gender
-спряжения	Inflected forms of a verb, according to tense, person and number
-пример	"Relevant example of the headword in context.
-Sutta number  (DPR Quick Link) and name"
-примеры	"Relevant examples of the headword in context.
-Sutta number  (DPR Quick Link) and name"
-Помощь	Click on any heading or abbreviation to get contextual help. 
-Источники	List of literature used in compiling this dictionary:<br/><b>(DPD) Digital Pāli Dictionary by Ven. Bodhirasa</b> (mostly based on this source)<br/>(PED) The Pali English Dictionary, Rhys Davids <br/>(MW) Sanskrit-English Dictionary (Monier-Williams) <br/>(BSK) Buddhist Hybrid Sanskrit Grammar and Dictionary<br/>(BD) Concise Pali English Dictionary (Ven. Buddhadatta)<br/>(NCPED) Combination of Concise Pali English Dictionary (Ven. Buddhadatta) and Dictionary of Pali (DoP) by Margaret Cone.<br/>(CPD) Critical Pali Dictionary (V. Trenckner, et al)<br/>(MC) A Dictionary of Pāli (Margaret Cone)<br/>(SCPN) Syntax of the Cases in the Pali Nikayas - Prof. O.H. De A. Wijesekera<br/>(Ñt) Analysis Of The Bhikkhu Pātimokkha (Bhikkhu Ñāṇatusita)<br/>(PDB) Princeton Dictionary of Buddhism<br/>(BDN) Buddhist Dictionary (Ven. Ñāṇatiloka Mahathera)
+часть речи	"Грамматическая информация, включающая
+<br/>- часть речи
+<br/>- пол
+<br/>- информация глагола (пассивная, каузативная, деноминативная)
+<br/>- слово от которого образовано
+<br/>- отрицание
+<br/>- падеж в котором будет парное слово"
+английский	English meaning of the word within the context of the given example(s), as well as a literal meaning, where relevant. 
+русский	Русский перевод в контексте приведённого ниже примера(ов), также дословный перевод, где это уместно.
+корень	Вся информация связанная с корнем слова, пример: √gam 1 a (to go)<br/>√gam : корень на Пали<br/>1 : группа корня<br/>a : признак сопряжения<br/>(to go) перевод корня<br/><br/>Root Groups: <br/>1 : bhūvāddigaṇa + a<br/>2 : rudhādigaṇa + ṃa<br/>3 : divādigaṇa + ya<br/>4 : svādigaṇa + ṇo + ṇā + uṇā<br/>5 : kiyādigaṇa + nā<br/>6 : gahādigaṇa + ṇhā<br/>7 : tanādigaṇa + o<br/>8 : curādigaṇa + e (aya)
+санскрит	Ближайший эквивалент на Санскрите
+санск. корень	Корень Санскритского эквивалента
+основа	Корень + признак сопряжения > основа. Дополнительная информация включающая в себя каузальные, пассивные, отымённые, будующие и неправильные формы основы глагола
+образование	"Для слов произошедших от корня, например <b>na > a + √kar + ta + tta</b>
+<br/>Приставка(и) + корень + первичный производный суфикс + вторичный производный суфикс(ы) + окончание
+<br/>Для слов являющихся сочетанием, например <b>abhi + okāsa + *ika</b>
+<br/>слово 1 + слово 1 + вторичный производный суфикс(ы) + окончание"
+вариант	Различные формы этого же слова, имеющие либо морфологические, либо орфографические отличия, либо аналог найденный в других вариантах текста.
+комментарий	Определение данного слова в Комментариях или Подкомментариях
+заметки	Заметки из разных источников
+склонения	Склонения существительных, местоимений, прилагательных и других частей речи, в соответствии с падежом, родом и числом
+спряжения	Спряжения глаголов, в соответствии с временем, лицом и числом
+пример	"Подходящий пример слова в контексте.
+Номер сутты (DPR) и название"
+примеры	"Подходящие примеры слова в контексте.
+Номера сутты (DPR) и названия"
+Помощь	Чтобы увидеть подробное описание пожалуйста кликните на любое заглавие или сокращение. 
+Источники	Список литературы, используемой при составлении данного словаря:<br/><b>(DPD) Digital Pāli Dictionary by Ven. Bodhirasa</b> (в основном словарь является переводом данной работы)<br/>(PED) The Pali English Dictionary, Rhys Davids <br/>(MW) Sanskrit-English Dictionary (Monier-Williams) <br/>(BSK) Buddhist Hybrid Sanskrit Grammar and Dictionary<br/>(BD) Concise Pali English Dictionary (Ven. Buddhadatta)<br/>(NCPED) Combination of Concise Pali English Dictionary (Ven. Buddhadatta) and Dictionary of Pali (DoP) by Margaret Cone.<br/>(CPD) Critical Pali Dictionary (V. Trenckner, et al)<br/>(MC) A Dictionary of Pāli (Margaret Cone)<br/>(И) Pali - Краткий пали-русский словарь ( Д.А. Ивахненко и А. Гунский )<br/>(SCPN) Syntax of the Cases in the Pali Nikayas - Prof. O.H. De A. Wijesekera<br/>(Ñt) Analysis Of The Bhikkhu Pātimokkha (Bhikkhu Ñāṇatusita)<br/>(PDB) Princeton Dictionary of Buddhism<br/>(BDN) Buddhist Dictionary (Ven. Ñāṇatiloka Mahathera)
