@@ -55,7 +55,7 @@ DNa	Dīgha Nikāya Aṭṭhakathā	Дигха Никая Комментарий
 Edg	Edgerton Buddhist Hybrid Sanskrit Dictionary	Смешанный Словарь Буддийского Санскрита Эджертона
 emph	emphatic particle	эмфатическая частица
 excl	exclamation	восклицание
-f	feminine	женский род
+fem	feminine	женский род
 fig	figurative meaning	образный смысл
 fut	future tense	будущее время
 gen	genitive	родительный падеж
@@ -81,7 +81,7 @@ trans	transitive verb	переходный, транзитивный глаго�
 intrans	intransitive verb	непереходный глагол
 loc	locative	местный падеж
 loc abs	locative absolute construction	местный падеж абсолютная конструкция
-m	masculine	мужской род
+masc	masculine	мужской род
 MN	Majjhimā Nikāya	Мадджхима Никая
 MNa	Majjhimā Nikāya Aṭṭhakathā	Мадджхима Никая Комментарий
 MOGG	Moggallānabyākaraṇaṃ	Моггалланабйакаранан

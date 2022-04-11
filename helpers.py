@@ -196,5 +196,5 @@ class DpsWord:
         # self.cognate: str = df.loc[row, "Cognate"]
         # self.category: str = df.loc[row, "Category"]
         self.stem: str = df.loc[row, "Stem"]
-        self.metadata: str = df.loc[row, "Metadata"]
+        # self.metadata: str = df.loc[row, "Metadata"]
         # self.link: str = df.loc[row, "Link"]
