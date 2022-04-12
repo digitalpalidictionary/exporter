@@ -100,8 +100,11 @@ def generate_html_and_json(generate_roots: bool = True):
         if w.eg1 != "" and w.eg2 == "":
             html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">пример</a>"""
 
-        if w.eg1 == "" and w.eg2 != "":
+        if w.eg1 == "" and w.eg2 != "" and w.eg3 == "":
             html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">пример</a>"""
+
+        if w.eg1 == "" and w.eg2 != "" and w.eg3 != "":
+            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">примеры</a>"""
 
         if w.eg1 != "" and w.eg2 != "":
             html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">примеры</a>"""
