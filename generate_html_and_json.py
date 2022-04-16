@@ -684,6 +684,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     
     df = data['words_df']
     df_length = data['words_df'].shape[0]
+    pos_exclude_list = ["abbrev", "cs", "letter","root", "suffix", "ve"]
 
     rpd = {}
 
@@ -695,14 +696,16 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         if row % 10000 == 0:
             print(f"{timeis()} {row}/{df_length}\t{w.pali}")
 
-        if w.russian != "":
-            meanings_clean = re.sub(fr"\(комм\).+$", "", w.russian)
-            meanings_clean = re.sub(fr"досл.+$", "", meanings_clean)
-            meanings_clean = re.sub(fr" \(.+?\)", "", meanings_clean)
-            meanings_clean = re.sub(fr"\(.+?\) ", "", meanings_clean)
-            meanings_clean = re.sub(fr"(^ | $)", "", meanings_clean)
-            meanings_clean = re.sub(fr"  ", " ", meanings_clean)
-            meanings_clean = re.sub(fr" ;|; ", ";", meanings_clean)
+        if w.meaning != "" and \
+        w.pos not in pos_exclude_list:
+
+            meanings_clean = re.sub(fr" \(.+?\)", "", w.meaning)                    # remove all space brackets
+            meanings_clean = re.sub(fr"\(.+?\) ", "", meanings_clean)           # remove all brackets space
+            meanings_clean = re.sub(fr"(^ | $)", "", meanings_clean)            # remove space at start and fin
+            meanings_clean = re.sub(fr"  ", " ", meanings_clean)                    # remove double spaces
+            meanings_clean = re.sub(fr" ;|; ", ";", meanings_clean)                 # remove space around ;
+            meanings_clean = re.sub(fr"\(комм\).+$", "", meanings_clean)   # remove commentary meanings
+            meanings_clean = re.sub(fr"досл.+$", "", meanings_clean)         # remove lit meanings
             meanings_list = meanings_clean.split(";")
             
             for russian in meanings_list:
