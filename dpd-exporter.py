@@ -3,6 +3,7 @@
 
 import json
 import typer
+import zipfile
 from datetime import datetime
 from timeis import timeis, yellow, green, line
 
@@ -56,6 +57,12 @@ def run_generate_goldendict(move_to_dest: bool = True):
 
     print(f"{timeis()} {green}writing goldendict")
     export_words_as_stardict_zip(words, ifo, rsc['output_stardict_zip_path'], rsc['icon_path'])
+
+    zipfilepath = rsc['output_stardict_zip_path']
+    with zipfile.ZipFile(zipfilepath, 'a') as zipf:
+        source_path = rsc['icon_bmp_path']
+        destination = 'dpd/android.bmp'
+        zipf.write(source_path, destination)
 
     if move_to_dest:
         copy_goldendict(rsc['output_stardict_zip_path'], rsc['output_share_dir'])
