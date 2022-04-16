@@ -20,13 +20,19 @@ p {
     margin: 5px 5px;
     vertical-align: middle;
 }
+b.epd {
+    color:#6124c4;
+    font-weight: 700;
+}
 
 div.epd {
-    border: 2px solid #3d1ec5;
+    border: 2px solid #6124c4;
     border-radius: 5px;
     line-height: 150%;
     overflow: auto;
     text-align: left;
 }
+
+
 </style>
 </head>

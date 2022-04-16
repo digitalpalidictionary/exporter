@@ -44,9 +44,11 @@ class ResourcePaths(TypedDict):
     dpd_roots_css_path: Path
     dpd_help_css_path: Path
     epd_css_path: Path
+    tpp_css_path: Path
     buttons_js_path: Path
     gd_json_path: Path
     icon_path: Path
+    icon_bmp_path: Path
     output_stardict_zip_path: Path
 
 
@@ -100,6 +102,7 @@ def get_resource_paths() -> ResourcePaths:
         dpd_roots_css_path = Path("./assets/dpd-roots.css"),
         dpd_help_css_path = Path("./assets/dpd-help.css"),
         epd_css_path = Path("./assets/epd.css"),
+        tpp_css_path = Path("./assets/tpp.css"),
         buttons_js_path = Path("./assets/buttons.js"),
         abbrev_path = Path("./assets/abbreviations.csv"),
         help_path = Path("./assets/help.csv"),
@@ -113,6 +116,7 @@ def get_resource_paths() -> ResourcePaths:
         roots_path = dpd_dir.joinpath("csvs/roots.csv"),
         
         icon_path = dpd_dir.joinpath("favicon/favicon_io nu circle/favicon.ico"),
+        icon_bmp_path = dpd_dir.joinpath("favicon/favicon_io nu circle/dpd.bmp")
     )
 
     # ensure write dirs exist
