@@ -130,7 +130,8 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # grammar
 
-        html_string += f"""<div id="grammar_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_{w.pali_}">close</a>"""
+        html_string += f"""<div id="grammar_{w.pali_}" class="content hidden">"""
+        # <a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_{w.pali_}">close</a>"""
 
         html_string += f"""<table class = "table1"><tr><th>Pāḷi</th><td>{w.pali2}</td></tr>"""
         html_string += f"""<tr><th>Grammar</th><td>{w.grammar}"""
@@ -243,7 +244,8 @@ def generate_html_and_json(generate_roots: bool = True):
 
         if w.meaning != "" and w.eg1 != "" and w.eg2 != "":
 
-            html_string += f"""<div id="example_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_{w.pali_}">close</a>"""
+            html_string += f"""<div id="example_{w.pali_}" class="content hidden">"""
+            # <a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_{w.pali_}">close</a>"""
 
             html_string += f"""<p>{w.eg1}<p class="sutta">{w.source1} {w.sutta1}</p>"""
             html_string += f"""<p>{w.eg2}<p class="sutta">{w.source2} {w.sutta2}</p>"""
@@ -252,7 +254,8 @@ def generate_html_and_json(generate_roots: bool = True):
 
         elif w.meaning != "" and w.eg1 != "" and w.eg2 == "":
 
-            html_string += f"""<div id="example_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_{w.pali_}">close</a>"""
+            html_string += f"""<div id="example_{w.pali_}" class="content hidden">"""
+            # <a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="example_{w.pali_}">close</a>"""
 
             html_string += f"""<p>{w.eg1}<p class="sutta">{w.source1} {w.sutta1}</p>"""
             html_string += f"""<p>Can you think of a better example? <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Example1&entry.1433863141=GoldenDict {today}" target="_blank">Add it here.</a></p>"""
@@ -275,11 +278,13 @@ def generate_html_and_json(generate_roots: bool = True):
 
             if w.pos in declensions:
 
-                html_string += f"""<div id="declension_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="declension_{w.pali_}">close</a>"""
+                html_string += f"""<div id="declension_{w.pali_}" class="content hidden">"""
+                # <a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="declension_{w.pali_}">close</a>"""
 
             if w.pos in conjugations:
 
-                html_string += f"""<div id="conjugation_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_{w.pali_}">close</a>"""
+                html_string += f"""<div id="conjugation_{w.pali_}" class="content hidden">"""
+                # <a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_{w.pali_}">close</a>"""
 
             html_string += f"""{table_data_read}"""
 
@@ -312,7 +317,8 @@ def generate_html_and_json(generate_roots: bool = True):
 
         if w.family != "" and w.metadata == "":
 
-            html_string += f"""<div id="root_family_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="root_family_{w.pali_}">close</a>"""
+            html_string += f"""<div id="root_family_{w.pali_}" class="content hidden">"""
+            # <a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="root_family_{w.pali_}">close</a>"""
 
             html_string += f"""<p class ="heading"><b>{w.pali_clean}</b> belongs to the root family <b>{w.family}</b> ({w.root_meaning})</p>"""
             html_string += f"""<table class = "table1">{table_data_read}</table>"""
@@ -323,7 +329,8 @@ def generate_html_and_json(generate_roots: bool = True):
 
         if w.family2 != "" and w.meaning != "" and w.metadata == "":
 
-            html_string += f"""<div id="compound_family_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="compound_family_{w.pali_}">close</a>"""
+            html_string += f"""<div id="compound_family_{w.pali_}" class="content hidden">"""
+            # <a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="compound_family_{w.pali_}">close</a>"""
 
             compound_family_list = []
             compound_family_list = list(w.family2.split())
@@ -337,18 +344,20 @@ def generate_html_and_json(generate_roots: bool = True):
                     with open(cf_path, "r") as f:
                         data_read = f.read()
                         html_string += f"""<p class="heading">compounds which contain <b>{cf}</b></p>"""
-                        html_string += f"""<table class = "table1">{data_read}</table>"""
+                        html_string += f"""{data_read}"""
 
                 elif w.family2 != "":
                     compound_family_error_string += w.pali +", "
                     error_log.write(f"""error reading compound family - {w.pali} - {cf}\n""")
 
-            html_string += f"""<p>Some word out of place? <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Compound+Family&entry.1433863141=GoldenDict {today}" target="_blank">Report it here</a>.</p>"""
+            html_string += f"""<p>Spot a mistake? <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Compound+Family&entry.1433863141=GoldenDict {today}" target="_blank">Fix it here</a>.</p>"""
             html_string += f"""</div>"""
 
         if w.family2 == "" and w.meaning != "" and w.pali_clean in cf_master_list:
 
-            html_string += f"""<div id="compound_family_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="compound_family_{w.pali_}">close</a>"""
+            html_string += f"""<div id="compound_family_{w.pali_}" class="content hidden">"""
+            # <a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="compound_family_{w.pali_}">close</a>"""
+            
 
             cf_path = rsc['compound_families_dir'] \
                 .joinpath("output/") \
@@ -371,7 +380,8 @@ def generate_html_and_json(generate_roots: bool = True):
 
         if w.sets != "" and w.meaning != "":
             
-            html_string += f"""<div id="sets_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="sets_{w.pali_}">close</a>"""
+            html_string += f"""<div id="sets_{w.pali_}" class="content hidden">"""
+            # <a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="sets_{w.pali_}">close</a>"""
 
             sets_list = []
             sets_list = list(w.sets.split(";"))
@@ -386,7 +396,7 @@ def generate_html_and_json(generate_roots: bool = True):
                     
                     with open(set_path) as f:
                         set_data_read = f.read()
-                        html_string += f"""<p class="heading">{w.pali} belongs to the set of <b>{set}</b></p>"""
+                        html_string += f"""<p class="heading">{w.pali} belongs to the set of <a href="{set}"><b>{set}</b></a></p>"""
                         html_string += f"""{set_data_read}"""
                 else:
                     print(f"{timeis()} {red}{row}/{df_length}\t{w.pali} set dir not found for {set}.html")
@@ -399,7 +409,9 @@ def generate_html_and_json(generate_roots: bool = True):
 
         if w.pos != "idiom":
 
-            html_string += f"""<div id="frequency_{w.pali_}" class="content hidden"><a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="frequency_{w.pali_}">close</a>"""
+            html_string += f"""<div id="frequency_{w.pali_}" class="content hidden">"""
+            # <a class="button close" href="javascript:void(0);" onclick="button_click(this)" data-target="frequency_{w.pali_}">close</a>"""
+
 
             if w.pos in indeclinables or re.match(r"^!", w.stem):
                 
@@ -435,8 +447,8 @@ def generate_html_and_json(generate_roots: bool = True):
                     data_read = re.sub(r'(td id.+) class.\[^>\]+', r"\\1", data_read)
                     
                     html_string += f"""{data_read}"""
-                    html_string += f"""<p>For a detailed explanation of how this word frequency chart is calculated, it's accuracies and inaccuracies, refer to """
-                    html_string += f"""<a class="link" href="https://digitalpalidictionary.github.io/frequency.html">this webpage</a>. Something look out of place? <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Frequency&entry.1433863141=GoldenDict {today}" target="_blank">Log it here.</a></p>"""
+                    html_string += f"""<p>For a detailed explanation of how this word frequency chart is calculated, it's accuracies and inaccuracies, please refer to """
+                    html_string += f"""<a class="link" href="https://digitalpalidictionary.github.io/frequency.html">this webpage</a>. If something looks out of place, <a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLSf9boBe7k5tCwq7LdWgBHHGIPVc4ROO5yjVDo1X5LDAxkmGWQ/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Frequency&entry.1433863141=GoldenDict {today}" target="_blank">log it here.</a></p>"""
                     
             else:
                 frequency_error_string += w.pali +", "
@@ -587,7 +599,8 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
             # root info
 
-            html_string += f"""<div id="root_info_{root_}_{root_id}" class="root_content hidden"><a class="button root close" href="javascript:void(0);" onclick="button_click(this)" data-target="root_info_{root_}_{root_id}">close</a>"""
+            html_string += f"""<div id="root_info_{root_}_{root_id}" class="root_content hidden">"""
+            # <a class="button root close" href="javascript:void(0);" onclick="button_click(this)" data-target="root_info_{root_}_{root_id}">close</a>"""
 
             p = rsc['root_families_dir'] \
                 .joinpath("output/root info/") \
@@ -609,8 +622,8 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
                     subfamily_ = "_" + re.sub(" ", "_", subfamily)
                     subfamily_ = re.sub("√", "", subfamily_)
 
-                    html_string += f"""
-                    <div id="root_family_{subfamily_}_{root_id}" class="root_content hidden"><a class="button root close" href="javascript:void(0);" onclick="button_click(this)" data-target="root_family_{subfamily_}_{root_id}">close</a>"""
+                    html_string += f"""<div id="root_family_{subfamily_}_{root_id}" class="root_content hidden">"""
+                    # <a class="button root close" href="javascript:void(0);" onclick="button_click(this)" data-target="root_family_{subfamily_}_{root_id}">close</a>"""
 
                     html_string += f"""<p class= "root_heading">all words which belong to the root family <b>{subfamily}</b> ({root_meaning})</p>"""
 
@@ -729,6 +742,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     
     df = data['words_df']
     df_length = data['words_df'].shape[0]
+    pos_exclude_list = ["abbrev", "cs", "letter","root", "suffix", "ve"]
 
     epd = {}
 
@@ -740,24 +754,26 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         if row % 10000 == 0:
             print(f"{timeis()} {row}/{df_length}\t{w.pali}")
 
-        if w.meaning != "":
-            meanings_clean = re.sub(fr"\(comm\).+$", "", w.meaning)
-            meanings_clean = re.sub(fr" \(.+?\)", "", meanings_clean)
-            meanings_clean = re.sub(fr"\(.+?\) ", "", meanings_clean)
-            meanings_clean = re.sub(fr"(^ | $)", "", meanings_clean)
-            meanings_clean = re.sub(fr"  ", " ", meanings_clean)
-            meanings_clean = re.sub(fr" ;|; ", ";", meanings_clean)
+        if w.meaning != "" and \
+        w.pos not in pos_exclude_list:
+            
+            meanings_clean = re.sub(fr" \(.+?\)", "", w.meaning)                    # remove all space brackets
+            meanings_clean = re.sub(fr"\(.+?\) ", "", meanings_clean)           # remove all brackets space
+            meanings_clean = re.sub(fr"(^ | $)", "", meanings_clean)            # remove space at start and fin
+            meanings_clean = re.sub(fr"  ", " ", meanings_clean)                    # remove double spaces
+            meanings_clean = re.sub(fr" ;|; ", ";", meanings_clean)                 # remove space around ;
+            meanings_clean = re.sub(fr"\(comm\).+$", "", meanings_clean)   # remove commentary meanings
             meanings_list = meanings_clean.split(";")
             
             for meaning in meanings_list:
                 if meaning in epd.keys() and w.case =="":
-                    epd[meaning] = f"{epd[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {w.meaning}"
+                    epd[meaning] = f"{epd[meaning]}<br><b class = 'epd'>{w.pali_clean}</b> {w.pos}. {w.meaning}"
                 if meaning in epd.keys() and w.case !="":
-                    epd[meaning] = f"{epd[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {w.meaning} ({w.case})"
+                    epd[meaning] = f"{epd[meaning]}<br><b class = 'epd'>{w.pali_clean}</b> {w.pos}. {w.meaning} ({w.case})"
                 if meaning not in epd.keys() and w.case =="":
-                    epd.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {w.meaning}"})
+                    epd.update({meaning: f"<b class = 'epd'>{w.pali_clean}</b> {w.pos}. {w.meaning}"})
                 if meaning not in epd.keys() and w.case !="":
-                    epd.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {w.meaning} ({w.case})"})
+                    epd.update({meaning: f"<b class = 'epd'>{w.pali_clean}</b> {w.pos}. {w.meaning} ({w.case})"})
     
     with open(rsc['epd_css_path'], 'r') as f:
         epd_css = f.read()
