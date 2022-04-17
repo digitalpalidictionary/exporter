@@ -696,10 +696,10 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         if row % 10000 == 0:
             print(f"{timeis()} {row}/{df_length}\t{w.pali}")
 
-        if w.meaning != "" and \
+        if w.russian != "" and \
         w.pos not in pos_exclude_list:
 
-            meanings_clean = re.sub(fr" \(.+?\)", "", w.meaning)                    # remove all space brackets
+            meanings_clean = re.sub(fr" \(.+?\)", "", w.russian)                    # remove all space brackets
             meanings_clean = re.sub(fr"\(.+?\) ", "", meanings_clean)           # remove all brackets space
             meanings_clean = re.sub(fr"(^ | $)", "", meanings_clean)            # remove space at start and fin
             meanings_clean = re.sub(fr"  ", " ", meanings_clean)                    # remove double spaces
