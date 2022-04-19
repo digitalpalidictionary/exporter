@@ -91,7 +91,7 @@ def get_resource_paths() -> ResourcePaths:
         output_help_html_dir = Path("./output/help html/"),
         output_share_dir = Path("./share/"),
         gd_json_path = Path("./output/gd.json"),
-        output_stardict_zip_path = Path("prp.zip"),
+        output_stardict_zip_path = Path("ПалиСловарь.zip"),
         error_log_dir = Path("./errorlogs/"),
         # Project assets
         dps_words_css_path = Path("./assets/dps-words.css"),
