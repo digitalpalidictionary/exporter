@@ -128,7 +128,7 @@ def copy_goldendict(src_path: Path, dest_dir: Path):
     # file name without .zip suffix
     dest_base = src_path.name.replace(src_path.suffix, '')
 
-    dest_path = dest_dir.joinpath(f"{dest_base}-{today}.zip")
+    dest_path = dest_dir.joinpath(f"{dest_base}.zip")
 
     try:
         subprocess.run(
