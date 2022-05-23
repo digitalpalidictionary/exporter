@@ -15,16 +15,30 @@ p {
 }
 
 p.heading {
-
     border-radius: 5px;
     margin: 2px;
     padding: 2px 5px;
     user-select: none;
 }
 
+p.heading b {
+    color: #00A4CC;
+    font-weight: 700;
+}
+
 p.sutta {
     color: #00A4CC;
     font-style: italic;
+}
+
+
+p.family b {
+    color: #00A4CC;
+    font-weight: 700;
+}
+
+span.colour2 {
+    color: #65DBFF
 }
 
 table.table1 {

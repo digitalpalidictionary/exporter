@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import TypedDict
 from datetime import date
 from datetime import datetime
-from timeis import timeis, green, red
+from timeis import timeis, green, red, line
 import subprocess
 import re
 
@@ -145,7 +145,12 @@ def copy_goldendict(src_path: Path, dest_dir: Path):
             check=True)
     except Exception as e:
         print(f"{timeis()} {red}{e}")
-        sys.exit(2)
+        # sys.exit(2)
+        
+    print(f"{timeis()} {green}unipping goldendict")
+    os.popen(f'unzip {dest_path}')
+    
+    print(f"{timeis()} {line}")
 
 
 class DpdWord:
@@ -198,5 +203,4 @@ class DpdWord:
         self.cognate: str = df.loc[row, "Cognate"]
         self.sets: str = df.loc[row, "Category"]
         self.stem: str = df.loc[row, "Stem"]
-        self.metadata: str = df.loc[row, "Metadata"]
         self.link: str = df.loc[row, "Link"]

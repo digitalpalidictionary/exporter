@@ -67,7 +67,6 @@ def run_generate_goldendict(move_to_dest: bool = True):
     if move_to_dest:
         copy_goldendict(rsc['output_stardict_zip_path'], rsc['output_share_dir'])
     
-    print(f"{timeis()} {line}")
 
 def main():
     # Process cli with typer.

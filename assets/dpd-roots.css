@@ -1,9 +1,13 @@
 p.root_heading {
-
     border-radius: 5px;
     margin: 2px;
     padding: 2px 5px;
     user-select: none;
+}
+
+p.root_heading b {
+    color: #AB3C00;
+    font-weight: 700;
 }
 
 table.root_table td,table.root_table th {
@@ -21,6 +25,15 @@ table.root_table th {
     color: #AB3C00;
     font-weight: 700;
     white-space: nowrap;
+}
+
+p.root_family b {
+    color: #AB3C00;
+    font-weight: 700;
+}
+
+span.colour2 {
+    color: #F95700
 }
 
 div.root_content {
