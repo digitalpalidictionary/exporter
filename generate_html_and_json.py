@@ -34,6 +34,9 @@ def generate_html_and_json(generate_roots: bool = True):
     synonyms_error_string = ""
     frequency_error_string = ""
 
+    with open(rsc['all_inflections_dict_path'], "rb") as f:
+        all_inflections_dict = pickle.load(f)
+
     # setup compound families list to search
 
     with open(rsc['compound_families_dir'].joinpath("compound_family_list.csv"), "r") as cfl:
@@ -51,7 +54,7 @@ def generate_html_and_json(generate_roots: bool = True):
     with open(rsc['buttons_js_path'], 'r') as f:
         buttons_js = f.read()
 
-    for row in range(df_length): #df_length
+    for row in range(df_length):  # df_length
 
         w = DpdWord(df, row)
 
@@ -447,21 +450,19 @@ def generate_html_and_json(generate_roots: bool = True):
 
         html_string += f"""</body></html>"""
 
-        # write gd.json
+        # synonyms
+        # add ṁ
 
-        inflections_path = rsc['inflections_dir'] \
-            .joinpath("output/inflections translit/") \
-            .joinpath(w.pali)
+        synonyms = list(all_inflections_dict[w.pali]["inflections"])
 
-        if inflections_path.exists():
-            with open(inflections_path, "rb") as syn_file:
-                synonyms = pickle.load(syn_file)
-                synonyms = (synonyms)
-
-        else:
-            synonyms_error_string += w.pali +", "
-            error_log.write(f"error reading synonyms - {w.pali}\n")
-            synonyms = ""
+        for synoym in synonyms:
+            if re.findall("ṃ", synoym):
+                synoym = re.sub("ṃ", "ṁ", synoym)
+                synonyms.append(synoym)
+            
+        synonyms += list(all_inflections_dict[w.pali]["sinhala"])
+        synonyms += list(all_inflections_dict[w.pali]["devanagari"])
+        synonyms += list(all_inflections_dict[w.pali]["thai"])
 
         # data compiling
 
@@ -551,7 +552,6 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
             css = f"{words_css}\n\n{roots_css}"
             html_string += render_header_tmpl(css=css, js=buttons_js)
-
             html_string += "<body>"
 
             # summary
@@ -561,7 +561,6 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
             # buttons
 
             html_string += f"""<div class="root-button-box">"""
-
             html_string += f"""<a class="button root" href="javascript:void(0);" onclick="button_click(this)" data-target="root_info_{root_}_{root_id}">root info</a>"""
 
             p = rsc['root_families_dir'] \
@@ -769,6 +768,24 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         html_string += f"<body><div class ='epd'><p>{value}</p></div></body></html>"
         epd_data_list += [[f"{key}", f"""{html_string}""", "", ""]]
 
+    # add compound deconstruction and sandhi splitter
+
+    print(f"{timeis()} {green}generating sandhi html")
+
+    with open("../inflection generator/output/sandhi dict", "rb") as pf:
+        sandhi_dict = pickle.load(pf)
+    
+    with open(rsc['sandhi_css_path'], 'r') as f:
+        sandhi_css = f.read()
+
+    sandhi_data_list = []
+
+    for key, value in sandhi_dict.items():
+        html_string = ""
+        html_string = sandhi_css
+        html_string += f"<body><div class ='sandhi'><p class='sandhi'>{value}</p></div></body></html>"
+        sandhi_data_list += [[f"{key}", f"""{html_string}""", "", ""]]
+
     # roots > dataframe > json
 
     print(f"{timeis()} {green}generating json")
@@ -785,7 +802,10 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     epd_data_df = pd.DataFrame(epd_data_list)
     epd_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
 
-    pali_data_df = pd.concat([pali_data_df, root_data_df, abbrev_data_df, help_data_df, epd_data_df])
+    sandhi_df = pd.DataFrame(sandhi_data_list)
+    sandhi_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+
+    pali_data_df = pd.concat([pali_data_df, root_data_df, abbrev_data_df, help_data_df, epd_data_df, sandhi_df])
 
     print(f"{timeis()} {green}saving html to json")
 

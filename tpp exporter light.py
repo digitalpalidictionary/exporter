@@ -1,20 +1,15 @@
-import pickle
 import re
-import stat
-import time
 import pandas as pd
 import os
 import shutil
 
 from datetime import date
-from datetime import datetime
-from typing import TypedDict
 from helpers import DpdWord
-from mako.template import Template
 from timeis import timeis, yellow, green, blue, line
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
-from helpers import DataFrames, DpdWord, ResourcePaths, get_resource_paths, parse_data_frames
-from html_components import render_header_tmpl, render_feedback_tmpl, render_word_meaning
+from helpers import DpdWord, get_resource_paths, parse_data_frames
 
 def generate_tpp_html():
 	rsc = get_resource_paths()
@@ -223,22 +218,17 @@ def generate_tpp_html():
 
 	f.write("};")
 	f.close()
-	os.popen('code "output/tpp.js"')
 
 
 def copy_file_to_tpp_folder():
-	print(f"{timeis()} {green}file management") 
-	yn = input(f"{timeis()} copy to tpp? (y/n) {blue}")
-	if yn == "y":
-		shutil.copy("output/tpp.js", "output/pv1_Pali_Viet_Dictionary_by_ngaiBuuChon_stardict.js")
-		shutil.move("output/pv1_Pali_Viet_Dictionary_by_ngaiBuuChon_stardict.js", "/home/bhikkhu/git/Tipitaka-Pali-Projector/tipitaka_projector_data/dictionary/pv1_Pali_Viet_Dictionary_by_ngaiBuuChon_stardict.js")
-		os.popen('nemo "/home/bhikkhu/git/Tipitaka-Pali-Projector/tipitaka_projector_data/dictionary"')
-		os.popen('code "/home/bhikkhu/git/Tipitaka-Pali-Projector/tipitaka_projector_data/js/preferences.single.page.js"')
-
-	else:
-		print(f"{timeis()} ok") 
+	print(f"{timeis()} {green}file management")
+	
+	os.popen('mv "output/tpp.js" "output/pv1_Pali_Viet_Dictionary_by_ngaiBuuChon_stardict.js"')
+	os.popen('mv "output/pv1_Pali_Viet_Dictionary_by_ngaiBuuChon_stardict.js" "/home/bhikkhu/git/Tipitaka-Pali-Projector/tipitaka_projector_data/dictionary/pv1_Pali_Viet_Dictionary_by_ngaiBuuChon_stardict.js"')
+	os.popen('nemo "/home/bhikkhu/git/Tipitaka-Pali-Projector/tipitaka_projector_data/dictionary"')
+	os.popen('code "/home/bhikkhu/git/Tipitaka-Pali-Projector/tipitaka_projector_data/dictionary/pv1_Pali_Viet_Dictionary_by_ngaiBuuChon_stardict.js"')
+	os.popen('code "/home/bhikkhu/git/Tipitaka-Pali-Projector/tipitaka_projector_data/js/preferences.single.page.js"')
 	print(f"{timeis()} {line}")
-
 
 generate_tpp_html()
 copy_file_to_tpp_folder()

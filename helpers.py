@@ -44,12 +44,14 @@ class ResourcePaths(TypedDict):
     dpd_roots_css_path: Path
     dpd_help_css_path: Path
     epd_css_path: Path
+    sandhi_css_path: Path
     tpp_css_path: Path
     buttons_js_path: Path
     gd_json_path: Path
     icon_path: Path
     icon_bmp_path: Path
     output_stardict_zip_path: Path
+    all_inflections_dict_path: Path
 
 
 def parse_data_frames(rsc: ResourcePaths) -> DataFrames:
@@ -102,10 +104,12 @@ def get_resource_paths() -> ResourcePaths:
         dpd_roots_css_path = Path("./assets/dpd-roots.css"),
         dpd_help_css_path = Path("./assets/dpd-help.css"),
         epd_css_path = Path("./assets/epd.css"),
+        sandhi_css_path=Path("./assets/sandhi.css"),
         tpp_css_path = Path("./assets/tpp.css"),
         buttons_js_path = Path("./assets/buttons.js"),
         abbrev_path = Path("./assets/abbreviations.csv"),
         help_path = Path("./assets/help.csv"),
+        
         # Project input
         compound_families_dir = dpd_dir.joinpath("compound families generator/"),
         frequency_dir = dpd_dir.joinpath("frequency maps/"),
@@ -114,7 +118,7 @@ def get_resource_paths() -> ResourcePaths:
         sets_dir = dpd_dir.joinpath("sets/"),
         words_path = dpd_dir.joinpath("csvs/dpd-full.csv"),
         roots_path = dpd_dir.joinpath("csvs/roots.csv"),
-        
+        all_inflections_dict_path = dpd_dir.joinpath("inflection generator/output/all inflections dict"),
         icon_path = dpd_dir.joinpath("favicon/favicon_io nu circle/favicon.ico"),
         icon_bmp_path = dpd_dir.joinpath("favicon/favicon_io nu circle/dpd.bmp")
     )
@@ -147,9 +151,6 @@ def copy_goldendict(src_path: Path, dest_dir: Path):
         print(f"{timeis()} {red}{e}")
         # sys.exit(2)
         
-    print(f"{timeis()} {green}unipping goldendict")
-    os.popen(f'unzip {dest_path}')
-    
     print(f"{timeis()} {line}")
 
 
