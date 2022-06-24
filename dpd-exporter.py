@@ -5,7 +5,8 @@ import json
 import typer
 import zipfile
 from datetime import datetime
-from timeis import timeis, yellow, green, line
+from timeis import timeis, yellow, green, line, tic, toc
+import pickle
 
 from generate_html_and_json import generate_html_and_json
 from helpers import copy_goldendict, get_resource_paths
@@ -21,6 +22,7 @@ def run_generate_html_and_json(generate_roots: bool = True):
 
 @app.command()
 def run_generate_goldendict(move_to_dest: bool = True):
+    tic()
     """Generate a Stardict-format .zip for GoldenDict."""
 
     rsc = get_resource_paths()
@@ -31,11 +33,17 @@ def run_generate_goldendict(move_to_dest: bool = True):
     print(f"{timeis()} {yellow}generate goldendict")
     print(f"{timeis()} {line}")
 
-    print(f"{timeis()} {green}reading json")
-    with open(rsc['gd_json_path'], "r") as f:
-        gd_data_read = json.load(f)
+    # print(f"{timeis()} {green}reading json")
+    # with open(rsc['gd_json_path'], "r") as f:
+    #     gd_data_read = json.load(f)
+    
+    print(f"{timeis()} {green}loading pickle")
+    with open("output/dpd data", "rb") as f:
+        pali_data_df = pickle.load(f)
+    
+    gd_data_read = pali_data_df.to_dict(orient="records")
 
-    print(f"{timeis()} {green}parsing json")
+    print(f"{timeis()} {green}parsing")
     def item_to_word(x):
         return DictEntry(
             word=x["word"],
@@ -67,6 +75,7 @@ def run_generate_goldendict(move_to_dest: bool = True):
     if move_to_dest:
         copy_goldendict(rsc['output_stardict_zip_path'], rsc['output_share_dir'])
     
+    toc()
 
 def main():
     # Process cli with typer.
@@ -74,3 +83,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

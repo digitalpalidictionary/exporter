@@ -22,7 +22,6 @@ p.heading {
 }
 
 p.heading b {
-    color: #00A4CC;
     font-weight: 700;
 }
 
@@ -31,14 +30,9 @@ p.sutta {
     font-style: italic;
 }
 
-
 p.family b {
     color: #00A4CC;
     font-weight: 700;
-}
-
-span.colour2 {
-    color: #65DBFF
 }
 
 table.table1 {
@@ -62,7 +56,6 @@ table.table1 th {
     font-weight: 700;
     white-space: nowrap;
 }
-
 
 table.dataframe {
     border: 1px solid #E2FFFF;

@@ -6,7 +6,6 @@ p.root_heading {
 }
 
 p.root_heading b {
-    color: #AB3C00;
     font-weight: 700;
 }
 
@@ -30,10 +29,6 @@ table.root_table th {
 p.root_family b {
     color: #AB3C00;
     font-weight: 700;
-}
-
-span.colour2 {
-    color: #F95700
 }
 
 div.root_content {

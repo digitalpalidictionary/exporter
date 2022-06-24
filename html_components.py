@@ -26,14 +26,14 @@ def render_word_meaning(w: DpdWord) -> RenderResult:
     text_concise = ""
 
     if w.meaning == "":
-        html_string += f"""<div class="content"><p>{w.pos}. <b>{w.buddhadatta}</b> [under construction]</p></div>"""
+        html_string += f"""<div class="content"><p>{w.pos}. <b>{w.buddhadatta}</b> 🔧</p></div>"""
         text_full += f"""{w.pali}. {w.grammar}. {w.buddhadatta}. [under construction]"""
         text_concise += f"""{w.pali}. {w.pos}. {w.buddhadatta}."""
 
 
     else:
         html_string += f"""<div class="content"><p>{w.pos}"""
-        text_concise += f"{w.pali}. {w.pos}."
+        text_concise += f"{w.pali}. {w.pos}"
 
         if w.case != "":
             html_string += f""" ({w.case})"""
@@ -47,12 +47,14 @@ def render_word_meaning(w: DpdWord) -> RenderResult:
             text_concise += f"""; lit. {w.lit}"""
 
         if w.base == "":
-            construction_simple = re.sub(r" \[.+\] \+", "", w.construction)
-            construction_simple = re.sub("> .+? ", "", construction_simple)
-            construction_simple = re.sub("<br/>.+", "", construction_simple)
+            construction_simple = re.sub("<br/>.+$", "", w.construction) # remove line2
+            construction_simple = re.sub(r" \[.+\] \+", "", construction_simple) # remove [insertions]
+            construction_simple = re.sub("> .+? ", "", construction_simple) # remove phonetic changes
+            construction_simple = re.sub("> .+?$", "", construction_simple) # remove phonetic changes at end
+
             if construction_simple != "":
-                html_string += f""". [{construction_simple}]"""
-                text_concise += f""". [{construction_simple}]"""
+                html_string += f""" [{construction_simple}]"""
+                text_concise += f""" [{construction_simple}]"""
 
         if w.base != "":
             family_plus = re.sub(" ", " + ", w.family)

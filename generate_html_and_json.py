@@ -6,13 +6,14 @@ import stat
 import time
 import pandas as pd
 import os
-from timeis import timeis, yellow, green, red, line
+from timeis import timeis, yellow, green, red, line, tic, toc
 
 from helpers import DataFrames, DpdWord, ResourcePaths, get_resource_paths, parse_data_frames
 from html_components import render_header_tmpl, render_feedback_tmpl, render_word_meaning
 
 
 def generate_html_and_json(generate_roots: bool = True):
+    tic()
     rsc = get_resource_paths()
 
     data = parse_data_frames(rsc)
@@ -73,7 +74,7 @@ def generate_html_and_json(generate_roots: bool = True):
         # x_colour2 #F95700
         # x_colour3 #FFE2D2
 
-        indeclinables = ["abbrev", "abs", "ger", "ind", "inf", "prefix", "sandhi", "idiom"]
+        indeclinables = ["abbrev", "abs", "ger", "ind", "inf", "prefix", "sandhi", "idiom", "var"]
         conjugations = ["aor", "cond", "fut", "imp", "imperf", "opt", "perf", "pr"]
         declensions = ["adj", "card", "cs", "fem", "letter", "masc", "nt", "ordin", "pp", "pron", "prp", "ptp", "root", "suffix", "ve"]
 
@@ -81,10 +82,14 @@ def generate_html_and_json(generate_roots: bool = True):
         text_full = ""
         text_concise = ""
 
+        # all headwords list
+        global all_headwords_clean
+        all_headwords_clean = []
+        all_headwords_clean.append(w.pali_clean)
+
         # html head & style
 
         html_string += render_header_tmpl(css=words_css, js=buttons_js)
-
         html_string += "<body>"
 
         # summary
@@ -388,7 +393,7 @@ def generate_html_and_json(generate_roots: bool = True):
                     
                     with open(set_path) as f:
                         set_data_read = f.read()
-                        html_string += f"""<p class="heading">{w.pali} belongs to the set of <a href="{set}"><b>{set}</b></a></p>"""
+                        html_string += f"""<p class="heading">{w.pali} belongs to the set of <b>{set}</b></p>"""
                         html_string += f"""{set_data_read}"""
                 else:
                     print(f"{timeis()} {red}{row}/{df_length}\t{w.pali} set dir not found for {set}.html")
@@ -457,8 +462,10 @@ def generate_html_and_json(generate_roots: bool = True):
 
         for synoym in synonyms:
             if re.findall("ṃ", synoym):
-                synoym = re.sub("ṃ", "ṁ", synoym)
-                synonyms.append(synoym)
+                synoym1 = re.sub("ṃ", "ṁ", synoym)
+                synonyms.append(synoym1)
+                synoym2 = re.sub("ṃ", "ŋ", synoym)  
+                synonyms.append(synoym2)
             
         synonyms += list(all_inflections_dict[w.pali]["sinhala"])
         synonyms += list(all_inflections_dict[w.pali]["devanagari"])
@@ -731,6 +738,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     for row in range(df_length): #df_length
         w = DpdWord(df, row)
         meanings_list = []
+        lit_meaning_list = []
         w.meaning = re.sub("\?\?", "", w.meaning)
 
         if row % 10000 == 0:
@@ -744,9 +752,9 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
             meanings_clean = re.sub(fr"(^ | $)", "", meanings_clean)            # remove space at start and fin
             meanings_clean = re.sub(fr"  ", " ", meanings_clean)                    # remove double spaces
             meanings_clean = re.sub(fr" ;|; ", ";", meanings_clean)                 # remove space around ;
-            meanings_clean = re.sub(fr" i\.e\. ", "", meanings_clean)               # remove i.e.           
+            meanings_clean = re.sub(fr" i\.e\. ", "", meanings_clean)               # remove i.e.     
             meanings_list = meanings_clean.split(";")
-            
+
             for meaning in meanings_list:
                 if meaning in epd.keys() and w.case =="":
                     epd[meaning] = f"{epd[meaning]}<br><b class = 'epd'>{w.pali_clean}</b> {w.pos}. {w.meaning}"
@@ -781,14 +789,17 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     sandhi_data_list = []
 
     for key, value in sandhi_dict.items():
-        html_string = ""
-        html_string = sandhi_css
-        html_string += f"<body><div class ='sandhi'><p class='sandhi'>{value}</p></div></body></html>"
-        sandhi_data_list += [[f"{key}", f"""{html_string}""", "", ""]]
+        key_clean = re.sub(" \d*$", "", key)
+        if key_clean not in all_headwords_clean:
+
+            html_string = ""
+            html_string = sandhi_css
+            html_string += f"<body><div class ='sandhi'><p class='sandhi'>{value}</p></div></body></html>"
+            sandhi_data_list += [[f"{key}", f"""{html_string}""", "", ""]]
 
     # roots > dataframe > json
 
-    print(f"{timeis()} {green}generating json")
+    print(f"{timeis()} {green}generating data df")
 
     root_data_df = pd.DataFrame(root_data_list)
     root_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
@@ -807,11 +818,11 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
     pali_data_df = pd.concat([pali_data_df, root_data_df, abbrev_data_df, help_data_df, epd_data_df, sandhi_df])
 
-    print(f"{timeis()} {green}saving html to json")
+    print(f"{timeis()} {green}saving html to pickle")
+    with open ("output/dpd data", "wb") as pf:
+        pickle.dump(pali_data_df, pf)
 
-    pali_data_df.to_json(rsc['gd_json_path'], force_ascii=False, orient="records", indent=6)
-
-    print(f"{timeis()} {line}")
+    toc()
 
 
 def delete_unused_html_files():

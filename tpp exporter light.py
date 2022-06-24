@@ -5,7 +5,7 @@ import shutil
 
 from datetime import date
 from helpers import DpdWord
-from timeis import timeis, yellow, green, blue, line
+from timeis import timeis, yellow, green, blue, line, tic, toc
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
@@ -138,14 +138,12 @@ def generate_tpp_html():
 		root_clean = re.sub("√", "", root)
 		root_ = "_" + re.sub(" ", "_", root)
 		root_ = re.sub("√", "", root_)
-		root_in_comps = roots_df.iloc[row, 3]
 		root_has_verb = roots_df.iloc[row, 4]
 		root_group = roots_df.iloc[row, 5]
 		root_sign = roots_df.iloc[row, 6]
 		root_meaning = roots_df.iloc[row, 8]
 		root_meaning_ = re.sub(",", "", root_meaning)
 		root_meaning_ = re.sub(" ", "_", root_meaning_)
-		root_id = root_group + "_" + root_meaning_
 
 		if root_count != "0":
 			if root != last_root and row == 0:
@@ -225,11 +223,13 @@ def copy_file_to_tpp_folder():
 	
 	os.popen('mv "output/tpp.js" "output/pv1_Pali_Viet_Dictionary_by_ngaiBuuChon_stardict.js"')
 	os.popen('mv "output/pv1_Pali_Viet_Dictionary_by_ngaiBuuChon_stardict.js" "/home/bhikkhu/git/Tipitaka-Pali-Projector/tipitaka_projector_data/dictionary/pv1_Pali_Viet_Dictionary_by_ngaiBuuChon_stardict.js"')
-	os.popen('nemo "/home/bhikkhu/git/Tipitaka-Pali-Projector/tipitaka_projector_data/dictionary"')
-	os.popen('code "/home/bhikkhu/git/Tipitaka-Pali-Projector/tipitaka_projector_data/dictionary/pv1_Pali_Viet_Dictionary_by_ngaiBuuChon_stardict.js"')
-	os.popen('code "/home/bhikkhu/git/Tipitaka-Pali-Projector/tipitaka_projector_data/js/preferences.single.page.js"')
-	print(f"{timeis()} {line}")
 
+	# os.popen('nemo "/home/bhikkhu/git/Tipitaka-Pali-Projector/tipitaka_projector_data/dictionary"')
+	# os.popen('code "/home/bhikkhu/git/Tipitaka-Pali-Projector/tipitaka_projector_data/dictionary/pv1_Pali_Viet_Dictionary_by_ngaiBuuChon_stardict.js"')
+	# os.popen('code "/home/bhikkhu/git/Tipitaka-Pali-Projector/tipitaka_projector_data/js/preferences.single.page.js"')
+
+
+tic()
 generate_tpp_html()
 copy_file_to_tpp_folder()
-
+toc()

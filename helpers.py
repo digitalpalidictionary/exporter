@@ -62,9 +62,6 @@ def parse_data_frames(rsc: ResourcePaths) -> DataFrames:
 
     roots_df = pd.read_csv(rsc['roots_path'], sep="\t", dtype=str)
     roots_df.fillna("", inplace=True)
-
-    # roots_df.replace("\.0$", "", inplace=True, regex=True)
-    # roots_df = roots_df[roots_df["Count"] != "0"] # remove roots with no examples
     roots_df = roots_df[roots_df["Fin"] != ""] # remove extra iines
 
     abbrev_df = pd.read_csv(rsc['abbrev_path'], sep="\t", dtype=str)
@@ -150,8 +147,7 @@ def copy_goldendict(src_path: Path, dest_dir: Path):
     except Exception as e:
         print(f"{timeis()} {red}{e}")
         # sys.exit(2)
-        
-    print(f"{timeis()} {line}")
+
 
 
 class DpdWord:
