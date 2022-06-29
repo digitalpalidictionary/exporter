@@ -1,0 +1,132 @@
+h3 {
+    font-size: 130%;
+    margin-top: 10px;
+    margin-bottom: 1px;
+}
+
+body {
+    font-family: "Noto Sans", "DejaVu Serif", "Verajja Serif";
+}
+
+p {
+    line-height: 150%;
+    margin: 3px 5px;
+    vertical-align: middle;
+}
+
+p.heading {
+    color: #00A4CC;
+    border-radius: 5px;
+    margin: 2px;
+    padding: 2px 5px;
+    user-select: none;
+}
+
+p.sutta_dps {
+    color: #358109;
+    font-style: italic;
+}
+
+table.table1_dps {
+    border: 1px solid transparent;
+    border-collapse: collapse;
+}
+
+table.table1_dps td, table.table1_dps th {
+    border: 1px solid transparent;
+    border-collapse: collapse;
+    line-height: 150%;
+    margin: 0px 0px;
+    padding: 1px 5px;
+    text-align: left;
+    transition-duration: .2s;
+    vertical-align: top;
+}
+
+table.table1_dps th {
+    color: #358109;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+
+table.dataframe {
+    border: 1px solid #E2FFFF;
+    border-collapse: collapse;
+}
+
+table.dataframe td,table.dataframe th {
+    border: 1px solid #E2FFFF;
+    border-collapse: collapse;
+    line-height: 150%;
+    padding: 1px 5px;
+    text-align: center;
+    transition-duration: .2s;
+    vertical-align: middle;
+}
+
+/* table.dataframe td {
+    background-color: #00A4CC;
+    color: black;
+} */
+
+table.dataframe th {
+    color: #00A4CC;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+input {
+    display: none;
+}
+
+div.content_dps {
+    border: 2px solid #358109;
+    border-radius: 5px;
+    line-height: 150%;
+    overflow: auto;
+    text-align: left;
+}
+
+a.button_dps {
+    text-decoration: none;
+    background-color: #9ff16f;
+    border-radius: 3px;
+    box-shadow: 0 4px 4px -2px #358109;
+    color: #000;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 80%;
+    font-weight: 400;
+    margin: 1px 1px 2px 0px;
+    padding: 2px 5px;
+    transition-duration: .2s;
+    user-select: none;
+}
+
+a.button_dps.close {
+    float: right;
+    margin: 1px;
+}
+
+a.button_dps:hover {
+    background-color: #358109;
+    color: white;
+    user-select: none;
+}
+
+.link {
+    border-radius: 5px;
+    color: #00A4CC;
+    font-weight: 700;
+}
+
+.hidden {
+    display: none;
+}
+
+a.button_dps.active {
+    background-color: #358109;
+    color: white;
+    user-select: none;
+}
