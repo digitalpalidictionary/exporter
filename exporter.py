@@ -2,39 +2,47 @@
 # coding: utf-8
 
 import json
-import typer
-from datetime import datetime
-from timeis import timeis, yellow, green, line
 
+import typer
+
+from timeis import timeis, yellow, green, line
 from generate_html_and_json import generate_html_and_json
-from helpers import copy_goldendict, get_resource_paths
+from generate_html_and_json_sbs import generate_html_and_json_sbs
+from helpers import ResourcePaths
+from helpers import copy_goldendict, get_resource_paths, get_resource_paths_sbs
 
 
 app = typer.Typer()
 
 RSC = get_resource_paths()
 
+
 @app.command()
 def run_generate_html_and_json(generate_roots: bool = True):
     generate_html_and_json(generate_roots)
 
+
 @app.command()
-def run_generate_goldendict(move_to_dest: bool = True):
+def run_generate_html_and_json_sbs(generate_roots: bool = True):
+    generate_html_and_json_sbs(generate_roots)
+
+
+def _run_generate_goldendict(rsc: ResourcePaths, ifo: 'StarDictIfo', move_to_dest: bool = True):
     """Generate a Stardict-format .zip for GoldenDict."""
 
-    rsc = get_resource_paths()
-
     # importing Simsapa here so other commands don't have to load it and its numerous dependencies
-    from simsapa.app.stardict import export_words_as_stardict_zip, ifo_from_opts, DictEntry
+    from simsapa.app.stardict import export_words_as_stardict_zip, DictEntry
 
     print(f"{timeis()} {yellow}generate goldendict")
     print(f"{timeis()} {line}")
 
-    print(f"{timeis()} {green}reading json")    
+    print(f"{timeis()} {green}reading json")
+
     with open(rsc['gd_json_path'], "r") as f:
         gd_data_read = json.load(f)
-    
+
     print(f"{timeis()} {green}parsing json")
+
     def item_to_word(x):
         return DictEntry(
             word=x["word"],
@@ -45,26 +53,51 @@ def run_generate_goldendict(move_to_dest: bool = True):
 
     words = list(map(item_to_word, gd_data_read))
 
-    ifo = ifo_from_opts(
-        {
-            "bookname": "Пали Словарь",
-            "author": "Бхиккху Дэвамитта",
-            "description": "Русско-Пали и Пали-Русский Словарь",
-            "website": "devamitta@sasanarakkha.org",
-        }
-    )
-
     print(f"{timeis()} {green}writing goldendict")
     export_words_as_stardict_zip(words, ifo, rsc['output_stardict_zip_path'], rsc['icon_path'])
 
     if move_to_dest:
         copy_goldendict(rsc['output_stardict_zip_path'], rsc['output_share_dir'])
-                    
+
     print(f"{timeis()} {line}")
+
+
+@app.command()
+def run_generate_goldendict(move_to_dest: bool = True):
+    from simsapa.app.stardict import ifo_from_opts, StarDictIfo
+
+    rsc = get_resource_paths()
+
+    ifo = ifo_from_opts({
+            "bookname": "Пали Словарь",
+            "author": "Бхиккху Дэвамитта",
+            "description": "Русско-Пали и Пали-Русский Словарь",
+            "website": "devamitta@sasanarakkha.org",
+    })
+
+    return _run_generate_goldendict(rsc, ifo, move_to_dest)
+
+
+@app.command()
+def run_generate_goldendict_sbs(move_to_dest: bool = True):
+    from simsapa.app.stardict import ifo_from_opts, StarDictIfo
+
+    rsc = get_resource_paths_sbs()
+
+    ifo = ifo_from_opts({
+        "bookname": "SBS Pāli Dictionary",
+        "author": "Devamitta Bhikkhu",
+        "description": "words from the SBS Pāli-English Recitation",
+        "email": "sasanarakkha.org",
+    })
+
+    return _run_generate_goldendict(rsc, ifo, move_to_dest)
+
 
 def main():
     # Process cli with typer.
     app()
+
 
 if __name__ == "__main__":
     main()

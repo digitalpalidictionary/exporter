@@ -8,12 +8,12 @@ import pandas as pd
 import os
 from timeis import timeis, yellow, green, red, line
 
-from helpers import DataFrames, DpsWord, ResourcePaths, get_resource_paths, parse_data_frames
+from helpers import DataFrames, DpsWord, ResourcePaths, get_resource_paths_sbs, parse_data_frames
 from html_components import render_header_tmpl, render_feedback_tmpl, render_word_meaning
 
 
-def generate_html_and_json(generate_roots: bool = True):
-    rsc = get_resource_paths()
+def generate_html_and_json_sbs(generate_roots: bool = True):
+    rsc = get_resource_paths_sbs()
 
     data = parse_data_frames(rsc)
     today = date.today()
@@ -30,6 +30,8 @@ def generate_html_and_json(generate_roots: bool = True):
 
     inflection_table_error_string = ""
     synonyms_error_string = ""
+
+    # the big for loop
 
     df = data['words_df']
     df_length = data['words_df'].shape[0]
@@ -63,7 +65,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # summary
 
-        r = render_word_meaning(w)
+        r = render_word_meaning_sbs(w)
         html_string += r['html']
         text_full += r['full']
         text_concise += r['concise']
@@ -73,35 +75,35 @@ def generate_html_and_json(generate_roots: bool = True):
         html_string += f"""<div class="button-box">"""
 
         if w.meaning != "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_dps_{w.pali_}">грамматика</a>"""
+            html_string += f"""<a class="button_sbs" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_sbs_{w.pali_}">grammar</a>"""
 
         if w.eg1 != "" and w.eg2 == "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">пример</a>"""
+            html_string += f"""<a class="button_sbs" href="javascript:void(0);" onclick="button_click(this)" data-target="example_sbs_{w.pali_}">example</a>"""
 
         if w.eg1 == "" and w.eg2 != "" and w.eg3 == "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">пример</a>"""
+            html_string += f"""<a class="button_sbs" href="javascript:void(0);" onclick="button_click(this)" data-target="example_sbs_{w.pali_}">example</a>"""
 
         if w.eg1 == "" and w.eg2 != "" and w.eg3 != "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">примеры</a>"""
+            html_string += f"""<a class="button_sbs" href="javascript:void(0);" onclick="button_click(this)" data-target="example_sbs_{w.pali_}">examples</a>"""
 
         if w.eg1 != "" and w.eg2 != "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">примеры</a>"""
+            html_string += f"""<a class="button_sbs" href="javascript:void(0);" onclick="button_click(this)" data-target="example_sbs_{w.pali_}">examples</a>"""
 
         if w.pos in conjugations:
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_dps_{w.pali_}">спряжения</a>"""
+            html_string += f"""<a class="button_sbs" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_sbs_{w.pali_}">conjugation</a>"""
 
         if w.pos in declensions:
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="declension_dps_{w.pali_}">склонения</a>"""
+            html_string += f"""<a class="button_sbs" href="javascript:void(0);" onclick="button_click(this)" data-target="declension_sbs_{w.pali_}">declension</a>"""
 
-        html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="feedback_dps_{w.pali_}">о словаре</a>"""
+        html_string += f"""<a class="button_sbs" href="javascript:void(0);" onclick="button_click(this)" data-target="feedback_sbs_{w.pali_}">feedback</a>"""
         html_string += f"""</div>"""
 
         # grammar
 
-        html_string += f"""<div id="grammar_dps_{w.pali_}" class="content_dps hidden">"""
-        html_string += f"""<table class = "table1_dps">"""
+        html_string += f"""<div id="grammar_sbs_{w.pali_}" class="content_sbs hidden">"""
+        html_string += f"""<table class = "table1_sbs">"""
         if w.pos != "":
-            html_string += f"""<tr><th>часть речи</th><td>{w.pos}"""
+            html_string += f"""<tr><th>Grammar</th><td>{w.pos}"""
             text_full += f"{w.pali}. {w.pos}"
 
         if w.grammar != "":
@@ -129,90 +131,115 @@ def generate_html_and_json(generate_roots: bool = True):
             text_full += f""" ({w.case})"""
 
         html_string += f"""</td></tr>"""
-        html_string += f"""<tr valign="top"><th>английский</th><td><b>{w.meaning}</b>"""
+        html_string += f"""<tr valign="top"><th>Meaning</th><td><b>{w.meaning}</b>"""
         text_full += f""". {w.meaning}"""
 
         if w.russian != "":
             html_string += f"""</td></tr>"""
-            html_string += f"""<tr valign="top"><th>русский</th><td><b>{w.russian}</b>"""
+            html_string += f"""<tr valign="top"><th>Russian</th><td><b>{w.russian}</b>"""
             text_full += f""". {w.russian}"""
 
         html_string += f"""</td></tr>"""
 
         if w.root != "":
-            html_string += f"""<tr valign="top"><th>корень</th><td>{w.root}</td></tr>"""
-            text_full += f""". корень: {w.root}"""
+            html_string += f"""<tr valign="top"><th>Root</th><td>{w.root}</td></tr>"""
+            text_full += f""". root: {w.root}"""
 
         if w.base != "":
-            html_string += f"""<tr valign="top"><th>основа</th><td>{w.base}</td></tr>"""
-            text_full += f""". основа: {w.base}"""
+            html_string += f"""<tr valign="top"><th>Base</th><td>{w.base}</td></tr>"""
+            text_full += f""". base: {w.base}"""
 
         if w.construction != "":
-            html_string += f"""<tr valign="top"><th>образование</th><td>{w.construction}</td></tr>"""
+            html_string += f"""<tr valign="top"><th>Construction</th><td>{w.construction}</td></tr>"""
             construction_text = re.sub("<br/>", ", ", w.construction)
-            text_full += f""". образование: {construction_text}"""
+            text_full += f""". construction: {construction_text}"""
 
         if w.var != "":
-            html_string += f"""<tr valign="top"><th>вариант</th><td>{w.var}</td></tr>"""
-            text_full += f"""вариант: {w.var}"""
+            html_string += f"""<tr valign="top"><th>Variant</th><td>{w.var}</td></tr>"""
+            text_full += f"""variant: {w.var}"""
 
         if w.comm != "":
-            html_string += f"""<tr valign="top"><th>комментарий</th><td>{w.comm}</td></tr>"""
+            html_string += f"""<tr valign="top"><th>Commentary</th><td>{w.comm}</td></tr>"""
             comm_text = re.sub("<br/>", " ", w.comm)
             comm_text = re.sub("<b>", "", comm_text)
             comm_text = re.sub("</b>", "", comm_text)
-            text_full += f""". комментарий: {comm_text}"""
+            text_full += f""". commentary: {comm_text}"""
 
         if w.notes != "":
-            html_string += f"""<tr valign="top"><th>заметки</th><td>{w.notes}</td></tr>"""
-            text_full += f""". заметки: {w.notes}"""
+            html_string += f"""<tr valign="top"><th>Notes</th><td>{w.notes}</td></tr>"""
+            text_full += f""". notes: {w.notes}"""
 
         if w.sk != "":
-            html_string += f"""<tr valign="top"><th>санскрит</th><td><i>{w.sk}</i></td></tr>"""
-            text_full += f""". санскрит: {w.sk}"""
+            html_string += f"""<tr valign="top"><th>Sanskrit</th><td><i>{w.sk}</i></td></tr>"""
+            text_full += f""". sanskrit: {w.sk}"""
 
         if w.sk_root != "":
-            html_string += f"""<tr valign="top"><th>санск. корень</th><td><i>{w.sk_root}</i></td></tr>"""
-            text_full += f""". санск. корень: {w.sk_root}"""
+            html_string += f"""<tr valign="top"><th>Sk root</th><td><i>{w.sk_root}</i></td></tr>"""
+            text_full += f""". sk root: {w.sk_root}"""
 
         html_string += f"""</table>"""
-        html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>"""
+        html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Report a mistake.</a></p>"""
         html_string += f"""</div>"""
 
         # examples
 
         if w.eg1 != "" and w.eg2 != "":
 
-            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden">"""
+            html_string += f"""<div id="example_sbs_{w.pali_}" class="content_sbs hidden">"""
 
-            html_string += f"""<p>{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
-            html_string += f"""<p>{w.eg2}<p class="sutta_dps">{w.source2} {w.sutta2}"""
+            html_string += f"""<p>{w.eg1}<p class="sutta_sbs">{w.source1} {w.sutta1}</p>"""
+            html_string += f"""<p>{w.eg2}<p class="sutta_sbs">{w.source2} {w.sutta2}"""
+
+            if w.chapter2 != "":
+                html_string += f"""<br>{w.chapter2}"""
+                if w.sbs_pali_chant2 != "":
+                    html_string += f""", {w.sbs_pali_chant2}"""
+                if w.sbs_eng_chant2 != "":
+                    html_string += f""", {w.sbs_eng_chant2}"""
+                html_string += f"""</p>"""
+                
 
             if w.chapter3 != "":
-                    html_string += f"""<p>{w.eg3}<p class="sutta_dps">{w.source3} {w.sutta3}"""
+                html_string += f"""<p>{w.eg3}<p class="sutta_sbs">{w.source3} {w.sutta3}"""
+                html_string += f"""<br>{w.chapter3}"""
+                if w.sbs_pali_chant3 != "":
+                    html_string += f""", {w.sbs_pali_chant3}"""
+                if w.sbs_eng_chant3 != "":
+                    html_string += f""", {w.sbs_eng_chant3}"""
+                html_string += f"""</p>"""
 
-            html_string += f"""<p>Пожалуйста, подскажите более подходящий <a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}" target="_blank">пример.</a></p>"""
             html_string += f"""</div>"""
 
         elif w.eg1 != "" and w.eg2 == "":
 
-            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden">"""
+            html_string += f"""<div id="example_sbs_{w.pali_}" class="content_sbs hidden">"""
 
-            html_string += f"""<p>{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
-            html_string += f"""<p>Пожалуйста, подскажите более подходящий <a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}" target="_blank">пример.</a></p>"""
+            html_string += f"""<p>{w.eg1}<p class="sutta_sbs">{w.source1} {w.sutta1}</p>"""
             html_string += f"""</div>"""
 
         elif w.eg1 == "" and w.eg2 != "":
 
-            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden">"""
+            html_string += f"""<div id="example_sbs_{w.pali_}" class="content_sbs hidden">"""
 
-            html_string += f"""<p>{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
-            html_string += f"""<p>{w.eg2}<p class="sutta_dps">{w.source2} {w.sutta2}"""
+            html_string += f"""<p>{w.eg2}<p class="sutta_sbs">{w.source2} {w.sutta2}"""
+
+            if w.chapter2 != "":
+                html_string += f"""<br>{w.chapter2}"""
+                if w.sbs_pali_chant2 != "":
+                    html_string += f""", {w.sbs_pali_chant2}"""
+                if w.sbs_eng_chant2 != "":
+                    html_string += f""", {w.sbs_eng_chant2}"""
+                html_string += f"""</p>"""
 
             if w.chapter3 != "":
-                    html_string += f"""<p>{w.eg3}<p class="sutta_dps">{w.source3} {w.sutta3}"""
+                html_string += f"""<p>{w.eg3}<p class="sutta_sbs">{w.source3} {w.sutta3}"""
+                html_string += f"""<br>{w.chapter3}"""
+                if w.sbs_pali_chant3 != "":
+                    html_string += f""", {w.sbs_pali_chant3}"""
+                if w.sbs_eng_chant3 != "":
+                    html_string += f""", {w.sbs_eng_chant3}"""
+                html_string += f"""</p>"""
 
-            html_string += f"""<p>Пожалуйста, подскажите более подходящий <a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}" target="_blank">пример.</a></p>"""
             html_string += f"""</div>"""
 
         # inflection table
@@ -232,11 +259,11 @@ def generate_html_and_json(generate_roots: bool = True):
 
             if w.pos in declensions:
 
-                html_string += f"""<div id="declension_dps_{w.pali_}" class="content_dps hidden">"""
+                html_string += f"""<div id="declension_sbs_{w.pali_}" class="content_sbs hidden">"""
 
             if w.pos in conjugations:
 
-                html_string += f"""<div id="conjugation_dps_{w.pali_}" class="content_dps hidden">"""
+                html_string += f"""<div id="conjugation_sbs_{w.pali_}" class="content_sbs hidden">"""
 
             html_string += f"""{table_data_read}"""
 
@@ -244,13 +271,13 @@ def generate_html_and_json(generate_roots: bool = True):
 
                 if w.pos in declensions:
 
-                    html_string += f"""<p>У вас есть предложение?"""
-                    html_string += f"""<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>"""
+                    html_string += f"""<p>Have a suggestion?"""
+                    html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Report a mistake.</a></p>"""
 
                 if w.pos in conjugations:
 
-                    html_string += f"""<p>У вас есть предложение?"""
-                    html_string += f"""<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>"""
+                    html_string += f"""<p>Have a suggestion?"""
+                    html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Report a mistake.</a></p>"""
             html_string += f"""</div>"""
 
         html_string += render_feedback_tmpl(w)
@@ -285,10 +312,10 @@ def generate_html_and_json(generate_roots: bool = True):
                 f.write(html_string)
 
     error_log.close()
-    
+
     if inflection_table_error_string != "":
         print(f"{timeis()} {red}inflection table errors: {inflection_table_error_string}")
-    
+
     if synonyms_error_string != "":
         print(f"{timeis()} {red}synonym errors: {synonyms_error_string}")
         
@@ -297,14 +324,13 @@ def generate_html_and_json(generate_roots: bool = True):
     text_data_full = re.sub("ṃ", "ṁ", text_data_full)
     text_data_concise = re.sub("ṃ", "ṁ", text_data_concise)
 
+# write text versions
 
-    # write text versions
-
-    p = rsc['output_share_dir'].joinpath("dps_full.txt")
+    p = rsc['output_share_dir'].joinpath("sbs_full.txt")
     with open(p, "w", encoding ="utf-8") as f:
         f.write(text_data_full)
 
-    p = rsc['output_share_dir'].joinpath("dps_concise.txt")
+    p = rsc['output_share_dir'].joinpath("sbs_concise.txt")
     with open(p, "w", encoding ="utf-8") as f:
         f.write(text_data_concise)
 
@@ -314,11 +340,11 @@ def generate_html_and_json(generate_roots: bool = True):
 
 def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data_list):
 
-
     # html list > dataframe
 
     pali_data_df = pd.DataFrame(html_data_list)
     pali_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+
 
     # generate abbreviations html
 
@@ -333,13 +359,12 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     abbrev_df_length = len(abbrev_df)
 
     for row in range(abbrev_df_length):
-        
+
         html_string = ""
 
         abbrev = abbrev_df.iloc[row,0]
         meaning = abbrev_df.iloc[row,1]
-        ru_meaning = abbrev_df.iloc[row,2]
-        
+
         css = f"{abbrev_css}"
         html_string += render_header_tmpl(css=css, js="")
 
@@ -347,15 +372,15 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # summary
 
-        html_string += f"""<div class="help_ru"><p>условное сокращение. <b>{abbrev}</b>. {meaning}. {ru_meaning}</p></div>"""
-        
+        html_string += f"""<div class="help_sbs"><p>abbreviation. <b>{abbrev}</b>. {meaning}</p></div>"""
+
         p = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
 
         with open(p, 'w') as f:
             f.write(html_string)
-        
+
         # compile root data into list
-        synonyms = [abbrev,meaning]
+        synonyms = [abbrev, meaning]
         abbrev_data_list += [[f"{abbrev}", f"""{html_string}""", "", synonyms]]
 
 # generate help html
@@ -371,12 +396,12 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     help_df_length = len(help_df)
 
     for row in range(help_df_length):
-        
+
         html_string = ""
 
         help_title = help_df.iloc[row,0]
         meaning = help_df.iloc[row,1]
-        
+
         css = f"{help_css}"
         html_string += render_header_tmpl(css=css, js="")
 
@@ -384,8 +409,8 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # summary
 
-        html_string += f"""<div class="help_ru"><p>помощь. <b>{help_title}</b>. {meaning}</p></div>"""
-        
+        html_string += f"""<div class="help_sbs"><p>help. <b>{help_title}</b>. {meaning}</p></div>"""
+
         p = rsc['output_help_html_dir'].joinpath(f"{help_title}.html")
 
         with open(p, 'w') as f:
@@ -396,56 +421,56 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         help_data_list += [[f"{help_title}", f"""{html_string}""", "", synonyms]]
 
 
-        # generate rpd html
+        # generate epd html
 
-    print(f"{timeis()} {green}generating rpd html")
+    print(f"{timeis()} {green}generating epd html")
     
     df = data['words_df']
     df_length = data['words_df'].shape[0]
     pos_exclude_list = ["abbrev", "cs", "letter","root", "suffix", "ve"]
 
-    rpd = {}
+    epd = {}
 
     for row in range(df_length): #df_length
         w = DpsWord(df, row)
         meanings_list = []
-        w.russian = re.sub("\?\?", "", w.russian)
+        w.meaning = re.sub("\?\?", "", w.meaning)
 
         if row % 10000 == 0:
-            print(f"{timeis()} {row}/{df_length}\t{w.pali}")
+            print(f"{timeis()} {row}/{df_length}\t{w.pali}")      
 
-        if w.russian != "" and \
+        if w.meaning != "" and \
         w.pos not in pos_exclude_list:
 
-            meanings_clean = re.sub(fr" \(.+?\)", "", w.russian)                    # remove all space brackets
+            meanings_clean = re.sub(fr" \(.+?\)", "", w.meaning)                    # remove all space brackets
             meanings_clean = re.sub(fr"\(.+?\) ", "", meanings_clean)           # remove all brackets space
             meanings_clean = re.sub(fr"(^ | $)", "", meanings_clean)            # remove space at start and fin
             meanings_clean = re.sub(fr"  ", " ", meanings_clean)                    # remove double spaces
             meanings_clean = re.sub(fr" ;|; ", ";", meanings_clean)                 # remove space around ;
-            meanings_clean = re.sub(fr"\(комм\).+$", "", meanings_clean)   # remove commentary meanings
-            meanings_clean = re.sub(fr"досл.+$", "", meanings_clean)         # remove lit meanings
+            meanings_clean = re.sub(fr"\(comm\).+$", "", meanings_clean)   # remove commentary meanings
+            meanings_clean = re.sub(fr"lit.+$", "", meanings_clean)         # remove lit meanings
             meanings_list = meanings_clean.split(";")
-            
-            for russian in meanings_list:
-                if russian in rpd.keys() and w.case =="":
-                    rpd[russian] = f"{rpd[russian]}<br><b>{w.pali_clean}</b> {w.pos}. {w.russian}"
-                if russian in rpd.keys() and w.case !="":
-                    rpd[russian] = f"{rpd[russian]}<br><b>{w.pali_clean}</b> {w.pos}. {w.russian} ({w.case})"
-                if russian not in rpd.keys() and w.case =="":
-                    rpd.update({russian: f"<b>{w.pali_clean}</b> {w.pos}. {w.russian}"})
-                if russian not in rpd.keys() and w.case !="":
-                    rpd.update({russian: f"<b>{w.pali_clean}</b> {w.pos}. {w.russian} ({w.case})"})
-    
-    with open(rsc['pd_css_path'], 'r') as f:
-        rpd_css = f.read()
-    
-    rpd_data_list = []
 
-    for key, value in rpd.items():
+            for meaning in meanings_list:
+                if meaning in epd.keys() and w.case =="":
+                    epd[meaning] = f"{epd[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {w.meaning}"
+                if meaning in epd.keys() and w.case !="":
+                    epd[meaning] = f"{epd[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {w.meaning} ({w.case})"
+                if meaning not in epd.keys() and w.case =="":
+                    epd.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {w.meaning}"})
+                if meaning not in epd.keys() and w.case !="":
+                    epd.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {w.meaning} ({w.case})"})
+
+    with open(rsc['pd_css_path'], 'r') as f:
+        epd_css = f.read()
+
+    epd_data_list = []
+
+    for key, value in epd.items():
         html_string = ""
-        html_string = rpd_css
-        html_string += f"<body><div class ='rpd'><p>{value}</p></div></body></html>"
-        rpd_data_list += [[f"{key}", f"""{html_string}""", "", ""]]
+        html_string = epd_css
+        html_string += f"<body><div class ='epd_sbs'><p>{value}</p></div></body></html>"
+        epd_data_list += [[f"{key}", f"""{html_string}""", "", ""]]
 
     # roots > dataframe > json
 
@@ -457,10 +482,10 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     help_data_df = pd.DataFrame(help_data_list)
     help_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
 
-    rpd_data_df = pd.DataFrame(rpd_data_list)
-    rpd_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+    epd_data_df = pd.DataFrame(epd_data_list)
+    epd_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
 
-    pali_data_df = pd.concat([pali_data_df, abbrev_data_df, help_data_df, rpd_data_df])
+    pali_data_df = pd.concat([pali_data_df, abbrev_data_df, help_data_df, epd_data_df])
 
     print(f"{timeis()} {green}saving html to json")
 
