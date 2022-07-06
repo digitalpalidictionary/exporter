@@ -9,7 +9,7 @@ import os
 from timeis import timeis, yellow, green, red, line
 
 from helpers import DataFrames, DpsWord, ResourcePaths, get_resource_paths_sbs, parse_data_frames
-from html_components import render_header_tmpl, render_feedback_tmpl, render_word_meaning
+from html_components import render_header_tmpl, render_feedback_tmpl_sbs, render_word_meaning_sbs
 
 
 def generate_html_and_json_sbs(generate_roots: bool = True):
@@ -280,7 +280,7 @@ def generate_html_and_json_sbs(generate_roots: bool = True):
                     html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Report a mistake.</a></p>"""
             html_string += f"""</div>"""
 
-        html_string += render_feedback_tmpl(w)
+        html_string += render_feedback_tmpl_sbs(w)
 
         html_string += f"""</body></html>"""
 

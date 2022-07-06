@@ -7,6 +7,7 @@ from mako.template import Template
 
 header_tmpl = Template(filename='./assets/templates/header.html')
 feedback_tmpl = Template(filename='./assets/templates/feedback.html')
+feedback_tmpl_sbs = Template(filename='./assets_sbs/templates/feedback.html')
 
 
 def render_header_tmpl(css: str, js: str) -> str:
@@ -16,6 +17,11 @@ def render_header_tmpl(css: str, js: str) -> str:
 def render_feedback_tmpl(w: DpsWord) -> str:
     today = date.today()
     return str(feedback_tmpl.render(w=w, today=today))
+
+
+def render_feedback_tmpl_sbs(w: DpsWord) -> str:
+    today = date.today()
+    return str(feedback_tmpl_sbs.render(w=w, today=today))
 
 
 class RenderResult(TypedDict):
