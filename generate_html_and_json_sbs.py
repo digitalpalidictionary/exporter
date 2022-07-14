@@ -364,6 +364,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         abbrev = abbrev_df.iloc[row,0]
         meaning = abbrev_df.iloc[row,1]
+        pali_meaning = abbrev_df.iloc[row,2]
 
         css = f"{abbrev_css}"
         html_string += render_header_tmpl(css=css, js="")
@@ -372,7 +373,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # summary
 
-        html_string += f"""<div class="help_sbs"><p>abbreviation. <b>{abbrev}</b>. {meaning}</p></div>"""
+        html_string += f"""<div class="help_sbs"><p>abbreviation. <b>{abbrev}</b>. {meaning}. {pali_meaning}</p></div>"""
 
         p = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
 

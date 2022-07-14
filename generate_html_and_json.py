@@ -355,7 +355,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
             f.write(html_string)
         
         # compile root data into list
-        synonyms = [abbrev,meaning]
+        synonyms = [abbrev, meaning]
         abbrev_data_list += [[f"{abbrev}", f"""{html_string}""", "", synonyms]]
 
 # generate help html
