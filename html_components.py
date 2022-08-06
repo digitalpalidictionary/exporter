@@ -8,6 +8,7 @@ from mako.template import Template
 header_tmpl = Template(filename='./assets/templates/header.html')
 feedback_tmpl = Template(filename='./assets/templates/feedback.html')
 feedback_tmpl_sbs = Template(filename='./assets_sbs/templates/feedback.html')
+feedback_tmpl_test = Template(filename='./assets_test/templates/feedback.html')
 
 
 def render_header_tmpl(css: str, js: str) -> str:
@@ -22,6 +23,11 @@ def render_feedback_tmpl(w: DpsWord) -> str:
 def render_feedback_tmpl_sbs(w: DpsWord) -> str:
     today = date.today()
     return str(feedback_tmpl_sbs.render(w=w, today=today))
+
+
+def render_feedback_tmpl_test(w: DpsWord) -> str:
+    today = date.today()
+    return str(feedback_tmpl_test.render(w=w, today=today))
 
 
 class RenderResult(TypedDict):
@@ -85,4 +91,41 @@ def render_word_meaning_sbs(w: DpsWord) -> RenderResult:
         html=html_string,
         full=text_full,
         concise=text_concise,
+    )
+
+def render_word_meaning_test(w: DpsWord) -> RenderResult:
+    html_string = ""
+    text_full = ""
+    text_concise = ""
+
+    html_string += f"""<div class="content_test"><p>"""
+
+    if w.ex != "":
+        html_string += f"""<b>(ex.{w.ex}) | </b>"""
+
+        if w.count != "":
+            html_string += f"""#{w.count}. | """
+
+        html_string += f"""{w.pos}. <b>{w.meaning}</b>"""
+
+        if w.chapter2 != "":
+            html_string += f""" | <i>[sbs]</i>"""
+
+        html_string += f"""</p></div>"""
+    
+    else:
+        if w.count != "":
+            html_string += f"""(cl.{w.cl}).#{w.count}. | """
+
+        html_string += f"""{w.pos}. <b>{w.meaning}</b>"""
+
+        if w.chapter2 != "":
+            html_string += f""" | <i>[sbs]</i>"""
+
+        html_string += f"""</p></div>"""
+
+    return RenderResult(
+        html = html_string,
+        full = text_full,
+        concise = text_concise,
     )

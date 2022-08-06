@@ -141,6 +141,46 @@ def get_resource_paths_sbs() -> ResourcePaths:
     return rsc
 
 
+def get_resource_paths_test() -> ResourcePaths:
+    s = os.getenv('DPS_DIR')
+    if s is None:
+        print(f"{timeis()} {red}ERROR! DPS_DIR is not set.")
+        sys.exit(2)
+    else:
+        dps_dir = Path(s)
+
+    rsc = ResourcePaths(
+        # Project output
+        output_dir=Path("./output/"),
+        output_html_dir=Path("./output/html/"),
+        output_help_html_dir=Path("./output/help html/"),
+        output_share_dir=Path("./share/"),
+        gd_json_path=Path("./output/gd.json"),
+        output_stardict_zip_path=Path("dps-test.zip"),
+        error_log_dir=Path("./errorlogs/"),
+        # Project assets
+        dict_words_css_path=Path("./assets_test/test-words.css"),
+        dict_help_css_path=Path("./assets_test/test-help.css"),
+        pd_css_path=Path("./assets_test/epd.css"),
+        buttons_js_path=Path("./assets_test/buttons.js"),
+        abbrev_path=Path("./assets_test/abbreviations.csv"),
+        help_path=Path("./assets_test/help.csv"),
+        # Project input
+        inflections_dir=dps_dir.joinpath("inflection/"),
+        words_path=dps_dir.joinpath("spreadsheets/dps-full.csv"),
+        icon_path=Path("./dps_icon.bmp"),
+    )
+
+    # ensure write dirs exist
+    for d in [rsc['output_dir'],
+              rsc['output_html_dir'],
+              rsc['output_share_dir'],
+              rsc['error_log_dir']]:
+        d.mkdir(parents=True, exist_ok=True)
+
+    return rsc
+
+
 def copy_goldendict(src_path: Path, dest_dir: Path):
     print(f"{timeis()} {green}copying goldendict to share")
 
@@ -202,3 +242,7 @@ class DpsWord:
         self.comm: str = re.sub(r"(.+)\.$", "\\1", self.comm)
         self.notes: str = df.loc[row, "Notes"]
         self.stem: str = df.loc[row, "Stem"]
+        self.ex: str = df.loc[row, "ex"]
+        self.cl: str = df.loc[row, "class"]
+        self.count: str = df.loc[row, "count"]
+

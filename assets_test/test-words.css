@@ -1,5 +1,5 @@
 h3 {
-    font-size: 130%;
+    font-size: 100%;
     margin-top: 10px;
     margin-bottom: 1px;
 }
@@ -22,17 +22,17 @@ p.heading {
     user-select: none;
 }
 
-p.sutta_dps {
-    color: #358109;
+p.sutta_test {
+    color: #ad0a94;
     font-style: italic;
 }
 
-table.table1_dps {
+table.table1_test {
     border: 1px solid transparent;
     border-collapse: collapse;
 }
 
-table.table1_dps td, table.table1_dps th {
+table.table1_test td, table.table1_test th {
     border: 1px solid transparent;
     border-collapse: collapse;
     line-height: 150%;
@@ -43,8 +43,8 @@ table.table1_dps td, table.table1_dps th {
     vertical-align: top;
 }
 
-table.table1_dps th {
-    color: #358109;
+table.table1_test th {
+    color: #ad0a94;
     font-weight: 700;
     white-space: nowrap;
 }
@@ -80,19 +80,19 @@ input {
     display: none;
 }
 
-div.content_dps {
-    border: 2px solid #358109;
+div.content_test {
+    border: 2px solid #ad0a94;
     border-radius: 5px;
     line-height: 150%;
     overflow: auto;
     text-align: left;
 }
 
-a.button_dps {
+a.button_test {
     text-decoration: none;
-    background-color: #9ff16f;
+    background-color: #ad0a94;
     border-radius: 3px;
-    box-shadow: 0 4px 4px -2px #358109;
+    box-shadow: 0 4px 4px -2px #600652;
     color: #000;
     cursor: pointer;
     display: inline-block;
@@ -104,13 +104,24 @@ a.button_dps {
     user-select: none;
 }
 
-a.button_dps.close {
-    float: right;
-    margin: 1px;
+a.button_test.close {
+    text-decoration: none;
+    background-color: #ad0a94;
+    border-radius: 3px;
+    box-shadow: 0 4px 4px -2px #650556;
+    color: #000;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 80%;
+    font-weight: 400;
+    margin: 1px 1px 1px 1px;
+    padding: 2px 5px;
+    transition-duration: .2s;
+    user-select: none;
 }
 
-a.button_dps:hover {
-    background-color: #358109;
+a.button_test:hover {
+    background-color: #ad0a94;
     color: white;
     user-select: none;
 }
@@ -125,8 +136,12 @@ a.button_dps:hover {
     display: none;
 }
 
-a.button_dps.active {
-    background-color: #358109;
+a.button_test.active {
+    background-color: #ad0a94;
     color: white;
     user-select: none;
 }
+
+/* b {
+    font-size: 105%;
+    } */
