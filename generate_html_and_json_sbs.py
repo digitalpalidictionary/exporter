@@ -346,7 +346,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     pali_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
 
 
-    # generate abbreviations html
+        # generate abbreviations html
 
     print(f"{timeis()} {green}generating abbreviations html")
 
@@ -365,6 +365,9 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         abbrev = abbrev_df.iloc[row,0]
         meaning = abbrev_df.iloc[row,1]
         pali_meaning = abbrev_df.iloc[row,2]
+        ru_meaning = abbrev_df.iloc[row,3]
+        examp = abbrev_df.iloc[row,4]
+        expl = abbrev_df.iloc[row,5]
 
         css = f"{abbrev_css}"
         html_string += render_header_tmpl(css=css, js="")
@@ -373,7 +376,21 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # summary
 
-        html_string += f"""<div class="help_sbs"><p>abbreviation. <b>{abbrev}</b>. {meaning}. {pali_meaning}</p></div>"""
+        html_string += f"""<div class="help_test"><p>abbreviation. <b>{abbrev}</b>. {meaning}. """
+
+        if pali_meaning != "":
+            html_string += f"""{pali_meaning}. """
+
+        # if ru_meaning != "":
+        #     html_string += f"""{ru_meaning}. """
+
+        if examp != "":
+            html_string += f"""<br>e.g. {examp}. """
+
+        if expl != "":
+            html_string += f"""<br>{expl}."""
+
+        html_string += f"""</p></div>"""
 
         p = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
 
@@ -383,7 +400,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         # compile root data into list
         synonyms = [abbrev, meaning]
         abbrev_data_list += [[f"{abbrev}", f"""{html_string}""", "", synonyms]]
-
+        
 # generate help html
 
     print(f"{timeis()} {green}generating help html")
