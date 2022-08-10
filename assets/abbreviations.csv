@@ -3,7 +3,7 @@ abbrev	meaning	pāli	ru_meaning	example	explanation
 ()	letters deleted from construction		указывает на изменения усиления гласных	√dhā > <b>(</b>da<b>)</b>h + ita > hita	
 []	letters added to construction		указывает на морфологические изменения	pari + <b>[</b>y<b>]</b> + √i > āy + *a > pariyāya	
 *	indicates vuddhi or vowel strengthening takes place	vuddhi	буквы удаленные из конструкции	√bhū + <b>*</b>e > bhāve	
->	indicates morphological change occurs	āpajjate	буквы добавленные в конструкцию	√bhū + *e <b>></b> bhāve	
+>	indicates morphological change occurs	āpajjate	буквы добавленные в конструкцию	√ñā + nā <b>></b> jānā	
 √	root symbol	dhātu	обозначение корня	<b>√</b>bhū 1 a (to be)	The form of a word after all affixes are removed
 1st	first person	uttama	1е лицо	mayaṃ - pron <b>1st</b> nom sg of ahaṃ	I; we
 2nd	second person	majjhima	2е лицо	ehi - verb imp <b>2nd</b> sg from eti	You; you all
@@ -12,32 +12,33 @@ abbrev			сокращённая форма
 ABD	Abhidhāna Dictionary		Словарь Абхидхана		
 ABHI	Abhidhamma Piṭaka				The third basket of the Tipiṭaka; lit. the higher doctrine
 abl	ablative case	pañcamī, apādanavacana, avadhi	отделительный падеж	pacchā - ind, adv, <b>abl</b> sg of paccha	From, away from
-abs	absolutive verb		деепричастие	paggahetvā; upasaṅkamitvā	A verb, often ending in -ing + pp, expressing completed action (eg having done; having made)
+abs	absolutive verb		деепричастие	upasaṅkamitvā; katvā	A verb, often a combination of having + pp, expressing completed action (e.g. having approached; having made)
 abstr	abstract noun		абстрактное существительное	abyāpāda - masc <b>abstr</b>	A concept or idea not associated with any specific instance
 acc	accusative case	dutiyā, upayogavacana, kammavacana	винительный падеж	maṃ - pron, 1st <b>acc</b> sg	The object
 act	action noun		существительное действие	parinibbāna nt <b>act</b>	Noun describing a process
 adj	adjective		прилагательное	pāpaka; kalyāṇa; anicca	A word that expresses an attribute of something
 ADT	Abhidhammamātikāpāḷi				
-adv	adverb		наречие	iti - ind <b>adv</b>	The word class that qualifies verbs or clauses
+adv	adverb		наречие	sammā - ind <b>adv</b>	The word class that qualifies verbs or clauses
 agent	agent noun	kattar	существительное деятель (кто совершает действие)	bhāsitar; cora; sāvaka	Describe a person who does the action of the verbal root
 AN	Aṅguttara Nikāya		Ангуттара Никая		Book 4 of the Sutta Piṭaka; Numbered Discourses; lit. one part more collection
-ANa	Aṅguttara Nikāya Aṭṭhakathā, Manorathapūraṇī		Ангуттара Никая Комментарий		Commentary on the Aṅguttara Nikāya compiled by Ven. Buddhaghosa; lit. Fulfiller of the heart's desire 
-aor	aorist verb	ajjatanī	аорист, прошедшее время	ahosi; nisīdi; udapādi	A verb tense in some languages (classical greek and sanskrit) expressing action (especially past action) without indicating its completion or continuation
+ANa	Aṅguttara Nikāya Aṭṭhakathā, Manorathapūraṇī		Ангуттара Никая Комментарий		Commentary on the Aṅguttara Nikāya compiled by Ven. Buddhaghosa; lit. which fills with mental delight
+aor	aorist verb	ajjatanī	аорист, прошедшее время	ahosi; nisīdi; udapādi	A verb tense expressing action (especially past action) without indicating its completion or continuation
 APA	Therāpadāna		Тхерападана		Book 10 of the Khuddaka Nikāya; Legends of the Elder Monks
 API	Therīapadāna		Тхериападана		Book 11 of the Khuddaka Nikāya; Legends of the Elder Nuns
 APP	Abhidhānappadīpikāpāṭha				
 app	active past participle		причастие прошедшего времени действительного залога	bhuttāvī; dassāvī	
 APT	Abhidhānappadīpikāṭīkā				
 base	pronominal base	liṅga	основа местоимения	ta; ima; ya; kaci	
-BD	Concise Pali English Dictionary (Ven. Buddhadatta)		Краткий Словарь Пали-Англ. (Досл. Буддхадатта)		
+BD	Concise Pali English Dictionary (by Ven. Buddhadatta)		Краткий Словарь Пали-Англ. (Досл. Буддхадатта)		
 bsk	Buddhist Sanskrit, Buddhist Hybird Sanskrit		Буддийский Санскрит		
 BV	Buddhavaṃsa		Буддхаванса		Book 12 of the Khuddaka Nikāya; “The Chronicle of the Buddhas”
 card	cardinal number	saṅkhyāpadhāna	количественное числительное	cattāro; pañca; eka	The number of elements in a mathematical set; denotes a quantity but not the order
 caus	causative verb	kārita	каузатив, побудительный залог	bhāveti; deseti; paññapeti	Producing an effect
 CDB	The Connected Discourses of the Buddha: A New Translation of the Samyutta Nikaya by Bhikkhu Bodhi				
-CND	Cūḷaniddesa				Book 17 of the Khuddaka Nikāya; canonical commentary on the pārāyana of the Sutta Nipāta; lit. smaller detailed analysis
+CND	Cūḷaniddesa				Book 17 of the Khuddaka Nikāya; canonical commentary on the Pārāyanavagga of the Sutta Nipāta; lit. smaller detailed analysis
+NIDD2	Cūḷaniddesa				Book 17 of the Khuddaka Nikāya; canonical commentary on the Pārāyanavagga of the Sutta Nipāta; lit. smaller detailed analysis
 CMA	Comprehensive Manual of Abhidhamma by Bhikkhu Bodhi				
-comm	commentary meaning		перевод комментария		Summary how commentary defines this word
+comm	commentary meaning		перевод комментария		English summary from the commentary definition
 comp	compound, samāsa		"сложное слово ""самаса"""	yathābhūta; gahapati; sikkhāpada	When two or more words are combined to form a single unit
 comp vb	compound verb		составной глагол	etadavoca; manasikaroti; pāturahosi	When verb is combined with another word(s) to form a single unit
 compar	comparative adjective		сравнительная форма	anuttara; purima; paṇītatara	The comparative form of an adjective
@@ -96,7 +97,8 @@ matr	matronymic		указывающий на происхождение	sāriput
 MIL	Milindapañha				Book 19 of the Khuddaka Nikāya; the “Questions of Milinda”
 MN	Majjhimā Nikāya		Мадджхима Никая		Book 2 of the Sutta Piṭaka; Collection of Middle-length Discourses; lit. middle collection 
 MNa	Majjhimā Nikāya Aṭṭhakathā, Papañcasūdanī		Мадджхима Никая Комментарий		Commentary on the Majjhima Nikāya compiled by Ven. Buddhaghosa; lit. Setting mental proliferation in order
-MND	Mahāniddesa				Book 16 of the Khuddaka Nikāya; canonical commentary on the aṭṭhakavagga of the Sutta Nipāta; lit. great detailed analysis
+MND	Mahāniddesa				Book 16 of the Khuddaka Nikāya; canonical commentary on the Aṭṭhakavagga of the Sutta Nipāta; lit. great detailed analysis
+NIDD1	Mahāniddesa				Book 16 of the Khuddaka Nikāya; canonical commentary on the Aṭṭhakavagga of the Sutta Nipāta; lit. great detailed analysis
 MNDa	Mahāniddesa Aṭṭhakathā				
 MOGG	Moggallānabyākaraṇaṃ		Моггалланабйакаранан		
 MW	Monier-Williams Sanskrit-English Dictionary		Санскр-Анг Словарь Монье Вильямс		
