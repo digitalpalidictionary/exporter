@@ -352,6 +352,8 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
     abbrev_data_list = []
 
+    today = date.today()
+
     with open(rsc['dict_help_css_path'], 'r') as f:
         abbrev_css = f.read()
 
