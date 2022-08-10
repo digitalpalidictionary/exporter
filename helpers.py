@@ -35,7 +35,8 @@ class ResourcePaths(TypedDict):
     help_path: Path
     dict_words_css_path: Path
     dict_help_css_path: Path
-    pd_css_path: Path
+    epd_css_path: Path
+    rpd_css_path: Path
     buttons_js_path: Path
     gd_json_path: Path
     icon_path: Path
@@ -81,7 +82,7 @@ def get_resource_paths() -> ResourcePaths:
         # Project assets
         dict_words_css_path=Path("./assets/dps-words.css"),
         dict_help_css_path=Path("./assets/dps-help.css"),
-        pd_css_path=Path("./assets/rpd.css"),
+        rpd_css_path=Path("./assets/rpd.css"),
         buttons_js_path=Path("./assets/buttons.js"),
         abbrev_path=Path("./assets/abbreviations.csv"),
         help_path=Path("./assets/help.csv"),
@@ -121,10 +122,10 @@ def get_resource_paths_sbs() -> ResourcePaths:
         # Project assets
         dict_words_css_path=Path("./assets_sbs/sbs-words.css"),
         dict_help_css_path=Path("./assets_sbs/dps-help.css"),
-        pd_css_path=Path("./assets_sbs/epd.css"),
+        epd_css_path=Path("./assets_sbs/epd.css"),
         buttons_js_path=Path("./assets_sbs/buttons.js"),
-        abbrev_path=Path("./assets_sbs/abbreviations.csv"),
-        help_path=Path("./assets_sbs/help.csv"),
+        abbrev_path=Path("./assets/abbreviations.csv"),
+        help_path=Path("./assets/help.csv"),
         # Project input
         inflections_dir=dps_dir.joinpath("inflection/"),
         words_path=dps_dir.joinpath("spreadsheets/sbs-pd.csv"),
@@ -161,10 +162,11 @@ def get_resource_paths_test() -> ResourcePaths:
         # Project assets
         dict_words_css_path=Path("./assets_test/test-words.css"),
         dict_help_css_path=Path("./assets_test/test-help.css"),
-        pd_css_path=Path("./assets_test/epd.css"),
+        epd_css_path=Path("./assets_test/epd.css"),
+        rpd_css_path=Path("./assets_test/rpd.css"),
         buttons_js_path=Path("./assets_test/buttons.js"),
-        abbrev_path=Path("./assets_test/abbreviations.csv"),
-        help_path=Path("./assets_test/help.csv"),
+        abbrev_path=Path("./assets/abbreviations.csv"),
+        help_path=Path("./assets/help.csv"),
         # Project input
         inflections_dir=dps_dir.joinpath("inflection/"),
         words_path=dps_dir.joinpath("spreadsheets/dps-full.csv"),

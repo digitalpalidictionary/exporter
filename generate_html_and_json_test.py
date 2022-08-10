@@ -191,7 +191,7 @@ def generate_html_and_json_test(generate_roots: bool = True):
             html_string += f"""<p>{w.eg2}<p class="sutta_test">{w.source2} {w.sutta2}"""
 
             if w.chapter2 != "":
-                html_string += f"""<br>{w.chapter2}"""
+                html_string += f"""<br>{w.sbs_index} {w.chapter2}"""
                 if w.sbs_pali_chant2 != "":
                     html_string += f""", {w.sbs_pali_chant2}"""
                 if w.sbs_eng_chant2 != "":
@@ -201,7 +201,7 @@ def generate_html_and_json_test(generate_roots: bool = True):
 
             if w.chapter3 != "":
                 html_string += f"""<p>{w.eg3}<p class="sutta_test">{w.source3} {w.sutta3}"""
-                html_string += f"""<br>{w.chapter3}"""
+                html_string += f"""<br>{w.sbs_index} {w.chapter3}"""
                 if w.sbs_pali_chant3 != "":
                     html_string += f""", {w.sbs_pali_chant3}"""
                 if w.sbs_eng_chant3 != "":
@@ -224,7 +224,7 @@ def generate_html_and_json_test(generate_roots: bool = True):
             html_string += f"""<p>{w.eg2}<p class="sutta_test">{w.source2} {w.sutta2}"""
 
             if w.chapter2 != "":
-                html_string += f"""<br>{w.chapter2}"""
+                html_string += f"""<br>{w.sbs_index} {w.chapter2}"""
                 if w.sbs_pali_chant2 != "":
                     html_string += f""", {w.sbs_pali_chant2}"""
                 if w.sbs_eng_chant2 != "":
@@ -233,7 +233,7 @@ def generate_html_and_json_test(generate_roots: bool = True):
 
             if w.chapter3 != "":
                 html_string += f"""<p>{w.eg3}<p class="sutta_test">{w.source3} {w.sutta3}"""
-                html_string += f"""<br>{w.chapter3}"""
+                html_string += f"""<br>{w.sbs_index} {w.chapter3}"""
                 if w.sbs_pali_chant3 != "":
                     html_string += f""", {w.sbs_pali_chant3}"""
                 if w.sbs_eng_chant3 != "":
@@ -366,6 +366,8 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         meaning = abbrev_df.iloc[row,1]
         pali_meaning = abbrev_df.iloc[row,2]
         ru_meaning = abbrev_df.iloc[row,3]
+        examp = abbrev_df.iloc[row,4]
+        expl = abbrev_df.iloc[row,5]
 
         css = f"{abbrev_css}"
         html_string += render_header_tmpl(css=css, js="")
@@ -374,7 +376,21 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # summary
 
-        html_string += f"""<div class="help_test"><p>abbreviation. <b>{abbrev}</b>. {meaning}. {pali_meaning}. {ru_meaning}</p></div>"""
+        html_string += f"""<div class="help_test"><p>abbreviation. <b>{abbrev}</b>. {meaning}. """
+
+        if pali_meaning != "":
+            html_string += f"""{pali_meaning}. """
+
+        if ru_meaning != "":
+            html_string += f"""{ru_meaning}. """
+
+        if examp != "":
+            html_string += f"""<br>e.g. {examp}. """
+
+        if expl != "":
+            html_string += f"""<br>{expl}."""
+
+        html_string += f"""</p></div>"""
 
         p = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
 
@@ -463,7 +479,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
                 if meaning not in epd.keys() and w.case !="":
                     epd.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {w.meaning} ({w.case})"})
 
-    with open(rsc['pd_css_path'], 'r') as f:
+    with open(rsc['epd_css_path'], 'r') as f:
         epd_css = f.read()
 
     epd_data_list = []
@@ -473,6 +489,59 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         html_string = epd_css
         html_string += f"<body><div class ='epd_test'><p>{value}</p></div></body></html>"
         epd_data_list += [[f"{key}", f"""{html_string}""", "", ""]]
+
+
+    # generate rpd html
+
+    print(f"{timeis()} {green}generating rpd html")
+    
+    df = data['words_df']
+    df_length = data['words_df'].shape[0]
+    pos_exclude_list = ["abbrev", "cs", "letter","root", "suffix", "ve"]
+
+    rpd = {}
+
+    for row in range(df_length): #df_length
+        w = DpsWord(df, row)
+        meanings_list = []
+        w.russian = re.sub("\?\?", "", w.russian)
+
+        if row % 10000 == 0:
+            print(f"{timeis()} {row}/{df_length}\t{w.pali}")
+
+        if w.russian != "" and \
+        w.pos not in pos_exclude_list:
+
+            meanings_clean = re.sub(fr" \(.+?\)", "", w.russian)                    # remove all space brackets
+            meanings_clean = re.sub(fr"\(.+?\) ", "", meanings_clean)           # remove all brackets space
+            meanings_clean = re.sub(fr"(^ | $)", "", meanings_clean)            # remove space at start and fin
+            meanings_clean = re.sub(fr"  ", " ", meanings_clean)                    # remove double spaces
+            meanings_clean = re.sub(fr" ;|; ", ";", meanings_clean)                 # remove space around ;
+            meanings_clean = re.sub(fr"\(комм\).+$", "", meanings_clean)   # remove commentary meanings
+            meanings_clean = re.sub(fr"досл.+$", "", meanings_clean)         # remove lit meanings
+            meanings_list = meanings_clean.split(";")
+            
+            for russian in meanings_list:
+                if russian in rpd.keys() and w.case =="":
+                    rpd[russian] = f"{rpd[russian]}<br><b>{w.pali_clean}</b> {w.pos}. {w.russian}"
+                if russian in rpd.keys() and w.case !="":
+                    rpd[russian] = f"{rpd[russian]}<br><b>{w.pali_clean}</b> {w.pos}. {w.russian} ({w.case})"
+                if russian not in rpd.keys() and w.case =="":
+                    rpd.update({russian: f"<b>{w.pali_clean}</b> {w.pos}. {w.russian}"})
+                if russian not in rpd.keys() and w.case !="":
+                    rpd.update({russian: f"<b>{w.pali_clean}</b> {w.pos}. {w.russian} ({w.case})"})
+    
+    with open(rsc['rpd_css_path'], 'r') as f:
+        rpd_css = f.read()
+    
+    rpd_data_list = []
+
+    for key, value in rpd.items():
+        html_string = ""
+        html_string = rpd_css
+        html_string += f"<body><div class ='rpd'><p>{value}</p></div></body></html>"
+        rpd_data_list += [[f"{key}", f"""{html_string}""", "", ""]]
+
 
     # roots > dataframe > json
 
@@ -484,10 +553,13 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     help_data_df = pd.DataFrame(help_data_list)
     help_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
 
+    rpd_data_df = pd.DataFrame(rpd_data_list)
+    rpd_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+
     epd_data_df = pd.DataFrame(epd_data_list)
     epd_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
 
-    pali_data_df = pd.concat([pali_data_df, abbrev_data_df, help_data_df, epd_data_df])
+    pali_data_df = pd.concat([pali_data_df, abbrev_data_df, help_data_df, rpd_data_df, epd_data_df])
 
     print(f"{timeis()} {green}saving html to json")
 

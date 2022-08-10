@@ -338,7 +338,8 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         abbrev = abbrev_df.iloc[row,0]
         meaning = abbrev_df.iloc[row,1]
-        ru_meaning = abbrev_df.iloc[row,2]
+        pali_meaning = abbrev_df.iloc[row,2]
+        ru_meaning = abbrev_df.iloc[row,3]
         
         css = f"{abbrev_css}"
         html_string += render_header_tmpl(css=css, js="")
@@ -347,7 +348,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # summary
 
-        html_string += f"""<div class="help_ru"><p>условное сокращение. <b>{abbrev}</b>. {meaning}. {ru_meaning}</p></div>"""
+        html_string += f"""<div class="help_ru"><p>условное сокращение. <b>{abbrev}</b>. {meaning}. {pali_meaning}. {ru_meaning}</p></div>"""
         
         p = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
 
@@ -436,7 +437,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
                 if russian not in rpd.keys() and w.case !="":
                     rpd.update({russian: f"<b>{w.pali_clean}</b> {w.pos}. {w.russian} ({w.case})"})
     
-    with open(rsc['pd_css_path'], 'r') as f:
+    with open(rsc['rpd_css_path'], 'r') as f:
         rpd_css = f.read()
     
     rpd_data_list = []

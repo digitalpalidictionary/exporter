@@ -462,7 +462,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
                 if meaning not in epd.keys() and w.case !="":
                     epd.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {w.meaning} ({w.case})"})
 
-    with open(rsc['pd_css_path'], 'r') as f:
+    with open(rsc['epd_css_path'], 'r') as f:
         epd_css = f.read()
 
     epd_data_list = []
