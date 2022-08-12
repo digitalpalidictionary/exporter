@@ -5,166 +5,168 @@ abbrev	meaning	pāli	ru_meaning	example	explanation
 *	indicates vuddhi or vowel strengthening takes place	vuddhi	буквы удаленные из конструкции	√bhū + <b>*</b>e > bhāve	
 >	indicates morphological change occurs	āpajjate	буквы добавленные в конструкцию	√ñā + nā <b>></b> jānā	
 √	root symbol	dhātu	обозначение корня	<b>√</b>bhū 1 a (to be)	The form of a word after all affixes are removed
-1st	first person	uttama	1е лицо	mayaṃ - pron <b>1st</b> nom sg of ahaṃ	I; we
-2nd	second person	majjhima	2е лицо	ehi - verb imp <b>2nd</b> sg from eti	You; you all
-3rd	third person	paṭhama	3е лицо	hontu - verb imp <b>3rd</b> pl from hoti	He: they
-abbrev			сокращённая форма		
+1st	first person	uttama; uttamapurisa	1е лицо	mayaṃ - pron <b>1st</b> nom sg of ahaṃ	I; we
+2nd	second person	majjhima; majjhimapurisa	2е лицо	ehi - verb imp <b>2nd</b> sg from eti	you; you all
+3rd	third person	paṭhama; paṭhamapurisa	3е лицо	hontu - verb imp <b>3rd</b> pl from hoti	he; they
+abbrev	abbreviation		сокращённая форма		
 ABD	Abhidhāna Dictionary		Словарь Абхидхана		
 ABHI	Abhidhamma Piṭaka				The third basket of the Tipiṭaka; lit. the higher doctrine
-abl	ablative case	pañcamī, apādanavacana, avadhi	отделительный падеж	pacchā - ind, adv, <b>abl</b> sg of paccha	From, away from
-abs	absolutive verb		деепричастие	upasaṅkamitvā; katvā	A verb, often a combination of having + pp, expressing completed action (e.g. having approached; having made)
-abstr	abstract noun		абстрактное существительное	abyāpāda - masc <b>abstr</b>	A concept or idea not associated with any specific instance
-acc	accusative case	dutiyā, upayogavacana, kammavacana	винительный падеж	maṃ - pron, 1st <b>acc</b> sg	The object
-act	action noun		существительное действие	parinibbāna nt <b>act</b>	Noun describing a process
-adj	adjective		прилагательное	pāpaka; kalyāṇa; anicca	A word that expresses an attribute of something
+abl	ablative case	pañcamī, apādanavacana, avadhi	отделительный падеж	tato - ind, adv, <b>abl</b> sg of ta	from, away from (e.g. from that, therefore)
+abs	absolutive verb	ādāya	деепричастие	upasaṅkamitvā; katvā	A verb, often a combination of having + pp, expressing completed action (e.g. having approached; having made)
+abstr	abstract noun		абстрактное существительное	abyāpāda - masc <b>abstr</b>	A concept or idea not associated with any specific instance or any concrete thing (e.g. friendliness)
+acc	accusative case	dutiyā, upayogavacana, kammavacana	винительный падеж	maṃ - pron, 1st <b>acc</b> sg	The object (e.g. me)
+act	action noun		существительное действие	pahāna - nt <b>act</b>	Noun describing a process (e.g) abandoning
+adj	adjective	?	прилагательное	pāpaka; kalyāṇa; anicca	A word that expresses an attribute of something; usually qualify a noun (e.g. bad, good, impermanent)
 ADT	Abhidhammamātikāpāḷi				
-adv	adverb		наречие	sammā - ind <b>adv</b>	The word class that qualifies verbs or clauses
-agent	agent noun	kattar	существительное деятель (кто совершает действие)	bhāsitar; cora; sāvaka	Describe a person who does the action of the verbal root
+adv	adverb	?	наречие	idha - ind <b>adv</b>	The word class that qualifies verbs or clauses (e.g. here)
+agent	agent noun	kattar	существительное деятель (кто совершает действие)	bhāsitar; cora; sāvaka	Describe a person who does the action of the verbal root (e.g. speaker; thief; hearer)
 AN	Aṅguttara Nikāya		Ангуттара Никая		Book 4 of the Sutta Piṭaka; Numbered Discourses; lit. one part more collection
-ANa	Aṅguttara Nikāya Aṭṭhakathā, Manorathapūraṇī		Ангуттара Никая Комментарий		Commentary on the Aṅguttara Nikāya compiled by Ven. Buddhaghosa; lit. which fills with mental delight
-aor	aorist verb	ajjatanī	аорист, прошедшее время	ahosi; nisīdi; udapādi	A verb tense expressing action (especially past action) without indicating its completion or continuation
+ANa	Aṅguttara Nikāya Aṭṭhakathā, Manorathapūraṇī		Ангуттара Никая Комментарий		Commentary on the Aṅguttara Nikāya compiled by Ven. Buddhaghosa; the “Fulfiller of Wishes”; lit. which fills with mental delight
+aor	aorist verb	ajjatanī; atītakāla	аорист, прошедшее время	ahosi; nisīdi; udapādi	"A form of a verb that in the
+indicative mood expresses past action. (e.g. was; sat down; arose)"
 APA	Therāpadāna		Тхерападана		Book 10 of the Khuddaka Nikāya; Legends of the Elder Monks
 API	Therīapadāna		Тхериападана		Book 11 of the Khuddaka Nikāya; Legends of the Elder Nuns
 APP	Abhidhānappadīpikāpāṭha				
-app	active past participle		причастие прошедшего времени действительного залога	bhuttāvī; dassāvī	
+app	active past participle	?	причастие прошедшего времени действительного залога	bhuttāvī; dassāvī	e.g. who has eaten; who has seen
 APT	Abhidhānappadīpikāṭīkā				
-base	pronominal base	liṅga	основа местоимения	ta; ima; ya; kaci	
+base	pronominal base	liṅga	основа местоимения	ta; ima; ya; kaci	e.g. that, this, which, someone
 BD	Concise Pali English Dictionary (by Ven. Buddhadatta)		Краткий Словарь Пали-Англ. (Досл. Буддхадатта)		
+BDN	Buddhist Dictionary by Ven. Ñāṇatiloka Mahathera				
 bsk	Buddhist Sanskrit, Buddhist Hybird Sanskrit		Буддийский Санскрит		
 BV	Buddhavaṃsa		Буддхаванса		Book 12 of the Khuddaka Nikāya; “The Chronicle of the Buddhas”
-card	cardinal number	saṅkhyāpadhāna	количественное числительное	cattāro; pañca; eka	The number of elements in a mathematical set; denotes a quantity but not the order
-caus	causative verb	kārita	каузатив, побудительный залог	bhāveti; deseti; paññapeti	Producing an effect
+card	cardinal number	saṅkhyāpadhāna	количественное числительное	cattāro; pañca; eka	The number of elements in a mathematical set; denotes a quantity but not the order (e.g. four, five; one)
+caus	causative verb	kārita	каузатив, побудительный залог	bhāveti; samādapeti; paññapeti	Producing an effect (e.g. causes to become; encourages; causes to know)
 CDB	The Connected Discourses of the Buddha: A New Translation of the Samyutta Nikaya by Bhikkhu Bodhi				
-CND	Cūḷaniddesa				Book 17 of the Khuddaka Nikāya; canonical commentary on the Pārāyanavagga of the Sutta Nipāta; lit. smaller detailed analysis
-NIDD2	Cūḷaniddesa				Book 17 of the Khuddaka Nikāya; canonical commentary on the Pārāyanavagga of the Sutta Nipāta; lit. smaller detailed analysis
 CMA	Comprehensive Manual of Abhidhamma by Bhikkhu Bodhi				
+CND	Cūḷaniddesa				Book 17 of the Khuddaka Nikāya; canonical commentary on the Pārāyanavagga of the Sutta Nipāta; lit. smaller detailed analysis
 comm	commentary meaning		перевод комментария		English summary from the commentary definition
 comp	compound, samāsa		"сложное слово ""самаса"""	yathābhūta; gahapati; sikkhāpada	When two or more words are combined to form a single unit
 comp vb	compound verb		составной глагол	etadavoca; manasikaroti; pāturahosi	When verb is combined with another word(s) to form a single unit
-compar	comparative adjective		сравнительная форма	anuttara; purima; paṇītatara	The comparative form of an adjective
-cond	conditional mood	kālātipatti	условное наклонение	abhavissa; agamissa	Imposing or depending on or containing a condition
+compar	comparative adjective		сравнительная форма	anuttara; purima; paṇītatara	The comparative form of an adjective (e.g. higher, earlier, more sublime)
+cond	conditional mood	kālātipatti; sattamī	условное наклонение	abhavissa; agamissa	Imposing or depending on or containing a condition (e.g. if would be; if could have been; would have gone)
+Cone	Pali Dictionary Margaret Cone				
 CP	Cariyā Piṭaka		Карийа Питака		Book 13 of the Khuddaka Nikāya; the Basket of Conduct
 CPD	Critical Pāli Dictionary		Критический Словарь Пали		
 cs	conjugational sign		признак сопряжения		
-dat	dative case	catutthī, sampadānavacana	дательный падеж	hitāya - noun, nt <b>dat</b> sg of hita	To; for
+dat	dative case	catutthī, sampadānavacana	дательный падеж	hitāya - noun, nt <b>dat</b> sg of hita	to; for (e.g. for the benefit)
 deno	denominative verb		отымённое слово		
 derog	derogatory		умаляющая форма		
 desid	desiderative verb	tumicchattha	дезидеративная форма		
 DHP	Dhammapada		Дхаммапада		Book 2 of the Khuddaka Nikāya; Dhamma Verses
-DHPa	Dhammapada Aṭṭhakathā,		Дхаммапада Комментарий		Commentary to Dhammapada
-dial	dialect, non Indo-Aryan word		диалект	dhāropa; māḷa	Vocabulary that is characteristic of a specific group of people
-dimin	diminutive noun		уменьшительное существительное	dāraka; māṇavaka; kuṭikā	A word that is formed with a suffix (such as -let or -kin) to indicate smallness
-ditrans	ditransitive verb	dvikammaka	двойной переходный, транзитивный глагол	pucchati; yācati; 	A verb (or verb construction) that takes two objects in the accusative case.
+DHPa	Dhammapada Aṭṭhakathā, part of Paramatthajotikā		Дхаммапада Комментарий		Commentary to Dhammapada compiled by Ven. Buddhaghosa; part of  “Illumination of the Ultimate Truth”
+dial	dialect, non Indo-Aryan word		диалект	dhāropa; māḷa	Vocabulary that is characteristic of a specific group of people or specific place
+dimin	diminutive noun		уменьшительное существительное	dāraka; phusitaka; kuṭikā	A word that is formed with a suffix (such as -let or -ing) to indicate smallness (e.g. booklet, droplet)
+ditrans	ditransitive verb	dvikammaka	двойной переходный, транзитивный глагол	pucchati; yācati	A verb (or verb construction) that takes two objects in the accusative case. (e.g. asks someone for something)
 DN	Dīgha Nikāya		Дигха Никая		Book 1 of the Sutta Piṭaka; Collection of Long Discourses; lit. long collection
-DNa	Dīgha Nikāya Aṭṭhakathā, Sumaṅgalavilāsinī		Дигха Никая Комментарий		Commentary on the Dīgha Nikāya compiled by Ven. Buddhaghosa; lit. Very auspicious and charming 
-DS	dhammasaṅgaṇī				Book 1 of the Abhidhamma Piṭaka; enumeration of phenomena
-DSa	Dhammasaṅgaṇī aṭṭhakathā				
+DNa	Dīgha Nikāya Aṭṭhakathā, Sumaṅgalavilāsinī		Дигха Никая Комментарий		Commentary on the Dīgha Nikāya compiled by Ven. Buddhaghosa; lit. very auspicious and charming
+DS	Dhammasaṅgaṇī				Book 1 of the Abhidhamma Piṭaka; enumeration of phenomena
+DSa	Dhammasaṅgaṇī Aṭṭhakathā; Aṭṭhasālinī				Commentary on the Dhammasaṅgaṇi compiled by Ven. Buddhaghosa;  “Exposition of Meaning”
 DSṭ	Dhammasaṅgaṇī mūlaṭīkā				
 Edg	Edgerton's Buddhist Hybrid Sanskrit Dictionary		Смешанный Словарь Буддийского Санскрита Эджертона		
-emph	emphatic particle		эмфатическая частица	eva; kho; have	Spoken with emphasis
+emph	emphatic particle	?	эмфатическая частица	eva; kho; have	Express some emphasis or stress something (e.g. only; just; indeed)
 EV	Elder's Verses by K.R.Norman				
-excl	exclamation		восклицание		An abrupt excited utterance
-fem	feminine noun	itthī	женский род	āpatti; vedanā; bhikkhunī	
-fut	future tense	bhavissantī	будущее время	bhavissati; gamissati; assasissati	A verb tense that expresses actions or states in the future
-gen	genitive case	chaṭṭhī, sāmivacana, sambandha	родительный падеж	me - pron, 1st <b>gen</b> sg of ahaṃ	Of; ‘s
+excl	exclamation		восклицание	aho; abbhutaṃ; ambho	Expressing spontaneous feelings, reactions or make the sentences stronger. Sometimes used to attract attention. (e.g. oh no! most certainly! wonderful! hey!)
+fem	feminine noun	itthī; itthiliṅga	женский род	āpatti; vedanā; bhikkhunī	
+fut	future tense	bhavissantī; anāgatakāla	будущее время	bhavissati; gamissati; assasissati	A verb tense that expresses actions or states in the future
+gen	genitive case	chaṭṭhī, sāmivacana, sambandha	родительный падеж	me - pron, 1st <b>gen</b> sg of ahaṃ	of; ‘s (e.g. my, mine)
 gen abs	genitive absolute construction		родительный падеж абсолютная конструкция	me sato; tassa jānato passato	When a noun or a pronoun in the genitive case is used with a participle in the same case as itself, the construction is called genitive absolute. It can be translated as when, while, since, or as. Sometimes it also has the meaning of since, although, even if, despite, in spite of, notwithstanding.
-ger	gerund		герундий	upasampajja; pahāya; ādāya	A verb, often ending in -ing, expressing ongoing action (eg. doing; making; going).
+ger	gerund	ādāya	герундий	upasampajja; pahāya; ādāya	A verb, often ending in -ing, expressing ongoing action (eg. doing; making; going).
 gram	grammatical term, technical term		грамматический термин	padasandhi	
-idiom	idiomatic expression		идиома; фразеологизм	app'eva nāma	A manner of speaking that is natural to native speakers of a language or an expression whose meanings cannot be inferred from the meanings of the words that make it up
-imp	imperative mood	pañcamī	повелительное наклонение	gaccha; atthu; hotu	Mood that expresses an intention to influence the listener's behavior
+idiom	idiomatic expression	?	идиома; фразеологизм	app'eva nāma	A manner of speaking that is natural to native speakers of a language or an expression whose meanings cannot be inferred from the meanings of the words that make it up (e.g. it would be good if)
+imp	imperative mood	pañcamī	повелительное наклонение	gaccha; atthu; hotu	Mood that expresses an intention to influence the listener's behavior or expresses wish. (e.g. begone! may there be! may it be!)
 imperf	imperfect past tense	hiyyattanī	имперфектное прошедшее время	addasā; ahuvā; accagamā	Past tense which is used for events which happened before yesterday, but were seen by the speaker.
-impers	impersonal	bhāva	безличный глагол	paṭibhāti; kappati	Not relating to or responsive to individual persons
+impers	impersonal	bhāva	безличный глагол	paṭibhāti; kappati	Not relating to or responsive to individual persons (e.g. it occurs (to); it is suitable (for))
 in comps	in compounds		в составе сложных слов	anupassī; paṭisaṃvedī	Usually act as part of compound
-ind	indeclinable word	nipāta	несклоняемое слово	api; pana; atha	
+ind	indeclinable word	nipāta	несклоняемое слово	api; pana; atha	Words which do not have declensions or conjugations.
 inf	infinitive verb	tumanta	инфинитив, неопределённая форма глагола	kātuṃ; pahātuṃ; carituṃ	The uninflected form of the verb. It most commonly expresses a purpose.
-instr	instrumental case	tatiyā, karaṇavacana	творительный, инструментальный падеж	kālena - ind, adv, <b>instr</b> sg of kāla	By, with or through
-intens	intensive verb		усилительный глагол	caṅkamati; jaṅgamati	A modifier that has little meaning except to intensify the meaning it modifies
-interr	interrogative pronoun		вопросительное слово	kiṃ; kissa; kittaka	Relating to the use of or having the nature of an interrogation
-intrans	intransitive verb	akammaka	непереходный глагол	hoti; nisīdi; bhavati	A verb (or verb construction) that does not take an object in the accusative case. sometimes they take what appears to be an object in another case. 
-irreg	irregular conjugation or declension		неправильное, нерегулярно образованное слово	kammunā - noun, nt instr sg of kamma, <b>irreg</b>	Contrary to rule or accepted order or general practice
+instr	instrumental case	tatiyā, karaṇavacana	творительный, инструментальный падеж	kālena - ind, adv, <b>instr</b> sg of kāla	by, with or through
+intens	intensive verb		усилительный глагол	caṅkamati; jaṅgamati	Also called Frequentative Verbs, express the frequent repetition or the intensification of the action denoted by the simple root.
+interr	interrogative particle	?	вопросительное слово	kiṃ; kissa; kittaka	Has the nature of asking a question. (who? how? perhaps? how many?)
+intrans	intransitive verb	akammaka	непереходный глагол	hoti; saṃvattati; bhavati	A verb (or verb construction) that does not take an object in the accusative case. sometimes they take what appears to be an object in another case. (e.g. there is; is conducive to)
+irreg	irregular conjugation or declension		неправильное, нерегулярно образованное слово	kammunā - noun, nt instr sg of kamma, <b>irreg</b>	Differs from the usual, generally accepted patterns of conjugation or declension.
 ITI	Itivuttaka		Итивуттака		Book 4 of the Khuddaka Nikāya; Quotations; lit. thus said
 JA	Jātaka		Джатака		Books 14 and 15 of the Khuddaka Nikāya; birth stories
-JAa	Jātaka Aṭṭhakathā		Джатака комментарий		Commentary to Jātaka
+JAa	Jātaka Aṭṭhakathā, part of Paramatthajotikā		Джатака комментарий		Commentary to Jātaka compiled by Ven. Buddhaghosa; part of  “Illumination of the Ultimate Truth”
 KP	Khuddaka Pāṭha		Куддака Патха		Books 1 of the Khuddaka Nikāya; lit. small passage
-KVa	Kaṅkhāvitaraṇīaṭṭhakathā		Канкхавитараниаттхакатха		
+KVa	Kaṅkhāvitaraṇīaṭṭhakathā		Канкхавитараниаттхакатха		Commentary to the Pāṭimokkha, Vinayapiṭaka, compiled by Ven. Buddhaghosa
 KVt	Kaṅkhāvitaraṇīpurāṇaṭīkā				
 LDA	The Law of Dependent Arising by Kaṭukurunde Ñāṇananda				
 lit	literal meaning		буквальный, дословный смысл		Limited to the explicit meaning of a word or parts from which the word has been constructed.
-loc	locative case	sattamī, bhummavacana, okāsa, ādhāra, sambodhana	местный падеж		In, on, at, among
-loc abs	locative absolute construction		местный падеж абсолютная конструкция	amhesu - pron, 1st <b>loc</b> pl of ahaṃ	When a noun or a pronoun in the locative case is used with a participle in the same case as itself, the construction is called locative absolute. It can be translated as when, while, since, or as.
-masc	masculine noun	puma	мужской род	bhikkhu; dhamma; loka	
-matr	matronymic		указывающий на происхождение	sāriputta; mantāṇiputta; vedehiputta	Pointing on the origin of the name
+loc	locative case	sattamī, bhummavacana, okāsa, ādhāra, sambodhana	местный падеж		in, on, at, among
+loc abs	locative absolute construction		местный падеж абсолютная конструкция	amhesu - pron, 1st <b>loc</b> pl of ahaṃ	When a noun or a pronoun in the locative case is used with a participle in the same case as itself, the construction is called locative absolute. It can be translated as when, while, since, or as. (e.g. in us; among us)
+masc	masculine noun	puma; pulliṅga	мужской род	bhikkhu; dhamma; loka	
+matr	matronymic		указывающий на происхождение	sāriputta; mantāṇiputta; vedehiputta	Pointing on the origin of the name. Very often name derived from the name of your mother or a maternal ancestor (e.g. son of Sāri; son of Mantāṇī; son of Vedehi)
 MIL	Milindapañha				Book 19 of the Khuddaka Nikāya; the “Questions of Milinda”
 MN	Majjhimā Nikāya		Мадджхима Никая		Book 2 of the Sutta Piṭaka; Collection of Middle-length Discourses; lit. middle collection 
-MNa	Majjhimā Nikāya Aṭṭhakathā, Papañcasūdanī		Мадджхима Никая Комментарий		Commentary on the Majjhima Nikāya compiled by Ven. Buddhaghosa; lit. Setting mental proliferation in order
+MNa	Majjhimā Nikāya Aṭṭhakathā, Papañcasūdanī		Мадджхима Никая Комментарий		Commentary on the Majjhima Nikāya compiled by Ven. Buddhaghosa; “Destruction of Obstacles [to Progress]”; lit. setting mental proliferation in order
 MND	Mahāniddesa				Book 16 of the Khuddaka Nikāya; canonical commentary on the Aṭṭhakavagga of the Sutta Nipāta; lit. great detailed analysis
-NIDD1	Mahāniddesa				Book 16 of the Khuddaka Nikāya; canonical commentary on the Aṭṭhakavagga of the Sutta Nipāta; lit. great detailed analysis
-MNDa	Mahāniddesa Aṭṭhakathā				
+MNDa	Mahāniddesa Aṭṭhakathā				Commentary to Mahāniddesa
 MOGG	Moggallānabyākaraṇaṃ		Моггалланабйакаранан		
 MW	Monier-Williams Sanskrit-English Dictionary		Санскр-Анг Словарь Монье Вильямс		
-neg	negative		отрицательная частица	na	
+neg	negative	?	отрицательная частица	na	express negation or opposite meaning
+NIDD1	Mahāniddesa				Book 16 of the Khuddaka Nikāya; canonical commentary on the Aṭṭhakavagga of the Sutta Nipāta; lit. great detailed analysis
+NIDD2	Cūḷaniddesa				Book 17 of the Khuddaka Nikāya; canonical commentary on the Pārāyanavagga of the Sutta Nipāta; lit. smaller detailed analysis
 NMS	Nibbana: The Mind Stilled by Kaṭukurunde Ñāṇananda				
-nom	nominative case	paṭhamā, paccattavacana	именительный падеж		The category of nouns serving as the grammatical subject of a verb
-noun	noun; substantive	nāma	существительное	tuvaṃ - pron, 2nd <b>nom</b> sg of tvaṃ	A content word that can be used to refer to a person, place, thing, quality, or action; the word class that can serve as the subject or object of a verb, the object of a preposition, or in apposition
-nt	neuter noun	napuṃsaka	средний род	citta, rūpa, viññāṇa	
+nom	nominative case	paṭhamā, paccattavacana	именительный падеж	tuvaṃ - pron, 2nd <b>nom</b> sg of tvaṃ	The category of nouns serving as the grammatical subject of a verb
+noun	noun; substantive	nāma; nāmanāma	существительное	samaṇa; purisa; paṭipadā	A content word that can be used to refer to a person, place, thing, quality, or action; the word class that can serve as the subject or object of a verb, the object of a preposition, or in apposition (e.g. recluse; man; method)
+nt	neuter noun	napuṃsaka; napuṁsakaliṅga	средний род	citta, rūpa, viññāṇa	
 onom	onomatopoeia		ономатопея, звукоподражание	capucapu, sū, surusuru	Using words that imitate the sound they denote
-opt	optative mood	sattamī	оптативное, желательное наклонение	siyā; gaccheyya; uddiseyya	A mood that expresses a wish, probability, advice or capability; expressed in english by modal verbs (should / could / may / might)
-ordin	ordinal number	saṅkhyāpūraṇa	порядковое числительное	paṭhama; dutiya; tatiya	The number designating place in an ordered sequence
-pass	passive verb	kamma	страдательный залог	nirujjhati; vuccati; paññāyati	The voice used to indicate that the grammatical subject of the verb is the recipient (not the source) of the action denoted by the verb
-patr	patronymic		указывающий на происхождение (о префиксе, суффиксе)	kassapa; bhāradvāja; kaccāna	Pointing on the origin of the name
+opt	optative mood	sattamī	оптативное, желательное наклонение	siyā; gaccheyya; uddiseyya	A mood that expresses a wish, probability, advice or capability; expressed in English by modal verbs (should / could / may / might)
+ordin	ordinal number	saṅkhyāpūraṇa	порядковое числительное	paṭhama; dutiya; tatiya	The number designating place in an ordered sequence (e.g. first; second; third)
+pass	passive verb	kamma; kammakāraka	страдательный залог	nirujjhati; vuccati; paññāyati	The voice used to indicate that the grammatical subject of the verb is the recipient (not the source) of the action denoted by the verb (e.g. is stopped; is said; is clearly known)
+patr	patronymic		указывающий на происхождение (о префиксе, суффиксе)	kassapa; bhāradvāja; kaccāna	Pointing on the origin of the name. Very often name derived from name of your father or a paternal ancestor  (e.g. descendant of Kassapa; descended from Bharadvāja; descendant of Kati)
 PDB	Princeton Dictionary of Buddhism		Словарь Буддизма Принстонского университета		
 PED	Pāli English Dictionary of the Pāli Text Society		Пали Английский Словарь Общества Палийских Текстов		
-perf	perfect past tense	parokkhā	перфектное прошлое время	āha; āhaṃsu; pāva	It as a normal past tense, something that happened a long time ago, a completed action, something you personally did not witness.
+perf	perfect past tense	parokkhā	перфектное прошлое время	āha; āhaṃsu; pāva	express something that happened a long time ago, a completed action, something you personally did not witness.
 Perniola	Pali Grammar by V.Perniola				
 pl	plural number	bahuvacana	множественное число	tumhe - pron, 2nd nom <b>pl</b> of tvaṃ	The form of a word that is used to denote more than one
 PM	Paṭisambhidā Magga				Book 18 of the Khuddaka Nikāya; Path to Analytical Knowledge
 pos	part of speech	pada	часть речи		One of the traditional categories of words intended to reflect their functions in a grammatical context
-pp	past participle		причастие прошедшего времени	vutta; nisinna; suta	Verbal adjective which describes the action that a noun did (in the past)
-PPa	Puggalapaññatti aṭṭhakathā				
-pr	present tense	vattamānā	настоящее время	viharati; uppajjati; passati	A verb tense that expresses actions or states at the time of speaking
+pp	past participle	?	причастие прошедшего времени	vutta; nisinna; suta	Verbal adjective which describes the action that a noun did (in the past) (e.g. have said; have seated; have heard)
+PPa	Puggalapaññatti Aṭṭhakathā				Commentary to Puggalapaññatti
+pr	present tense	vattamānā; vattamānakāla	настоящее время	viharati; uppajjati; passati	A verb tense that expresses actions or states at the time of speaking (e.g. lives; appears; sees)
 prefix	prefix	upasagga	приставка, префикс	ā-; abhi-; nī-	An affix that is added in front of the word
-prep	preposition	upasagga	предлог; препозиция	saddhiṃ; purato; anto	A function word that combines with a noun or pronoun or noun phrase to form a prepositional phrase that can have an adverbial or adjectival relation to some other word
-prk	Prakrit		Пракрит		Any of the vernacular indic languages of north and central india (as distinguished from sanskrit) recorded from the 3rd century bc to the 4th century ad
-pron	pronoun, pronominal adjective	sabbanāma	местоимение	sa; eta; añña; sabba	A function word that is used in place of a noun or noun phrase
-prp	present participle	missakiriya	причастие настоящего времени	passanta; viharanta; jānanta	Verbal adjective. That means it describes the action that a noun is doing. 
+prep	preposition	upasagga	предлог; препозиция	saddhiṃ; purato; anto	A function word that combines with a noun or pronoun or noun phrase to form a prepositional phrase that can have an adverbial or adjectival relation to some other word (e.g. with; in front (of); within)
+prk	Prakrit		Пракрит		Any of the vernacular indic languages of north and central india (as distinguished from sanskrit) recorded from the 3rd century BC to the 4th century AD
+pron	pronoun, pronominal adjective	sabbanāma	местоимение	sa; eta; añña; sabba	A function word that is used in place of a noun or noun phrase (he; this; another; all)
+prp	present participle	missakiriya	причастие настоящего времени	passanta; viharanta; jānanta	Verbal adjective, which describes the action that a noun is doing. (seeing; dwelling; knowing)
 PRS	Padarūpasiddhi		Падарупасиддхи		
-ptp	potential particle, future passive participle	kicca	причастие будущего времени	karaṇīya; veditabba; sikkhitabba	Verbal adjectives, they give more information about the noun they are describing. Can mean to be; should be; could be; must be; can be; ought to be; fit to be; able to be; suitable to be. It depending on the context.
+ptp	potential particle, future passive participle; future perfect conditional	kicca	причастие будущего времени	karaṇīya; veditabba; sikkhitabba	Verbal adjectives, they give more information about the noun they are describing. (e.g. ought to be done; can be known; should be practised)
 PV	Petavatthu		Пета Ваттху		Book 7 of the Khuddaka Nikāya; lit. story about ghosts
-reflx	reflexive verb or the middle voice. 		возвратный глагол	karomase; sikkhassu; bhāvayate	The reflexive voice contains the idea of an action coming back to the person who did the action, i.e. reflecting back to the doer. Reflexive verbs can be translated into english with a reflexive pronoun. (he himself, they themselves etc.)
-sandhi	sandhi compound		слияние слов; сандхи	evaṃ + eva > evam'eva	It refers to the changes that take place when the different parts of the language are joined together.
+reflx	reflexive verb or the middle voice		возвратный глагол	karomase; sikkhassu; bhāvayate	The reflexive voice contains the idea of an action coming back to the person who did the action, i.e. reflecting back to the doer. Reflexive verbs can be translated into English with a reflexive pronoun. (he himself, they themselves etc.)
+sandhi	sandhi compound		слияние слов; сандхи	evaṃ + eva > evam'eva	It refers to the changes that take place when the different parts of the speech are joined together.
+SBS-PER	SBS Pāli English Recitations				"Download the latest version <a class=""link"" href=""https://github.com/sasanarakkha/pali-English-recitations/releases/latest"">here</a>."
 SCPN	Syntax of the Case in the Pali Nikayas by O.H. de A. Wijesekera		Синтакс падежей в Пали Никая (Виджесекера)		
 SDM	Saddanītippakaraṇaṃ Dhātumālā		Садданитиппакаранан Дхатумала		
 SDt	Sāratthadīpanī Ṭīkā (sub commentary to Samantapāsādikā)				
-sg	singular number	ekatta	единственное число	ajjhattaṃ - ind, adv, comp, acc <b>sg</b> of ajjhatta	The form of a word that is used to denote a singleton
+sg	singular number	ekatta; ekavacana	единственное число	ajjhattaṃ - ind, adv, comp, acc <b>sg</b> of ajjhatta	The form of a word that is used to denote a singleton
 SN	Saṃyutta Nikāya		Саньютта Никая		Book 3 of the Sutta Piṭaka; Collection of Connected Discourses; lit. connected collection 
-SNa	Saṃyutta Nikāya Aṭṭhakathā, Sāratthappakāsinī		Саньютта Никая Комментарий		Commentary on the Saṃyutta Nikāya compiled by Ven. Buddhaghosa; lit. Shining essence of the goal
-SNP	Sutta Nipāta		Сутта Нипата		Book 5 of the Khuddaka Nikāya; Irregular Discourses
-SNPa	Sutta Nipāta Aṭṭhakathā, part of Paramatthajotikā		Сутта Нипата Комментарий		Commentary to Sutta Nipāta
+SNa	Saṃyutta Nikāya Aṭṭhakathā, Sāratthappakāsinī		Саньютта Никая Комментарий		Commentary on the Saṃyutta Nikāya compiled by Ven. Buddhaghosa; “Revealer of Essential Meaning”; lit. shining essence of the goal
+SNP	Sutta Nipāta		Сутта Нипата		Book 5 of the Khuddaka Nikāya; “Sutta Collection”; lit. Irregular Discourses
+SNPa	Sutta Nipāta Aṭṭhakathā, part of Paramatthajotikā		Сутта Нипата Комментарий		Commentary to Sutta Nipāta compiled by Ven. Buddhaghosa; part of  “Illumination of the Ultimate Truth”
 SPM	Saddanītippakaraṇaṃ Padamālā		Садданитиппакаранан Падамала		
 SPV	Saṃgāyanassa pucchā vissajjanā				
 suffix	suffix	paccaya		-ima; -tama; -dhā	an affix that is added at the end of the word
-superl	superlative adjective		превосходная степень	pacchima; pāpiṭṭha; antima	An exaggerated expression
+superl	superlative adjective		превосходная степень	pacchima; pāpiṭṭha; antima	increasing meaning of something; expresses a sense of the ‘most’ of something. (examples: lowest; highest)
 TH	Theragāthā		Тхерагатха		Book 8 of the Khuddaka Nikāya; Verses of the Elder Monks
 THI	Therīgāthā		Тхеригатха		Book 9 of the Khuddaka Nikāya; Verses of the Elder Nuns
-trans	transitive verb	sakammaka	переходный, транзитивный глагол	karoti; vadati; gacchati	A verb (or verb construction) that requires an object in the accusative case
+trans	transitive verb	sakammaka	переходный, транзитивный глагол	karoti; vadati; gacchati	A verb (or verb construction) that requires an object in the accusative case. (e.g. makes something; says to; goes to)
 UD	Udāna		Удана		Book 3 of the Khuddaka Nikāya; Inspired Sayings; lit. breath up; sigh
 Var	various reading		различное чтение		Different form of the same word, either by morphology, different spelling, or a variant reading found in texts
 ve	verbal ending		окончание глагола		
 verb	verb	kriyapada, ākhyāta	глагол	pajānāti; upasaṅkami; carati	The word class that serves as the predicate of a sentence
-VIBH	Vibhaṅgapāḷi				Book 2 of the Abhidhamma Piṭaka; lit. analysis
-VIBHa	Vibhaṅga aṭṭhakathā				
+VIBH	Vibhaṅga				Book 2 of the Abhidhamma Piṭaka; lit. analysis
+VIBHa	Vibhaṅga Aṭṭhakathā				Commentary on the Vibhaṅga, Abhidhammapiṭaka
 VIBHt	Vibhaṅga mūlaṭīkā				
-VIN	Vinaya Piṭaka		Виная Питака		The first basket of the Tipiṭaka; the discipline; lit. leading out
-VINa	Vinaya Piṭaka Aṭṭhakathā, Samantapāsādikā		Виная Питака Комментарий		Ven. Buddhaghosa's commentary on the Vinaya Piṭaka; lit. Making everything clear; (or) all-inspiring 
+VIN	Vinaya Piṭaka		Виная Питака		The first basket of the Tipiṭaka; the Discipline; lit. leading out
+VINa	Vinaya Piṭaka Aṭṭhakathā, Samantapāsādikā		Виная Питака Комментарий		Ven. Buddhaghosa's commentary on the Vinaya Piṭaka; lit. making everything clear; (or) all-inspiring 
 VISM	Visuddhimagga				Path of purification; commentarial treatise by Ven. Buddhaghosa
 VISMa	Visuddhimagga Aṭṭhakathā				Commentary to Visuddhimagga 
 VMVt	Vimativinodanī Tīkā		Вимативинодани Подкомментарий		
 voc	vocative case	āmantaṇavacana, ālapanavacana	звательный падеж	āvuso - ind, <b>voc</b> sg & pl	Addressing form
 VV	Vimānavatthu		Вимана Ваттху		Book 6 of the Khuddaka Nikāya; story about Celestial Abodes
 wrt	with regard to		по отношению к		
-x	no gender		не имеет рода	pañca - card, <b>x</b> pl	Word do not have any specific gender
-SBS-PER	SBS Pāli English Recitations				https://github.com/sasanarakkha/pali-english-recitations/releases/latest
-BDN	Buddhist Dictionary by Ven. Ñāṇatiloka Mahathera				
+x	no gender		не имеет рода	pañca - card, <b>x</b> pl	Word does not have any specific gender
 грам			грамматический термин		
 досл			дословно, буквально		
 комм			перевод комментария		

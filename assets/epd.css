@@ -21,8 +21,8 @@ p {
     vertical-align: middle;
 }
 
-div.rpd {
-    border: 2px solid #82ee23;
+div.epd {
+    border: 2px solid #f5f55b;
     border-radius: 5px;
     line-height: 150%;
     overflow: auto;

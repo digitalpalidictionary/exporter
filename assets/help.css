@@ -14,8 +14,8 @@ p {
     vertical-align: middle;
 }
 
-div.help_ru {
-    border: 2px solid #0c370f;
+div.help {
+    border: 2px solid #6f5306;
     border-radius: 5px;
     line-height: 150%;
     overflow: auto;

@@ -75,17 +75,23 @@ def generate_html_and_json(generate_roots: bool = True):
         if w.meaning != "":
             html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_dps_{w.pali_}">грамматика</a>"""
 
-        if w.eg1 != "" and w.eg2 == "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">пример</a>"""
+        if w.eg1 != "" and w.eg2 != "" and w.eg3 == "":
+            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">примеры</a>"""
 
-        if w.eg1 == "" and w.eg2 != "" and w.eg3 == "":
+        if w.eg1 != "" and w.eg2 == "" and w.eg3 != "":
+            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">примеры</a>"""
+
+        if w.eg1 != "" and w.eg2 == "" and w.eg3 == "":
             html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">пример</a>"""
 
         if w.eg1 == "" and w.eg2 != "" and w.eg3 != "":
             html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">примеры</a>"""
 
-        if w.eg1 != "" and w.eg2 != "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">примеры</a>"""
+        if w.eg1 == "" and w.eg2 != "" and w.eg3 == "":
+            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">пример</a>"""
+
+        if w.eg1 == "" and w.eg2 == "" and w.eg3 != "":
+            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">пример</a>"""     
 
         if w.pos in conjugations:
             html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_dps_{w.pali_}">спряжения</a>"""
@@ -181,39 +187,24 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # examples
 
-        if w.eg1 != "" and w.eg2 != "":
+        html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden">"""
 
-            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden">"""
+        html_string += f"""<p>"""
 
-            html_string += f"""<p>{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
-            html_string += f"""<p>{w.eg2}<p class="sutta_dps">{w.source2} {w.sutta2}"""
+        if w.eg1 != "":
 
-            if w.chapter3 != "":
-                    html_string += f"""<p>{w.eg3}<p class="sutta_dps">{w.source3} {w.sutta3}"""
+            html_string += f"""{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
 
-            html_string += f"""<p>Пожалуйста, подскажите более подходящий <a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}" target="_blank">пример.</a></p>"""
-            html_string += f"""</div>"""
+        if w.eg2 != "":
 
-        elif w.eg1 != "" and w.eg2 == "":
+            html_string += f"""<p>{w.eg2}<p class="sutta_dps">{w.source2} {w.sutta2}</p>"""
 
-            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden">"""
+        if w.eg3 != "" and w.chapter3 != "SBS":
 
-            html_string += f"""<p>{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
-            html_string += f"""<p>Пожалуйста, подскажите более подходящий <a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}" target="_blank">пример.</a></p>"""
-            html_string += f"""</div>"""
+            html_string += f"""<p> {w.eg3}<p class="sutta_dps"> {w.source3} {w.sutta3}</p>"""
 
-        elif w.eg1 == "" and w.eg2 != "":
-
-            html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden">"""
-
-            html_string += f"""<p>{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
-            html_string += f"""<p>{w.eg2}<p class="sutta_dps">{w.source2} {w.sutta2}"""
-
-            if w.chapter3 != "":
-                    html_string += f"""<p>{w.eg3}<p class="sutta_dps">{w.source3} {w.sutta3}"""
-
-            html_string += f"""<p>Пожалуйста, подскажите более подходящий <a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}" target="_blank">пример.</a></p>"""
-            html_string += f"""</div>"""
+        html_string += f"""<p>Пожалуйста, подскажите более подходящий <a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}" target="_blank">пример.</a></p>"""
+        html_string += f"""</div>"""
 
         # inflection table
 
@@ -326,6 +317,8 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
     abbrev_data_list = []
 
+    today = date.today()
+
     with open(rsc['dict_help_css_path'], 'r') as f:
         abbrev_css = f.read()
 
@@ -350,7 +343,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # summary
 
-        html_string += f"""<div class="help_test"><p>abbreviation. <b>{abbrev}</b>. {meaning}. """
+        html_string += f"""<div class="help"><p>abbreviation. <b>{abbrev}</b>. {meaning}. """
 
         if pali_meaning != "":
             html_string += f"""{pali_meaning}. """
@@ -365,6 +358,8 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
             html_string += f"""<br>{expl}."""
 
         html_string += f"""</p></div>"""
+
+        html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}" target="_blank">Сообщить об ошибке.</a></p>"""
 
         p = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
 
@@ -402,7 +397,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # summary
 
-        html_string += f"""<div class="help_ru"><p>помощь. <b>{help_title}</b>. {meaning}</p></div>"""
+        html_string += f"""<div class="help"><p>помощь. <b>{help_title}</b>. {meaning}</p></div>"""
         
         p = rsc['output_help_html_dir'].joinpath(f"{help_title}.html")
 

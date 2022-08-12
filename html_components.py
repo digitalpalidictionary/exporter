@@ -6,9 +6,9 @@ from helpers import DpsWord
 from mako.template import Template
 
 header_tmpl = Template(filename='./assets/templates/header.html')
-feedback_tmpl = Template(filename='./assets/templates/feedback.html')
-feedback_tmpl_sbs = Template(filename='./assets_sbs/templates/feedback.html')
-feedback_tmpl_test = Template(filename='./assets_test/templates/feedback.html')
+feedback_tmpl = Template(filename='./assets/templates/feedback-dps.html')
+feedback_tmpl_sbs = Template(filename='./assets/templates/feedback-sbs.html')
+feedback_tmpl_test = Template(filename='./assets/templates/feedback-test.html')
 
 
 def render_header_tmpl(css: str, js: str) -> str:

@@ -77,17 +77,26 @@ def generate_html_and_json_test(generate_roots: bool = True):
         if w.meaning != "":
             html_string += f"""<a class="button_test" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_test_{w.pali_}">grammar</a>"""
 
-        if w.eg1 != "" and w.eg2 == "":
-            html_string += f"""<a class="button_test" href="javascript:void(0);" onclick="button_click(this)" data-target="example_test_{w.pali_}">example</a>"""
+        if w.eg1 != "" and w.eg2 != "" and w.eg3 != "":
+            html_string += f"""<a class="button_test" href="javascript:void(0);" onclick="button_click(this)" data-target="example_test_{w.pali_}">examples</a>"""
 
-        if w.eg1 == "" and w.eg2 != "" and w.eg3 == "":
+        if w.eg1 != "" and w.eg2 != "" and w.eg3 == "":
+            html_string += f"""<a class="button_test" href="javascript:void(0);" onclick="button_click(this)" data-target="example_test_{w.pali_}">examples</a>"""
+
+        if w.eg1 != "" and w.eg2 == "" and w.eg3 != "":
+            html_string += f"""<a class="button_test" href="javascript:void(0);" onclick="button_click(this)" data-target="example_test_{w.pali_}">examples</a>"""
+
+        if w.eg1 != "" and w.eg2 == "" and w.eg3 == "":
             html_string += f"""<a class="button_test" href="javascript:void(0);" onclick="button_click(this)" data-target="example_test_{w.pali_}">example</a>"""
 
         if w.eg1 == "" and w.eg2 != "" and w.eg3 != "":
             html_string += f"""<a class="button_test" href="javascript:void(0);" onclick="button_click(this)" data-target="example_test_{w.pali_}">examples</a>"""
 
-        if w.eg1 != "" and w.eg2 != "":
-            html_string += f"""<a class="button_test" href="javascript:void(0);" onclick="button_click(this)" data-target="example_test_{w.pali_}">examples</a>"""
+        if w.eg1 == "" and w.eg2 != "" and w.eg3 == "":
+            html_string += f"""<a class="button_test" href="javascript:void(0);" onclick="button_click(this)" data-target="example_test_{w.pali_}">example</a>"""
+
+        if w.eg1 == "" and w.eg2 == "" and w.eg3 != "":
+            html_string += f"""<a class="button_test" href="javascript:void(0);" onclick="button_click(this)" data-target="example_test_{w.pali_}">example</a>"""     
 
         if w.pos in conjugations:
             html_string += f"""<a class="button_test" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_test_{w.pali_}">conjugation</a>"""
@@ -183,64 +192,53 @@ def generate_html_and_json_test(generate_roots: bool = True):
 
         # examples
 
-        if w.eg1 != "" and w.eg2 != "":
+        html_string += f"""<div id="example_test_{w.pali_}" class="content_test hidden">"""
 
-            html_string += f"""<div id="example_test_{w.pali_}" class="content_test hidden">"""
+        html_string += f"""<p>"""
 
-            html_string += f"""<p>{w.eg1}<p class="sutta_test">{w.source1} {w.sutta1}</p>"""
-            html_string += f"""<p>{w.eg2}<p class="sutta_test">{w.source2} {w.sutta2}"""
+        if w.eg1 != "":
+
+            html_string += f"""{w.eg1}<p class="sutta_test">{w.source1} {w.sutta1}</p>"""
+
+            if w.chapter1 != "":
+                html_string += f"""<p class="sutta_test">{w.chapter1}"""
+                if w.sbs_pali_chant1 != "":
+                    html_string += f""", {w.sbs_pali_chant1}"""
+                if w.sbs_eng_chant1 != "":
+                    html_string += f""", {w.sbs_eng_chant1}"""
+
+                html_string += f"""</p>"""
+
+        if w.eg2 != "":
+
+            html_string += f"""<p>{w.eg2}<p class="sutta_test">{w.source2} {w.sutta2}</p>"""
 
             if w.chapter2 != "":
-                html_string += f"""<br>{w.sbs_index} {w.chapter2}"""
+                html_string += f"""<p class="sutta_test">{w.chapter2}"""
                 if w.sbs_pali_chant2 != "":
                     html_string += f""", {w.sbs_pali_chant2}"""
                 if w.sbs_eng_chant2 != "":
                     html_string += f""", {w.sbs_eng_chant2}"""
+
                 html_string += f"""</p>"""
-                
+
+        if w.eg3 != "":
+
+            html_string += f"""<p> {w.eg3}<p class="sutta_test"> {w.source3} {w.sutta3}</p>"""
 
             if w.chapter3 != "":
-                html_string += f"""<p>{w.eg3}<p class="sutta_test">{w.source3} {w.sutta3}"""
-                html_string += f"""<br>{w.sbs_index} {w.chapter3}"""
+                html_string += f"""<p class="sutta_test"> {w.chapter3}"""
                 if w.sbs_pali_chant3 != "":
                     html_string += f""", {w.sbs_pali_chant3}"""
                 if w.sbs_eng_chant3 != "":
                     html_string += f""", {w.sbs_eng_chant3}"""
+
                 html_string += f"""</p>"""
 
-            html_string += f"""</div>"""
+        html_string += f"""<p class="sutta_test">{w.sbs_index}</p>"""
 
-        elif w.eg1 != "" and w.eg2 == "":
-
-            html_string += f"""<div id="example_test_{w.pali_}" class="content_test hidden">"""
-
-            html_string += f"""<p>{w.eg1}<p class="sutta_test">{w.source1} {w.sutta1}</p>"""
-            html_string += f"""</div>"""
-
-        elif w.eg1 == "" and w.eg2 != "":
-
-            html_string += f"""<div id="example_test_{w.pali_}" class="content_test hidden">"""
-
-            html_string += f"""<p>{w.eg2}<p class="sutta_test">{w.source2} {w.sutta2}"""
-
-            if w.chapter2 != "":
-                html_string += f"""<br>{w.sbs_index} {w.chapter2}"""
-                if w.sbs_pali_chant2 != "":
-                    html_string += f""", {w.sbs_pali_chant2}"""
-                if w.sbs_eng_chant2 != "":
-                    html_string += f""", {w.sbs_eng_chant2}"""
-                html_string += f"""</p>"""
-
-            if w.chapter3 != "":
-                html_string += f"""<p>{w.eg3}<p class="sutta_test">{w.source3} {w.sutta3}"""
-                html_string += f"""<br>{w.sbs_index} {w.chapter3}"""
-                if w.sbs_pali_chant3 != "":
-                    html_string += f""", {w.sbs_pali_chant3}"""
-                if w.sbs_eng_chant3 != "":
-                    html_string += f""", {w.sbs_eng_chant3}"""
-                html_string += f"""</p>"""
-
-            html_string += f"""</div>"""
+        html_string += f"""<p>Can you think of a better example?<a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Example2&entry.1433863141=GoldenDict {today}" target="_blank">Add it here.</a></p>"""
+        html_string += f"""</div>"""
 
         # inflection table
 
@@ -378,7 +376,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # summary
 
-        html_string += f"""<div class="help_test"><p>abbreviation. <b>{abbrev}</b>. {meaning}. """
+        html_string += f"""<div class="help"><p>abbreviation. <b>{abbrev}</b>. {meaning}. """
 
         if pali_meaning != "":
             html_string += f"""{pali_meaning}. """
@@ -431,7 +429,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # summary
 
-        html_string += f"""<div class="help_test"><p>help. <b>{help_title}</b>. {meaning}</p></div>"""
+        html_string += f"""<div class="help"><p>help. <b>{help_title}</b>. {meaning}</p></div>"""
 
         p = rsc['output_help_html_dir'].joinpath(f"{help_title}.html")
 
@@ -491,7 +489,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     for key, value in epd.items():
         html_string = ""
         html_string = epd_css
-        html_string += f"<body><div class ='epd_test'><p>{value}</p></div></body></html>"
+        html_string += f"<body><div class ='epd'><p>{value}</p></div></body></html>"
         epd_data_list += [[f"{key}", f"""{html_string}""", "", ""]]
 
 

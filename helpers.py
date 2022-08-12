@@ -81,15 +81,15 @@ def get_resource_paths() -> ResourcePaths:
         error_log_dir=Path("./errorlogs/"),
         # Project assets
         dict_words_css_path=Path("./assets/dps-words.css"),
-        dict_help_css_path=Path("./assets/dps-help.css"),
+        dict_help_css_path=Path("./assets/help.css"),
         rpd_css_path=Path("./assets/rpd.css"),
-        buttons_js_path=Path("./assets/buttons.js"),
+        buttons_js_path=Path("./assets/buttons-dps.js"),
         abbrev_path=Path("./assets/abbreviations.csv"),
         help_path=Path("./assets/help.csv"),
         # Project input
         inflections_dir=dps_dir.joinpath("inflection/"),
         words_path=dps_dir.joinpath("spreadsheets/dps-full.csv"),
-        icon_path=Path("./book.bmp"),
+        icon_path=Path("./logo/book.bmp"),
     )
 
     # ensure write dirs exist
@@ -120,16 +120,16 @@ def get_resource_paths_sbs() -> ResourcePaths:
         output_stardict_zip_path=Path("sbs-pd.zip"),
         error_log_dir=Path("./errorlogs/"),
         # Project assets
-        dict_words_css_path=Path("./assets_sbs/sbs-words.css"),
-        dict_help_css_path=Path("./assets_sbs/dps-help.css"),
-        epd_css_path=Path("./assets_sbs/epd.css"),
-        buttons_js_path=Path("./assets_sbs/buttons.js"),
+        dict_words_css_path=Path("./assets/sbs-words.css"),
+        dict_help_css_path=Path("./assets/help.css"),
+        epd_css_path=Path("./assets/epd.css"),
+        buttons_js_path=Path("./assets/buttons-sbs.js"),
         abbrev_path=Path("./assets/abbreviations.csv"),
         help_path=Path("./assets/help.csv"),
         # Project input
         inflections_dir=dps_dir.joinpath("inflection/"),
         words_path=dps_dir.joinpath("spreadsheets/sbs-pd.csv"),
-        icon_path=Path("./SBS_logo/head_brown.bmp"),
+        icon_path=Path("./logo/head_brown.bmp"),
     )
 
     # ensure write dirs exist
@@ -160,17 +160,17 @@ def get_resource_paths_test() -> ResourcePaths:
         output_stardict_zip_path=Path("dps-test.zip"),
         error_log_dir=Path("./errorlogs/"),
         # Project assets
-        dict_words_css_path=Path("./assets_test/test-words.css"),
-        dict_help_css_path=Path("./assets_test/test-help.css"),
-        epd_css_path=Path("./assets_test/epd.css"),
-        rpd_css_path=Path("./assets_test/rpd.css"),
-        buttons_js_path=Path("./assets_test/buttons.js"),
+        dict_words_css_path=Path("./assets/test-words.css"),
+        dict_help_css_path=Path("./assets/help.css"),
+        epd_css_path=Path("./assets/epd.css"),
+        rpd_css_path=Path("./assets/rpd.css"),
+        buttons_js_path=Path("./assets/buttons-test.js"),
         abbrev_path=Path("./assets/abbreviations.csv"),
         help_path=Path("./assets/help.csv"),
         # Project input
         inflections_dir=dps_dir.joinpath("inflection/"),
         words_path=dps_dir.joinpath("spreadsheets/dps-full.csv"),
-        icon_path=Path("./dps_icon.bmp"),
+        icon_path=Path("./logo/dps_icon.bmp"),
     )
 
     # ensure write dirs exist
@@ -226,6 +226,9 @@ class DpsWord:
         self.source1: str = df.loc[row, "Source1"]
         self.sutta1: str = df.loc[row, "Sutta1"]
         self.eg1: str = df.loc[row, "Example1"]
+        self.sbs_pali_chant1: str = df.loc[row, "Pali chant 1"]
+        self.sbs_eng_chant1: str = df.loc[row, "English chant 1"]
+        self.chapter1: str = df.loc[row, "Chapter 1"]
         self.source2: str = df.loc[row, "Source 2"]
         self.sutta2: str = df.loc[row, "Sutta2"]
         self.eg2: str = df.loc[row, "Example 2"]
