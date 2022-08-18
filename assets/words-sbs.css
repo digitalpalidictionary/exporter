@@ -23,7 +23,7 @@ p.heading {
 }
 
 p.sutta_sbs {
-    color: #ad740a;
+    color: #ab7b38;
     font-style: italic;
 }
 
@@ -44,7 +44,7 @@ table.table1_sbs td, table.table1_sbs th {
 }
 
 table.table1_sbs th {
-    color: #ad740a;
+    color: #ab7b38;
     font-weight: 700;
     white-space: nowrap;
 }
@@ -81,7 +81,7 @@ input {
 }
 
 div.content_sbs {
-    border: 2px solid #ad740a;
+    border: 2px solid #ab7b38;
     border-radius: 5px;
     line-height: 150%;
     overflow: auto;
@@ -90,9 +90,9 @@ div.content_sbs {
 
 a.button_sbs {
     text-decoration: none;
-    background-color: #ad740a;
+    background-color: #c39a4e;
     border-radius: 3px;
-    box-shadow: 0 4px 4px -2px #5e3f06;
+    box-shadow: 0 4px 4px -2px #888888;
     color: #000;
     cursor: pointer;
     display: inline-block;
@@ -105,23 +105,12 @@ a.button_sbs {
 }
 
 a.button_sbs.close {
-    text-decoration: none;
-    background-color: #ad740a;
-    border-radius: 3px;
-    box-shadow: 0 4px 4px -2px #5e3f06;
-    color: #000;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 80%;
-    font-weight: 400;
-    margin: 1px 1px 1px 1px;
-    padding: 2px 5px;
-    transition-duration: .2s;
-    user-select: none;
+    float: right;
+    margin: 10px;
 }
 
 a.button_sbs:hover {
-    background-color: #ad740a;
+    background-color: #ab7b38;
     color: white;
     user-select: none;
 }
@@ -137,7 +126,7 @@ a.button_sbs:hover {
 }
 
 a.button_sbs.active {
-    background-color: #ad740a;
+    background-color: #ab7b38;
     color: white;
     user-select: none;
 }

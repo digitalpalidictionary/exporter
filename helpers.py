@@ -80,7 +80,7 @@ def get_resource_paths() -> ResourcePaths:
         output_stardict_zip_path=Path("ru-pali-dictionary.zip"),
         error_log_dir=Path("./errorlogs/"),
         # Project assets
-        dict_words_css_path=Path("./assets/dps-words.css"),
+        dict_words_css_path=Path("./assets/words-dps.css"),
         dict_help_css_path=Path("./assets/help.css"),
         rpd_css_path=Path("./assets/rpd.css"),
         buttons_js_path=Path("./assets/buttons-dps.js"),
@@ -120,7 +120,7 @@ def get_resource_paths_sbs() -> ResourcePaths:
         output_stardict_zip_path=Path("sbs-pd.zip"),
         error_log_dir=Path("./errorlogs/"),
         # Project assets
-        dict_words_css_path=Path("./assets/sbs-words.css"),
+        dict_words_css_path=Path("./assets/words-sbs.css"),
         dict_help_css_path=Path("./assets/help.css"),
         epd_css_path=Path("./assets/epd.css"),
         buttons_js_path=Path("./assets/buttons-sbs.js"),
@@ -160,7 +160,7 @@ def get_resource_paths_test() -> ResourcePaths:
         output_stardict_zip_path=Path("dps-test.zip"),
         error_log_dir=Path("./errorlogs/"),
         # Project assets
-        dict_words_css_path=Path("./assets/test-words.css"),
+        dict_words_css_path=Path("./assets/words-test.css"),
         dict_help_css_path=Path("./assets/help.css"),
         epd_css_path=Path("./assets/epd.css"),
         rpd_css_path=Path("./assets/rpd.css"),

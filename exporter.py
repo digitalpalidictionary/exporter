@@ -94,7 +94,7 @@ def run_generate_goldendict_sbs(move_to_dest: bool = True):
     ifo = ifo_from_opts({
         "bookname": "SBS Pāḷi Dictionary",
         "author": "Devamitta Bhikkhu",
-        "description": "words from the SBS Pāḷi-English Recitation",
+        "description": "words from the SBS Pāḷi-English Recitation an other Pāḷi study tools",
         "email": "sasanarakkha.org",
     })
 
@@ -108,7 +108,7 @@ def run_generate_goldendict_test(move_to_dest: bool = True):
     rsc = get_resource_paths_test()
 
     ifo = ifo_from_opts({
-        "bookname": "DPS Pāḷi Dictionary",
+        "bookname": "DPS",
         "author": "Devamitta Bhikkhu",
         "description": "words from the Devamitta Pāḷi Study",
         "email": "devamitta@sasanarakkha.org",
