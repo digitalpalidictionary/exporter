@@ -1,7 +1,6 @@
 # Project output
 output/
 errors.txt
-.env
 movedict.sh
 share/
 errorlogs/exporter errorlog.txt
