@@ -73,6 +73,9 @@ def render_word_meaning_sbs(w: DpsWord) -> RenderResult:
     html_string += '<div class="content_sbs"><p>'
     text_concise += f"{w.pali}."
 
+    if w.ex != "":
+        html_string += f"""<b>(cl.{w.ex}) | </b>"""
+
     if w.pos != "":
         html_string += f"{w.pos}."
         text_concise += f"{w.pos}."
@@ -110,8 +113,6 @@ def render_word_meaning_test(w: DpsWord) -> RenderResult:
 
         if w.chapter2 != "":
             html_string += f""" | <i>[sbs]</i>"""
-
-        html_string += f"""</p></div>"""
     
     else:
         if w.count != "":
@@ -122,7 +123,12 @@ def render_word_meaning_test(w: DpsWord) -> RenderResult:
         if w.chapter2 != "":
             html_string += f""" | <i>[sbs]</i>"""
 
-        html_string += f"""</p></div>"""
+    html_string += f"""</p>"""
+
+    if w.russian != "":
+        html_string += f"""<p>{w.russian}</p>"""
+
+    html_string += f"""</div>"""
 
     return RenderResult(
         html = html_string,

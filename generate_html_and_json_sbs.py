@@ -224,7 +224,12 @@ def generate_html_and_json_sbs(generate_roots: bool = True):
 
         if w.eg3 != "":
 
-            html_string += f"""<p> {w.eg3}<p class="sutta_sbs"> {w.source3} {w.sutta3}</p>"""
+            html_string += f"""<p>{w.eg3}<p class="sutta_sbs">""" 
+            
+            if w.ex != "":
+                html_string += f"""<b>(cl.{w.ex}) | </b>"""
+            
+            html_string += f"""{w.source3} {w.sutta3}</p>"""
 
             if w.chapter3 != "":
                 html_string += f"""<p class="sutta_sbs"> {w.chapter3}"""
