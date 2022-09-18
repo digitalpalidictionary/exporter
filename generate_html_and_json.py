@@ -11,6 +11,10 @@ from timeis import timeis, yellow, green, red, line
 from helpers import DataFrames, DpsWord, ResourcePaths, get_resource_paths, parse_data_frames
 from html_components import render_header_tmpl, render_feedback_tmpl, render_word_meaning
 
+GOOGLE_LINK_TEMPLATE = (
+    '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
+    'usp=pp_url&{args}" target="_blank">{text}</a>')
+
 
 def generate_html_and_json(generate_roots: bool = True):
     rsc = get_resource_paths()
@@ -156,9 +160,11 @@ def generate_html_and_json(generate_roots: bool = True):
 
         html_string += f"""</table>"""
         html_string += (
-            '<p><a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
-            f'usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">'
-            'Пожалуйста, сообщите об ошибке.</a></p>')
+            '<p>' +
+            GOOGLE_LINK_TEMPLATE.format(
+                args=f'entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}',
+                text='Пожалуйста, сообщите об ошибке.') +
+            '</p>')
         html_string += f"""</div>"""
 
         # examples
@@ -180,9 +186,11 @@ def generate_html_and_json(generate_roots: bool = True):
             html_string += f"""<p> {w.eg3}<p class="sutta_dps"> {w.source3} {w.sutta3}</p>"""
 
         html_string += (
-          '<p>Пожалуйста, подскажите более подходящий '
-          '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform'
-          f'?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}" target="_blank">пример.</a></p>')
+            '<p>Пожалуйста, подскажите более подходящий ' +
+            GOOGLE_LINK_TEMPLATE.format(
+                args=f'entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}',
+                text='пример.') +
+            '</p>')
         html_string += '</div>'
 
         # inflection table
@@ -208,15 +216,21 @@ def generate_html_and_json(generate_roots: bool = True):
 
             if w.pos != "sandhi" and w.pos != "idiom":
                 if w.pos in declensions:
-                    html_string += f"""<p>У вас есть предложение?"""
-                    html_string += f"""<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>"""
+                    html_string += (
+                        '<p>У вас есть предложение?' +
+                        GOOGLE_LINK_TEMPLATE.format(
+                            args=f'entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}',
+                            text='Пожалуйста, сообщите об ошибке.') +
+                        '</p>')
 
                 if w.pos in conjugations:
-                    html_string += f"""<p>У вас есть предложение?"""
                     html_string += (
-                      '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
-                      f'usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>')
-            html_string += f"""</div>"""
+                        '<p>У вас есть предложение? ' +
+                        GOOGLE_LINK_TEMPLATE.format(
+                            args=f'entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}',
+                            text='Пожалуйста, сообщите об ошибке.') +
+                        '</p>')
+            html_string += '</div>'
 
         html_string += render_feedback_tmpl(w)
 
@@ -330,7 +344,12 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         html_string += f"""</p></div>"""
 
-        html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}" target="_blank">Сообщить об ошибке.</a></p>"""
+        html_string += (
+            '<p>' +
+            GOOGLE_LINK_TEMPLATE.format(
+                args=f'entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}',
+                text='Сообщить об ошибке.') +
+            '</p>')
 
         p = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
 
