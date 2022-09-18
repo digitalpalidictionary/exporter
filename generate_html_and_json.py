@@ -102,29 +102,10 @@ def generate_html_and_json(generate_roots: bool = True):
             html_string += f"""<tr><th>часть речи</th><td>{w.pos}"""
             text_full += f"{w.pali}. {w.pos}"
 
-        if w.grammar != "":
-            html_string += f""", {w.grammar}"""
-            text_full += f""", {w.grammar}"""
-
-        if w.derived != "":
-            html_string += f""", from {w.derived}"""
-            text_full += f""", from {w.derived}"""
-
-        if w.neg != "":
-            html_string += f""", {w.neg}"""
-            text_full += f""", {w.neg}"""
-
-        if w.verb != "":
-            html_string += f""", {w.verb}"""
-            text_full += f""", {w.verb}"""
-
-        if w.trans != "":
-            html_string += f""", {w.trans}"""
-            text_full += f""", {w.trans}"""
-
-        if w.case != "":
-            html_string += f""" ({w.case})"""
-            text_full += f""" ({w.case})"""
+        for i in [w.grammar, w.derived, w.neg, w.verb, w.trans, w.case]:
+            if i != '':
+                html_string += f", {i}"
+                text_full += f", {i}"
 
         html_string += f"""</td></tr>"""
         html_string += f"""<tr valign="top"><th>английский</th><td><b>{w.meaning}</b>"""
@@ -174,7 +155,10 @@ def generate_html_and_json(generate_roots: bool = True):
             text_full += f""". санск. корень: {w.sk_root}"""
 
         html_string += f"""</table>"""
-        html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>"""
+        html_string += (
+            '<p><a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
+            f'usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">'
+            'Пожалуйста, сообщите об ошибке.</a></p>')
         html_string += f"""</div>"""
 
         # examples
@@ -195,15 +179,16 @@ def generate_html_and_json(generate_roots: bool = True):
 
             html_string += f"""<p> {w.eg3}<p class="sutta_dps"> {w.source3} {w.sutta3}</p>"""
 
-        html_string += f"""<p>Пожалуйста, подскажите более подходящий <a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}" target="_blank">пример.</a></p>"""
-        html_string += f"""</div>"""
+        html_string += (
+          '<p>Пожалуйста, подскажите более подходящий '
+          '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform'
+          f'?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}" target="_blank">пример.</a></p>')
+        html_string += '</div>'
 
         # inflection table
 
         if w.pos not in indeclinables:
-            table_path = rsc['inflections_dir'] \
-                .joinpath("output/html tables/") \
-                .joinpath(w.pali + ".html")
+            table_path = rsc['inflections_dir'].joinpath("output/html tables/").joinpath(w.pali + ".html")
 
             if table_path.exists():
                 with open(table_path) as f:
@@ -214,26 +199,23 @@ def generate_html_and_json(generate_roots: bool = True):
                 error_log.write(f"error reading inflection table: {w.pali}.html\n")
 
             if w.pos in declensions:
-
                 html_string += f"""<div id="declension_dps_{w.pali_}" class="content_dps hidden">"""
 
             if w.pos in conjugations:
-
                 html_string += f"""<div id="conjugation_dps_{w.pali_}" class="content_dps hidden">"""
 
             html_string += f"""{table_data_read}"""
 
             if w.pos != "sandhi" and w.pos != "idiom":
-
                 if w.pos in declensions:
-
                     html_string += f"""<p>У вас есть предложение?"""
                     html_string += f"""<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>"""
 
                 if w.pos in conjugations:
-
                     html_string += f"""<p>У вас есть предложение?"""
-                    html_string += f"""<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>"""
+                    html_string += (
+                      '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
+                      f'usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>')
             html_string += f"""</div>"""
 
         html_string += render_feedback_tmpl(w)
@@ -242,15 +224,12 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # write gd.json
 
-        inflections_path = rsc['inflections_dir'] \
-            .joinpath("output/inflections translit/") \
-            .joinpath(w.pali)
+        inflections_path = rsc['inflections_dir'].joinpath("output/inflections translit/").joinpath(w.pali)
 
         if inflections_path.exists():
             with open(inflections_path, "rb") as syn_file:
                 synonyms = pickle.load(syn_file)
                 synonyms = (synonyms)
-
         else:
             synonyms_error_string += w.pali +", "
             error_log.write(f"error reading synonyms - {w.pali}\n")
