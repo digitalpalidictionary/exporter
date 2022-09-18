@@ -71,27 +71,14 @@ def generate_html_and_json(generate_roots: bool = True):
         # buttons
 
         html_string += f"""<div class="button-box">"""
+        examples = [i for i in [w.eg1, w.eg2, w.eg3] if i != ""]
 
         if w.meaning != "":
             html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_dps_{w.pali_}">грамматика</a>"""
 
-        if w.eg1 != "" and w.eg2 != "" and w.eg3 == "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">примеры</a>"""
-
-        if w.eg1 != "" and w.eg2 == "" and w.eg3 != "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">примеры</a>"""
-
-        if w.eg1 != "" and w.eg2 == "" and w.eg3 == "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">пример</a>"""
-
-        if w.eg1 == "" and w.eg2 != "" and w.eg3 != "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">примеры</a>"""
-
-        if w.eg1 == "" and w.eg2 != "" and w.eg3 == "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">пример</a>"""
-
-        if w.eg1 == "" and w.eg2 == "" and w.eg3 != "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">пример</a>"""     
+        html_string += (
+          '<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)"'
+          f' data-target="example_dps_{w.pali_}">{"примеры" if len(examples) >= 1 else "пример"}</a>')
 
         if w.pos in conjugations:
             html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_dps_{w.pali_}">спряжения</a>"""
