@@ -34,6 +34,10 @@ def generate_html_and_json(generate_roots: bool = True):
     df = data['words_df']
     df_length = data['words_df'].shape[0]
 
+    button_template = (
+        '<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)"'
+        ' data-target="{target}">{name}</a>')
+
     with open(rsc['dict_words_css_path'], 'r') as f:
         words_css = f.read()
 
@@ -70,24 +74,25 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # buttons
 
-        html_string += f"""<div class="button-box">"""
+        html_string += '<div class="button-box">'
         examples = [i for i in [w.eg1, w.eg2, w.eg3] if i != ""]
 
         if w.meaning != "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_dps_{w.pali_}">грамматика</a>"""
+            html_string += button_template.format(target=f'grammar_dps_{w.pali_}', name='грамматика')
 
-        html_string += (
-          '<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)"'
-          f' data-target="example_dps_{w.pali_}">{"примеры" if len(examples) >= 1 else "пример"}</a>')
+        if len(examples) == 1:
+            html_string += button_template.format(target=f'example_dps_{w.pali_}', name="пример")
+        elif len(examples) > 1:
+            html_string += button_template.format(target=f'example_dps_{w.pali_}', name="примеры")
 
         if w.pos in conjugations:
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_dps_{w.pali_}">спряжения</a>"""
+            html_string += button_template.format(target=f'conjugation_dps_{w.pali_}', name='спряжения')
 
         if w.pos in declensions:
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="declension_dps_{w.pali_}">склонения</a>"""
+            html_string += button_template.format(target=f'declension_dps_{w.pali_}', name='склонения')
 
-        html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="feedback_dps_{w.pali_}">о словаре</a>"""
-        html_string += f"""</div>"""
+        html_string += button_template.format(target=f'feedback_dps_{w.pali_}', name='о словаре')
+        html_string += '</div>'
 
         # grammar
 
