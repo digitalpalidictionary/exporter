@@ -83,7 +83,7 @@ def generate_html_and_json(generate_roots: bool = True):
         if len(examples) == 1:
             html_string += button_template.format(target=f'example_dps_{w.pali_}', name="пример")
         elif len(examples) > 1:
-            html_string += button_template.format(target=f'example_dps_{w.pali_}', name="примеры")
+            html_string += button_template.format(target=f'example_dps_{w.pali_}', name='примеры')
 
         if w.pos in conjugations:
             html_string += button_template.format(target=f'conjugation_dps_{w.pali_}', name='спряжения')
@@ -268,14 +268,14 @@ def generate_html_and_json(generate_roots: bool = True):
                 f.write(html_string)
 
     error_log.close()
-    
+
     if inflection_table_error_string != "":
         print(f"{timeis()} {red}inflection table errors: {inflection_table_error_string}")
-    
+
     if synonyms_error_string != "":
         print(f"{timeis()} {red}synonym errors: {synonyms_error_string}")
-        
-# convert ṃ to ṁ
+
+    # convert ṃ to ṁ
 
     text_data_full = re.sub("ṃ", "ṁ", text_data_full)
     text_data_concise = re.sub("ṃ", "ṁ", text_data_concise)
@@ -362,7 +362,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         synonyms = [abbrev, meaning]
         abbrev_data_list += [[f"{abbrev}", f"""{html_string}""", "", synonyms]]
 
-        
+
 # generate help html
 
     print(f"{timeis()} {green}generating help html")
@@ -376,12 +376,12 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     help_df_length = len(help_df)
 
     for row in range(help_df_length):
-        
+
         html_string = ""
 
         help_title = help_df.iloc[row,0]
         meaning = help_df.iloc[row,1]
-        
+
         css = f"{help_css}"
         html_string += render_header_tmpl(css=css, js="")
 
@@ -390,12 +390,12 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         # summary
 
         html_string += f"""<div class="help"><p>помощь. <b>{help_title}</b>. {meaning}</p></div>"""
-        
+
         p = rsc['output_help_html_dir'].joinpath(f"{help_title}.html")
 
         with open(p, 'w') as f:
             f.write(html_string)
-        
+
         # compile root data into list
         synonyms = [help_title]
         help_data_list += [[f"{help_title}", f"""{html_string}""", "", synonyms]]
@@ -404,7 +404,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         # generate rpd html
 
     print(f"{timeis()} {green}generating rpd html")
-    
+
     df = data['words_df']
     df_length = data['words_df'].shape[0]
     pos_exclude_list = ["abbrev", "cs", "letter","root", "suffix", "ve"]
@@ -430,7 +430,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
             meanings_clean = re.sub(fr"\(комм\).+$", "", meanings_clean)   # remove commentary meanings
             meanings_clean = re.sub(fr"досл.+$", "", meanings_clean)         # remove lit meanings
             meanings_list = meanings_clean.split(";")
-            
+
             for russian in meanings_list:
                 if russian in rpd.keys() and w.case =="":
                     rpd[russian] = f"{rpd[russian]}<br><b>{w.pali_clean}</b> {w.pos}. {w.russian}"
@@ -440,10 +440,10 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
                     rpd.update({russian: f"<b>{w.pali_clean}</b> {w.pos}. {w.russian}"})
                 if russian not in rpd.keys() and w.case !="":
                     rpd.update({russian: f"<b>{w.pali_clean}</b> {w.pos}. {w.russian} ({w.case})"})
-    
+
     with open(rsc['rpd_css_path'], 'r') as f:
         rpd_css = f.read()
-    
+
     rpd_data_list = []
 
     for key, value in rpd.items():
@@ -489,7 +489,7 @@ def delete_unused_html_files():
                     print(f"{timeis()} {file}")
                 except:
                     print(f"{timeis()} {red}{file} not found")
-    
+
     print(f"{timeis()} {green}deleting unused roots html files")
     for root, dirs, files in os.walk("output/root html/", topdown=True):
         for file in files:
