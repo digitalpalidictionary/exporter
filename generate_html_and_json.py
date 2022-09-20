@@ -11,6 +11,10 @@ from timeis import timeis, yellow, green, red, line
 from helpers import DataFrames, DpsWord, ResourcePaths, get_resource_paths, parse_data_frames
 from html_components import render_header_tmpl, render_feedback_tmpl, render_word_meaning
 
+GOOGLE_LINK_TEMPLATE = (
+    '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
+    'usp=pp_url&{args}" target="_blank">{text}</a>')
+
 
 def generate_html_and_json(generate_roots: bool = True):
     rsc = get_resource_paths()
@@ -33,6 +37,10 @@ def generate_html_and_json(generate_roots: bool = True):
 
     df = data['words_df']
     df_length = data['words_df'].shape[0]
+
+    button_template = (
+        '<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)"'
+        ' data-target="{target}">{name}</a>')
 
     with open(rsc['dict_words_css_path'], 'r') as f:
         words_css = f.read()
@@ -70,37 +78,25 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # buttons
 
-        html_string += f"""<div class="button-box">"""
+        html_string += '<div class="button-box">'
+        examples = [i for i in [w.eg1, w.eg2, w.eg3] if i != ""]
 
         if w.meaning != "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="grammar_dps_{w.pali_}">грамматика</a>"""
+            html_string += button_template.format(target=f'grammar_dps_{w.pali_}', name='грамматика')
 
-        if w.eg1 != "" and w.eg2 != "" and w.eg3 == "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">примеры</a>"""
-
-        if w.eg1 != "" and w.eg2 == "" and w.eg3 != "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">примеры</a>"""
-
-        if w.eg1 != "" and w.eg2 == "" and w.eg3 == "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">пример</a>"""
-
-        if w.eg1 == "" and w.eg2 != "" and w.eg3 != "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">примеры</a>"""
-
-        if w.eg1 == "" and w.eg2 != "" and w.eg3 == "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">пример</a>"""
-
-        if w.eg1 == "" and w.eg2 == "" and w.eg3 != "":
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="example_dps_{w.pali_}">пример</a>"""     
+        if len(examples) == 1:
+            html_string += button_template.format(target=f'example_dps_{w.pali_}', name="пример")
+        elif len(examples) > 1:
+            html_string += button_template.format(target=f'example_dps_{w.pali_}', name='примеры')
 
         if w.pos in conjugations:
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="conjugation_dps_{w.pali_}">спряжения</a>"""
+            html_string += button_template.format(target=f'conjugation_dps_{w.pali_}', name='спряжения')
 
         if w.pos in declensions:
-            html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="declension_dps_{w.pali_}">склонения</a>"""
+            html_string += button_template.format(target=f'declension_dps_{w.pali_}', name='склонения')
 
-        html_string += f"""<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)" data-target="feedback_dps_{w.pali_}">о словаре</a>"""
-        html_string += f"""</div>"""
+        html_string += button_template.format(target=f'feedback_dps_{w.pali_}', name='о словаре')
+        html_string += '</div>'
 
         # grammar
 
@@ -110,29 +106,10 @@ def generate_html_and_json(generate_roots: bool = True):
             html_string += f"""<tr><th>часть речи</th><td>{w.pos}"""
             text_full += f"{w.pali}. {w.pos}"
 
-        if w.grammar != "":
-            html_string += f""", {w.grammar}"""
-            text_full += f""", {w.grammar}"""
-
-        if w.derived != "":
-            html_string += f""", from {w.derived}"""
-            text_full += f""", from {w.derived}"""
-
-        if w.neg != "":
-            html_string += f""", {w.neg}"""
-            text_full += f""", {w.neg}"""
-
-        if w.verb != "":
-            html_string += f""", {w.verb}"""
-            text_full += f""", {w.verb}"""
-
-        if w.trans != "":
-            html_string += f""", {w.trans}"""
-            text_full += f""", {w.trans}"""
-
-        if w.case != "":
-            html_string += f""" ({w.case})"""
-            text_full += f""" ({w.case})"""
+        for i in [w.grammar, w.derived, w.neg, w.verb, w.trans, w.case]:
+            if i != '':
+                html_string += f", {i}"
+                text_full += f", {i}"
 
         html_string += f"""</td></tr>"""
         html_string += f"""<tr valign="top"><th>английский</th><td><b>{w.meaning}</b>"""
@@ -182,7 +159,12 @@ def generate_html_and_json(generate_roots: bool = True):
             text_full += f""". санск. корень: {w.sk_root}"""
 
         html_string += f"""</table>"""
-        html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>"""
+        html_string += (
+            '<p>' +
+            GOOGLE_LINK_TEMPLATE.format(
+                args=f'entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}',
+                text='Пожалуйста, сообщите об ошибке.') +
+            '</p>')
         html_string += f"""</div>"""
 
         # examples
@@ -203,15 +185,18 @@ def generate_html_and_json(generate_roots: bool = True):
 
             html_string += f"""<p> {w.eg3}<p class="sutta_dps"> {w.source3} {w.sutta3}</p>"""
 
-        html_string += f"""<p>Пожалуйста, подскажите более подходящий <a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}" target="_blank">пример.</a></p>"""
-        html_string += f"""</div>"""
+        html_string += (
+            '<p>Пожалуйста, подскажите более подходящий ' +
+            GOOGLE_LINK_TEMPLATE.format(
+                args=f'entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}',
+                text='пример.') +
+            '</p>')
+        html_string += '</div>'
 
         # inflection table
 
         if w.pos not in indeclinables:
-            table_path = rsc['inflections_dir'] \
-                .joinpath("output/html tables/") \
-                .joinpath(w.pali + ".html")
+            table_path = rsc['inflections_dir'].joinpath("output/html tables/").joinpath(w.pali + ".html")
 
             if table_path.exists():
                 with open(table_path) as f:
@@ -222,27 +207,30 @@ def generate_html_and_json(generate_roots: bool = True):
                 error_log.write(f"error reading inflection table: {w.pali}.html\n")
 
             if w.pos in declensions:
-
                 html_string += f"""<div id="declension_dps_{w.pali_}" class="content_dps hidden">"""
 
             if w.pos in conjugations:
-
                 html_string += f"""<div id="conjugation_dps_{w.pali_}" class="content_dps hidden">"""
 
             html_string += f"""{table_data_read}"""
 
             if w.pos != "sandhi" and w.pos != "idiom":
-
                 if w.pos in declensions:
-
-                    html_string += f"""<p>У вас есть предложение?"""
-                    html_string += f"""<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>"""
+                    html_string += (
+                        '<p>У вас есть предложение?' +
+                        GOOGLE_LINK_TEMPLATE.format(
+                            args=f'entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}',
+                            text='Пожалуйста, сообщите об ошибке.') +
+                        '</p>')
 
                 if w.pos in conjugations:
-
-                    html_string += f"""<p>У вас есть предложение?"""
-                    html_string += f"""<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}" target="_blank">Пожалуйста, сообщите об ошибке.</a></p>"""
-            html_string += f"""</div>"""
+                    html_string += (
+                        '<p>У вас есть предложение? ' +
+                        GOOGLE_LINK_TEMPLATE.format(
+                            args=f'entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}',
+                            text='Пожалуйста, сообщите об ошибке.') +
+                        '</p>')
+            html_string += '</div>'
 
         html_string += render_feedback_tmpl(w)
 
@@ -250,15 +238,12 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # write gd.json
 
-        inflections_path = rsc['inflections_dir'] \
-            .joinpath("output/inflections translit/") \
-            .joinpath(w.pali)
+        inflections_path = rsc['inflections_dir'].joinpath("output/inflections translit/").joinpath(w.pali)
 
         if inflections_path.exists():
             with open(inflections_path, "rb") as syn_file:
                 synonyms = pickle.load(syn_file)
                 synonyms = (synonyms)
-
         else:
             synonyms_error_string += w.pali +", "
             error_log.write(f"error reading synonyms - {w.pali}\n")
@@ -276,14 +261,14 @@ def generate_html_and_json(generate_roots: bool = True):
                 f.write(html_string)
 
     error_log.close()
-    
+
     if inflection_table_error_string != "":
         print(f"{timeis()} {red}inflection table errors: {inflection_table_error_string}")
-    
+
     if synonyms_error_string != "":
         print(f"{timeis()} {red}synonym errors: {synonyms_error_string}")
-        
-# convert ṃ to ṁ
+
+    # convert ṃ to ṁ
 
     text_data_full = re.sub("ṃ", "ṁ", text_data_full)
     text_data_concise = re.sub("ṃ", "ṁ", text_data_concise)
@@ -359,7 +344,12 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         html_string += f"""</p></div>"""
 
-        html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}" target="_blank">Сообщить об ошибке.</a></p>"""
+        html_string += (
+            '<p>' +
+            GOOGLE_LINK_TEMPLATE.format(
+                args=f'entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}',
+                text='Сообщить об ошибке.') +
+            '</p>')
 
         p = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
 
@@ -370,7 +360,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         synonyms = [abbrev, meaning]
         abbrev_data_list += [[f"{abbrev}", f"""{html_string}""", "", synonyms]]
 
-        
+
 # generate help html
 
     print(f"{timeis()} {green}generating help html")
@@ -384,12 +374,12 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     help_df_length = len(help_df)
 
     for row in range(help_df_length):
-        
+
         html_string = ""
 
         help_title = help_df.iloc[row,0]
         meaning = help_df.iloc[row,1]
-        
+
         css = f"{help_css}"
         html_string += render_header_tmpl(css=css, js="")
 
@@ -398,12 +388,12 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         # summary
 
         html_string += f"""<div class="help"><p>помощь. <b>{help_title}</b>. {meaning}</p></div>"""
-        
+
         p = rsc['output_help_html_dir'].joinpath(f"{help_title}.html")
 
         with open(p, 'w') as f:
             f.write(html_string)
-        
+
         # compile root data into list
         synonyms = [help_title]
         help_data_list += [[f"{help_title}", f"""{html_string}""", "", synonyms]]
@@ -412,7 +402,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         # generate rpd html
 
     print(f"{timeis()} {green}generating rpd html")
-    
+
     df = data['words_df']
     df_length = data['words_df'].shape[0]
     pos_exclude_list = ["abbrev", "cs", "letter","root", "suffix", "ve"]
@@ -438,7 +428,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
             meanings_clean = re.sub(fr"\(комм\).+$", "", meanings_clean)   # remove commentary meanings
             meanings_clean = re.sub(fr"досл.+$", "", meanings_clean)         # remove lit meanings
             meanings_list = meanings_clean.split(";")
-            
+
             for russian in meanings_list:
                 if russian in rpd.keys() and w.case =="":
                     rpd[russian] = f"{rpd[russian]}<br><b>{w.pali_clean}</b> {w.pos}. {w.russian}"
@@ -448,10 +438,10 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
                     rpd.update({russian: f"<b>{w.pali_clean}</b> {w.pos}. {w.russian}"})
                 if russian not in rpd.keys() and w.case !="":
                     rpd.update({russian: f"<b>{w.pali_clean}</b> {w.pos}. {w.russian} ({w.case})"})
-    
+
     with open(rsc['rpd_css_path'], 'r') as f:
         rpd_css = f.read()
-    
+
     rpd_data_list = []
 
     for key, value in rpd.items():
@@ -497,7 +487,7 @@ def delete_unused_html_files():
                     print(f"{timeis()} {file}")
                 except:
                     print(f"{timeis()} {red}{file} not found")
-    
+
     print(f"{timeis()} {green}deleting unused roots html files")
     for root, dirs, files in os.walk("output/root html/", topdown=True):
         for file in files:
