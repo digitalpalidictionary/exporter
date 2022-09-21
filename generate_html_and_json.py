@@ -100,10 +100,10 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # grammar
 
-        html_string += f"""<div id="grammar_dps_{w.pali_}" class="content_dps hidden">"""
-        html_string += f"""<table class = "table1_dps">"""
+        html_string += f'<div id="grammar_dps_{w.pali_}" class="content_dps hidden">'
+        html_string += f'<table class = "table1_dps">'
         if w.pos != "":
-            html_string += f"""<tr><th>часть речи</th><td>{w.pos}"""
+            html_string += f'<tr><th>часть речи</th><td>{w.pos}'
             text_full += f"{w.pali}. {w.pos}"
 
         for i in [w.grammar, w.derived, w.neg, w.verb, w.trans]:
@@ -115,79 +115,79 @@ def generate_html_and_json(generate_roots: bool = True):
             html_string += f' ({w.case})'
             text_full += f' ({w.case})'
 
-        html_string += f"""</td></tr>"""
-        html_string += f"""<tr valign="top"><th>английский</th><td><b>{w.meaning}</b>"""
-        text_full += f""". {w.meaning}"""
+        html_string += f'</td></tr>'
+        html_string += f'<tr valign="top"><th>английский</th><td><b>{w.meaning}</b>'
+        text_full += f'. {w.meaning}'
 
         if w.russian != "":
-            html_string += f"""</td></tr>"""
-            html_string += f"""<tr valign="top"><th>русский</th><td><b>{w.russian}</b>"""
-            text_full += f""". {w.russian}"""
+            html_string += f'</td></tr>'
+            html_string += f'<tr valign="top"><th>русский</th><td><b>{w.russian}</b>'
+            text_full += f'. {w.russian}'
 
-        html_string += f"""</td></tr>"""
+        html_string += f'</td></tr>'
 
         if w.root != "":
-            html_string += f"""<tr valign="top"><th>корень</th><td>{w.root}</td></tr>"""
-            text_full += f""". корень: {w.root}"""
+            html_string += f'<tr valign="top"><th>корень</th><td>{w.root}</td></tr>'
+            text_full += f'. корень: {w.root}'
 
         if w.base != "":
-            html_string += f"""<tr valign="top"><th>основа</th><td>{w.base}</td></tr>"""
-            text_full += f""". основа: {w.base}"""
+            html_string += f'<tr valign="top"><th>основа</th><td>{w.base}</td></tr>'
+            text_full += f'. основа: {w.base}'
 
         if w.construction != "":
-            html_string += f"""<tr valign="top"><th>образование</th><td>{w.construction}</td></tr>"""
+            html_string += f'<tr valign="top"><th>образование</th><td>{w.construction}</td></tr>'
             construction_text = re.sub("<br/>", ", ", w.construction)
-            text_full += f""". образование: {construction_text}"""
+            text_full += f'. образование: {construction_text}'
 
         if w.var != "":
-            html_string += f"""<tr valign="top"><th>вариант</th><td>{w.var}</td></tr>"""
-            text_full += f"""вариант: {w.var}"""
+            html_string += f'<tr valign="top"><th>вариант</th><td>{w.var}</td></tr>'
+            text_full += f'вариант: {w.var}'
 
         if w.comm != "":
-            html_string += f"""<tr valign="top"><th>комментарий</th><td>{w.comm}</td></tr>"""
+            html_string += f'<tr valign="top"><th>комментарий</th><td>{w.comm}</td></tr>'
             comm_text = re.sub("<br/>", " ", w.comm)
             comm_text = re.sub("<b>", "", comm_text)
             comm_text = re.sub("</b>", "", comm_text)
-            text_full += f""". комментарий: {comm_text}"""
+            text_full += f'. комментарий: {comm_text}'
 
         if w.notes != "":
-            html_string += f"""<tr valign="top"><th>заметки</th><td>{w.notes}</td></tr>"""
-            text_full += f""". заметки: {w.notes}"""
+            html_string += f'<tr valign="top"><th>заметки</th><td>{w.notes}</td></tr>'
+            text_full += f'. заметки: {w.notes}'
 
         if w.sk != "":
-            html_string += f"""<tr valign="top"><th>санскрит</th><td><i>{w.sk}</i></td></tr>"""
-            text_full += f""". санскрит: {w.sk}"""
+            html_string += f'<tr valign="top"><th>санскрит</th><td><i>{w.sk}</i></td></tr>'
+            text_full += f'. санскрит: {w.sk}'
 
         if w.sk_root != "":
-            html_string += f"""<tr valign="top"><th>санск. корень</th><td><i>{w.sk_root}</i></td></tr>"""
-            text_full += f""". санск. корень: {w.sk_root}"""
+            html_string += f'<tr valign="top"><th>санск. корень</th><td><i>{w.sk_root}</i></td></tr>'
+            text_full += f'. санск. корень: {w.sk_root}'
 
-        html_string += f"""</table>"""
+        html_string += f'</table>'
         html_string += (
             '<p>' +
             GOOGLE_LINK_TEMPLATE.format(
                 args=f'entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}',
                 text='Пожалуйста, сообщите об ошибке.') +
             '</p>')
-        html_string += f"""</div>"""
+        html_string += f'</div>'
 
         # examples
 
-        html_string += f"""<div id="example_dps_{w.pali_}" class="content_dps hidden">"""
+        html_string += f'<div id="example_dps_{w.pali_}" class="content_dps hidden">'
 
-        html_string += f"""<p>"""
+        html_string += f'<p>'
 
         if w.eg1 != "":
 
-            html_string += f"""{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>"""
+            html_string += f'{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>'
 
         if w.eg2 != "":
 
-            html_string += f"""<p>{w.eg2}<p class="sutta_dps">{w.source2} {w.sutta2}</p>"""
+            html_string += f'<p>{w.eg2}<p class="sutta_dps">{w.source2} {w.sutta2}</p>'
 
         if w.eg3 != "" and w.chapter3 != "SBS":
 
-            html_string += f"""<p> {w.eg3}<p class="sutta_dps"> {w.source3} {w.sutta3}</p>"""
+            html_string += f'<p> {w.eg3}<p class="sutta_dps"> {w.source3} {w.sutta3}</p>'
 
         html_string += (
             '<p>Пожалуйста, подскажите более подходящий ' +
@@ -211,12 +211,12 @@ def generate_html_and_json(generate_roots: bool = True):
                 error_log.write(f"error reading inflection table: {w.pali}.html\n")
 
             if w.pos in declensions:
-                html_string += f"""<div id="declension_dps_{w.pali_}" class="content_dps hidden">"""
+                html_string += f'<div id="declension_dps_{w.pali_}" class="content_dps hidden">'
 
             if w.pos in conjugations:
-                html_string += f"""<div id="conjugation_dps_{w.pali_}" class="content_dps hidden">"""
+                html_string += f'<div id="conjugation_dps_{w.pali_}" class="content_dps hidden">'
 
-            html_string += f"""{table_data_read}"""
+            html_string += f'{table_data_read}'
 
             if w.pos != "sandhi" and w.pos != "idiom":
                 if w.pos in declensions:
@@ -238,7 +238,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         html_string += render_feedback_tmpl(w)
 
-        html_string += f"""</body></html>"""
+        html_string += f'</body></html>'
 
         # write gd.json
 
@@ -255,7 +255,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
         # data compiling
 
-        html_data_list += [[f"{w.pali}", f"""{html_string}""", "", synonyms]]
+        html_data_list += [[f"{w.pali}", f'{html_string}', "", synonyms]]
         text_data_full += f"{text_full}\n"
         text_data_concise += f"{text_concise}\n"
 
@@ -294,9 +294,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
 def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data_list):
 
-
     # html list > dataframe
-
     pali_data_df = pd.DataFrame(html_data_list)
     pali_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
 
@@ -318,12 +316,12 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         html_string = ""
 
-        abbrev = abbrev_df.iloc[row,0]
-        meaning = abbrev_df.iloc[row,1]
-        pali_meaning = abbrev_df.iloc[row,2]
-        ru_meaning = abbrev_df.iloc[row,3]
-        examp = abbrev_df.iloc[row,4]
-        expl = abbrev_df.iloc[row,5]
+        abbrev = abbrev_df.iloc[row, 0]
+        meaning = abbrev_df.iloc[row, 1]
+        pali_meaning = abbrev_df.iloc[row, 2]
+        ru_meaning = abbrev_df.iloc[row, 3]
+        examp = abbrev_df.iloc[row, 4]
+        expl = abbrev_df.iloc[row, 5]
 
         css = f"{abbrev_css}"
         html_string += render_header_tmpl(css=css, js="")
@@ -332,21 +330,21 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # summary
 
-        html_string += f"""<div class="help"><p>abbreviation. <b>{abbrev}</b>. {meaning}. """
+        html_string += f'<div class="help"><p>abbreviation. <b>{abbrev}</b>. {meaning}. '
 
         if pali_meaning != "":
-            html_string += f"""{pali_meaning}. """
+            html_string += f'{pali_meaning}. '
 
         if ru_meaning != "":
-            html_string += f"""{ru_meaning}. """
+            html_string += f'{ru_meaning}. '
 
         if examp != "":
-            html_string += f"""<br>e.g. {examp}. """
+            html_string += f'<br>e.g. {examp}. '
 
         if expl != "":
-            html_string += f"""<br>{expl}."""
+            html_string += f'<br>{expl}.'
 
-        html_string += f"""</p></div>"""
+        html_string += '</p></div>'
 
         html_string += (
             '<p>' +
@@ -362,7 +360,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # compile root data into list
         synonyms = [abbrev, meaning]
-        abbrev_data_list += [[f"{abbrev}", f"""{html_string}""", "", synonyms]]
+        abbrev_data_list += [[f"{abbrev}", f'{html_string}', "", synonyms]]
 
 
 # generate help html
@@ -381,8 +379,8 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         html_string = ""
 
-        help_title = help_df.iloc[row,0]
-        meaning = help_df.iloc[row,1]
+        help_title = help_df.iloc[row, 0]
+        meaning = help_df.iloc[row, 1]
 
         css = f"{help_css}"
         html_string += render_header_tmpl(css=css, js="")
@@ -391,7 +389,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # summary
 
-        html_string += f"""<div class="help"><p>помощь. <b>{help_title}</b>. {meaning}</p></div>"""
+        html_string += f'<div class="help"><p>помощь. <b>{help_title}</b>. {meaning}</p></div>'
 
         p = rsc['output_help_html_dir'].joinpath(f"{help_title}.html")
 
@@ -400,47 +398,45 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # compile root data into list
         synonyms = [help_title]
-        help_data_list += [[f"{help_title}", f"""{html_string}""", "", synonyms]]
+        help_data_list += [[f"{help_title}", f'{html_string}', "", synonyms]]
 
 
-        # generate rpd html
-
+    # generate rpd html
     print(f"{timeis()} {green}generating rpd html")
 
     df = data['words_df']
     df_length = data['words_df'].shape[0]
-    pos_exclude_list = ["abbrev", "cs", "letter","root", "suffix", "ve"]
+    pos_exclude_list = ["abbrev", "cs", "letter", "root", "suffix", "ve"]
 
     rpd = {}
 
-    for row in range(df_length): #df_length
+    for row in range(df_length):  # df_length
         w = DpsWord(df, row)
         meanings_list = []
-        w.russian = re.sub("\?\?", "", w.russian)
+        w.russian = re.sub(r'\?\?', "", w.russian)
 
         if row % 10000 == 0:
             print(f"{timeis()} {row}/{df_length}\t{w.pali}")
 
-        if w.russian != "" and \
-        w.pos not in pos_exclude_list:
+        if w.russian != "" and w.pos not in pos_exclude_list:
 
-            meanings_clean = re.sub(fr" \(.+?\)", "", w.russian)                    # remove all space brackets
-            meanings_clean = re.sub(fr"\(.+?\) ", "", meanings_clean)           # remove all brackets space
-            meanings_clean = re.sub(fr"(^ | $)", "", meanings_clean)            # remove space at start and fin
-            meanings_clean = re.sub(fr"  ", " ", meanings_clean)                    # remove double spaces
-            meanings_clean = re.sub(fr" ;|; ", ";", meanings_clean)                 # remove space around ;
-            meanings_clean = re.sub(fr"\(комм\).+$", "", meanings_clean)   # remove commentary meanings
-            meanings_clean = re.sub(fr"досл.+$", "", meanings_clean)         # remove lit meanings
+            meanings_clean = re.sub(fr" \(.+?\)", "", w.russian)          # remove all space brackets
+            meanings_clean = re.sub(fr"\(.+?\) ", "", meanings_clean)     # remove all brackets space
+            meanings_clean = re.sub(fr"(^ | $)", "", meanings_clean)      # remove space at start and fin
+            meanings_clean = re.sub(fr"  ", " ", meanings_clean)          # remove double spaces
+            meanings_clean = re.sub(fr" ;|; ", ";", meanings_clean)       # remove space around ;
+            meanings_clean = re.sub(fr"\(комм\).+$", "", meanings_clean)  # remove commentary meanings
+            meanings_clean = re.sub(fr"досл.+$", "", meanings_clean)      # remove lit meanings
             meanings_list = meanings_clean.split(";")
 
             for russian in meanings_list:
-                if russian in rpd.keys() and w.case =="":
+                if russian in rpd.keys() and w.case == "":
                     rpd[russian] = f"{rpd[russian]}<br><b>{w.pali_clean}</b> {w.pos}. {w.russian}"
-                if russian in rpd.keys() and w.case !="":
+                if russian in rpd.keys() and w.case != "":
                     rpd[russian] = f"{rpd[russian]}<br><b>{w.pali_clean}</b> {w.pos}. {w.russian} ({w.case})"
-                if russian not in rpd.keys() and w.case =="":
+                if russian not in rpd.keys() and w.case == "":
                     rpd.update({russian: f"<b>{w.pali_clean}</b> {w.pos}. {w.russian}"})
-                if russian not in rpd.keys() and w.case !="":
+                if russian not in rpd.keys() and w.case != "":
                     rpd.update({russian: f"<b>{w.pali_clean}</b> {w.pos}. {w.russian} ({w.case})"})
 
     with open(rsc['rpd_css_path'], 'r') as f:
@@ -452,7 +448,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         html_string = ""
         html_string = rpd_css
         html_string += f"<body><div class ='rpd'><p>{value}</p></div></body></html>"
-        rpd_data_list += [[f"{key}", f"""{html_string}""", "", ""]]
+        rpd_data_list += [[f"{key}", f'{html_string}', "", ""]]
 
     # roots > dataframe > json
 
