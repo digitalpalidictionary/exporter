@@ -117,7 +117,6 @@ def run_generate_goldendict_test(move_to_dest: bool = True):
     return _run_generate_goldendict(rsc, ifo, move_to_dest)
 
 
-
 def main():
     # Process cli with typer.
     app()

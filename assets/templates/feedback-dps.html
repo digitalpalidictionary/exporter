@@ -1,3 +1,13 @@
+<%
+  google_href = (
+    'https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
+    'usp=pp_url&entry.438735500=${w.pali}&entry.1433863141=GoldenDict ${today}')
+
+  mailto_href = (
+    'mailto:devamitta@sasanarakkha.org?subject='
+    'Участие&body=Пожалуйста, дайте мне знать, как я могу принять участие в развитии Словаря.')
+%>
+
 <div id="feedback_dps_${w.pali_}" class="content_dps hidden">
   <!-- <a
     class="button_dps close"
@@ -19,20 +29,25 @@
   </p>
 
   <p>
-    <a
-      class="link"
-      href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?usp=pp_url&entry.438735500=${w.pali}&entry.1433863141=GoldenDict ${today}"
-      target="_blank">
+    <a class="link" href="${google_href}" target="_blank">
       Сообщить об ошибке.
     </a>
-    <span> Ваши предложения и комментарии будут неоценимой помощью в улучшении качества данной работы и будут полезны всем пользователям словаря.</span>
+    <span> Ваши предложения и комментарии будут неоценимой помощью в улучшении
+      качества данной работы и будут полезны всем пользователям словаря.</span>
   </p>
 
   <p>
     <span>Ваша версия словаря от <b>${today}</b>. Пожалуйста, регулярно проверяйте наличие обновлений.</span>
   </p>
 
-<p><a class="link" href="https://devamitta.github.io/">Веб страница</a><span>. Можно найти всежую версию словаря; узнать больше о функциях, как установить и настроить.</span></p>
-<p><a class="link"
-    href="mailto:devamitta@sasanarakkha.org?subject=Участие&body=Пожалуйста, дайте мне знать, как я могу принять участие в развитии Словаря.">Принять участие</a><span>. Если вы программист или хорошо знаете Пали или как-то хотите поддержать проект, помощь приветствуется!</span></p>
+  <p>
+    <a class="link" href="https://devamitta.github.io/">Веб страница</a>.
+    <span>Можно найти всежую версию словаря; узнать больше о функциях, как установить и настроить.</span>
+  </p>
+
+  <p>
+    <a class="link" href="${mailto_href}">Принять участие</a>.
+    <span>Если вы программист или хорошо знаете Пали или как-то хотите
+      поддержать проект, помощь приветствуется!</span>
+  </p>
 </div>
