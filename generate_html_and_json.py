@@ -106,10 +106,14 @@ def generate_html_and_json(generate_roots: bool = True):
             html_string += f"""<tr><th>часть речи</th><td>{w.pos}"""
             text_full += f"{w.pali}. {w.pos}"
 
-        for i in [w.grammar, w.derived, w.neg, w.verb, w.trans, w.case]:
+        for i in [w.grammar, w.derived, w.neg, w.verb, w.trans]:
             if i != '':
                 html_string += f", {i}"
                 text_full += f", {i}"
+
+        if w.case != '':
+            html_string += f' ({w.case})'
+            text_full += f' ({w.case})'
 
         html_string += f"""</td></tr>"""
         html_string += f"""<tr valign="top"><th>английский</th><td><b>{w.meaning}</b>"""
