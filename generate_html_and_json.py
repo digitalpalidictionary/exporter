@@ -202,11 +202,11 @@ def generate_html_and_json(generate_roots: bool = True):
         if w.pos not in indeclinables:
             table_path = rsc['inflections_dir'].joinpath("output/html tables/").joinpath(w.pali + ".html")
 
-            if table_path.exists():
+            table_data_read = ''
+            try:
                 with open(table_path) as f:
                     table_data_read = f.read()
-
-            else:
+            except FileNotFoundError:
                 inflection_table_error_string += w.pali + ", "
                 error_log.write(f"error reading inflection table: {w.pali}.html\n")
 
@@ -353,9 +353,10 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
                 text='Сообщить об ошибке.') +
             '</p>')
 
-        p = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
+        part_file = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
 
-        with open(p, 'w') as f:
+        rsc['output_help_html_dir'].mkdir(parents=True, exist_ok=True)  # TODO Move out of the loop
+        with open(part_file, 'w') as f:
             f.write(html_string)
 
         # compile root data into list
@@ -369,8 +370,11 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
     help_data_list = []
 
-    with open(rsc['dict_help_css_path'], 'r') as f:
-        help_css = f.read()
+    try:
+        with open(rsc['dict_help_css_path'], 'r') as f:
+            help_css = f.read()
+    except FileNotFoundError:
+        help_css = ''
 
     help_df = data['help_df']
     help_df_length = len(help_df)
@@ -382,8 +386,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         help_title = help_df.iloc[row, 0]
         meaning = help_df.iloc[row, 1]
 
-        css = f"{help_css}"
-        html_string += render_header_tmpl(css=css, js="")
+        html_string += render_header_tmpl(css=help_css, js="")
 
         html_string += "<body>"
 
