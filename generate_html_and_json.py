@@ -79,10 +79,10 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
 
         # html head & style
 
-        html_string += render_header_tmpl(css=words_css, js=buttons_js)  # TODO
+        html_string += render_header_tmpl(css=words_css, js=buttons_js)
 
         # summary
-        r = render_word_meaning(w)  # TODO Move to Mako template
+        r = render_word_meaning(w)
         text_full += r['full']
         text_concise += r['concise']
 
@@ -134,7 +134,6 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
         if w.pos not in INDECLINABLES:
             table_path = rsc['inflections_dir'].joinpath("output/html tables/").joinpath(w.pali + ".html")
 
-            # TODO To html_components
             table_data_read = ''
             try:
                 with open(table_path) as f:
@@ -143,7 +142,7 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
                 inflection_table_error_string += w.pali + ", "
                 error_log.write(f"error reading inflection table: {w.pali}.html\n")
 
-        html_string += render_word_dps_tmpl(w, r['html'], table_data_read=table_data_read)
+        html_string += render_word_dps_tmpl(w, table_data_read=table_data_read)
         html_string += '</html>'
 
         # write gd.json

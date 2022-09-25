@@ -29,13 +29,12 @@ def render_feedback_tmpl_test(w: DpsWord) -> str:
     return str(feedback_tmpl_test.render(w=w, today=today))
 
 
-def render_word_dps_tmpl(word: DpsWord, meaning: str, table_data_read: str) -> str:
+def render_word_dps_tmpl(word: DpsWord, table_data_read: str) -> str:
     try:
         return word_dps_tmpl.render(
             conjugations=helpers.CONJUGATIONS,
             declensions=helpers.DECLENSIONS,
             indeclinables=helpers.INDECLINABLES,
-            meaning=meaning,
             table_data_read=table_data_read,
             today=date.today(),
             word=word)
@@ -53,29 +52,22 @@ class RenderResult(TypedDict):
 
 
 def render_word_meaning(w: DpsWord) -> RenderResult:
-    html_string = ""
     text_full = ""
     text_concise = ""
 
     if w.russian == "":
-        html_string += f"""<div class="content_dps"><p>{w.pos}. <b>{w.meaning}</b> [в процессе]</p></div>"""
         text_full += f"""{w.pali}. {w.pos}. {w.meaning}. [в процессе]"""
         text_concise += f"""{w.pali}. {w.pos}. {w.meaning}."""
 
     else:
-        html_string += f"""<div class="content_dps"><p>"""
-
         if w.pos != "":
-            html_string += f"""{w.pos}."""
             text_concise += f"{w.pali}. {w.pos}."
 
-        html_string += f""" <b>{w.russian}</b>"""
         text_concise += f""" {w.russian}"""
 
-        html_string += f"""</p></div>"""
 
     return RenderResult(
-        html = html_string,
+        html = '',  # TODO Deprecate
         full = text_full,
         concise = text_concise,
     )
