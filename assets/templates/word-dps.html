@@ -1,11 +1,8 @@
 <%
-    google_link_template = (
-        '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
-        'usp=pp_url&{args}" target="_blank">{text}</a>')
-
     google_href = (
         'https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
-        'usp=pp_url&entry.438735500=${word.pali}&entry.1433863141=GoldenDict ${today}')
+        f'usp=pp_url&entry.438735500={word.pali}&entry.1433863141=GoldenDict%20{today}'
+        '{args}')
 
     mailto_href = (
         'mailto:devamitta@sasanarakkha.org?subject='
@@ -54,10 +51,10 @@ ${meaning}
         </tr>
         % endif
 
-        <tr valign="top"><th>английский</th><td><b>{word.meaning}</b></td></tr>
+        <tr valign="top"><th>английский</th><td><b>${word.meaning}</b></td></tr>
 
         % if word.russian != "":
-        <tr valign="top"><th>русский</th><td><b>{word.russian}</b></td></tr>
+        <tr valign="top"><th>русский</th><td><b>${word.russian}</b></td></tr>
         % endif
 
         % if word.root != "":
@@ -86,7 +83,9 @@ ${meaning}
         % endif
     </table>
     <p>
-        ${google_link_template.format(args=f'entry.438735500={word.pali}&entry.1433863141=GoldenDict {today}', text='Пожалуйста, сообщите об ошибке.')}
+        <a class="link" target="_blank" href="${google_href.format(args='')}">
+            Пожалуйста, сообщите об ошибке.
+        </a>
     </p>
 </div>
 
@@ -104,7 +103,7 @@ ${meaning}
 
     <p>
     Пожалуйста, подскажите более подходящий 
-    ${google_link_template.format(args=f'entry.438735500={word.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}', text='пример.')}
+    <a class="link" target='_blank' href="${google_href.format(args=f'&entry.326955045=Пример2')}">пример</a>.
     </p>
 </div>
 
@@ -118,7 +117,9 @@ ${table_data_read}
     % if word.pos != 'sandhi' and word.pos != 'idiom' and (word.pos in declensions or word.pos in conjugations):
     <p>
         У вас есть предложение?
-        ${google_link_template.format(args=f'entry.438735500={word.pali}&entry.1433863141=GoldenDict {today}', text='Пожалуйста, сообщите об ошибке.')}
+        <a class="link" target='_blank' href="${google_href.format(args='')}">
+            Пожалуйста, сообщите об ошибке
+        </a>.
     </p>
     % endif
 </div>
@@ -145,7 +146,7 @@ ${table_data_read}
     </p>
   
     <p>
-        <a class="link" href="${google_href}" target="_blank">
+        <a class="link" href="${google_href.format(args='')}" target="_blank">
             Сообщить об ошибке.
         </a>
         <span>

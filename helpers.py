@@ -251,3 +251,10 @@ class DpsWord:
         self.cl: str = df.loc[row, "class"]
         self.count: str = df.loc[row, "count"]
 
+
+INDECLINABLES = {"abbrev", "abs", "ger", "ind", "inf", "prefix", "sandhi", "idiom"}
+CONJUGATIONS = {"aor", "cond", "fut", "imp", "imperf", "opt", "perf", "pr"}
+DECLENSIONS = {
+    "adj", "card", "cs", "fem", "letter", "masc", "nt", "ordin", "pp", "pron",
+    "prp", "ptp", "root", "suffix", "ve"
+}

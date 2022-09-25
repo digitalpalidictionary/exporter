@@ -11,18 +11,20 @@ import pandas as pd
 
 from helpers import DataFrames
 from helpers import DpsWord
+from helpers import INDECLINABLES
 from helpers import ResourcePaths
 from helpers import get_resource_paths
 from helpers import parse_data_frames
 from html_components import render_header_tmpl
-from html_components import render_word_meaning
 from html_components import render_word_dps_tmpl
+from html_components import render_word_meaning
 
 GOOGLE_LINK_TEMPLATE = (
     '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
     'usp=pp_url&{args}" target="_blank">{text}</a>')
 
 
+# TODO
 def generate_html_and_json(generate_roots: bool = True):
     rsc = get_resource_paths()
     _generate_html_and_json(
@@ -71,20 +73,13 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
         if row % 5000 == 0 or row % df_length == 0:
             print(f"{timeis()} {row}/{df_length}\t{w.pali}")
 
-        # TODO Purge from here
-        indeclinables = {"abbrev", "abs", "ger", "ind", "inf", "prefix", "sandhi", "idiom"}
-        conjugations = {"aor", "cond", "fut", "imp", "imperf", "opt", "perf", "pr"}
-        declensions = {"adj", "card", "cs", "fem", "letter", "masc", "nt", "ordin", "pp", "pron", "prp", "ptp", "root", "suffix", "ve"}
-
         html_string = ""
         text_full = ""
         text_concise = ""
 
         # html head & style
 
-        html_string += render_header_tmpl(css=words_css, js=buttons_js)
-
-        # TODO BEGIN 
+        html_string += render_header_tmpl(css=words_css, js=buttons_js)  # TODO
 
         # summary
         r = render_word_meaning(w)  # TODO Move to Mako template
@@ -135,10 +130,8 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
         if w.sk_root != "":
             text_full += f'. санск. корень: {w.sk_root}'
 
-
         # inflection table
-
-        if w.pos not in indeclinables:
+        if w.pos not in INDECLINABLES:
             table_path = rsc['inflections_dir'].joinpath("output/html tables/").joinpath(w.pali + ".html")
 
             # TODO To html_components
@@ -151,8 +144,6 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
                 error_log.write(f"error reading inflection table: {w.pali}.html\n")
 
         html_string += render_word_dps_tmpl(w, r['html'], table_data_read=table_data_read)
-        #html_string += render_feedback_tmpl(w)  # TODO
-
         html_string += '</html>'
 
         # write gd.json

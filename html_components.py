@@ -1,13 +1,13 @@
-import re
-
-from mako.template import Template
-from mako import exceptions
-
 from datetime import date
 from typing import TypedDict
-from helpers import DpsWord
 
+from mako import exceptions
+from mako.template import Template
+
+import helpers
 import timeis
+
+from helpers import DpsWord
 
 header_tmpl = Template(filename='./assets/templates/header.html')
 feedback_tmpl_sbs = Template(filename='./assets/templates/feedback-sbs.html')
@@ -30,26 +30,20 @@ def render_feedback_tmpl_test(w: DpsWord) -> str:
 
 
 def render_word_dps_tmpl(word: DpsWord, meaning: str, table_data_read: str) -> str:
-    indeclinables = ["abbrev", "abs", "ger", "ind", "inf", "prefix", "sandhi", "idiom"]
-    conjugations = ["aor", "cond", "fut", "imp", "imperf", "opt", "perf", "pr"]
-    declensions = [
-        "adj", "card", "cs", "fem", "letter", "masc", "nt", "ordin", "pp", "pron",
-        "prp", "ptp", "root", "suffix", "ve"
-    ]
     try:
         return word_dps_tmpl.render(
-            conjugations=conjugations,
-            declensions=declensions,
-            indeclinables=indeclinables,
+            conjugations=helpers.CONJUGATIONS,
+            declensions=helpers.DECLENSIONS,
+            indeclinables=helpers.INDECLINABLES,
             meaning=meaning,
             table_data_read=table_data_read,
             today=date.today(),
             word=word)
-    except:
+    except Exception as error:
         print(f'{timeis.red} Template exception')
         print(exceptions.text_error_template().render())
         print(f'{timeis.line}{timeis.white}')
-
+        raise error from None
 
 
 class RenderResult(TypedDict):
