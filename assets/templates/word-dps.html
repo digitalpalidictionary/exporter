@@ -80,4 +80,22 @@ ${meaning}
         ${google_link_template.format(args=f'entry.438735500={word.pali}&entry.1433863141=GoldenDict {today}', text='Пожалуйста, сообщите об ошибке.')}
     </p>
 </div>'
+
+<div id="example_dps_${word.pali_}" class="content_dps hidden">
+    ## FIXME Nested pars
+    % if word.eg1 != '':
+    <p>${word.eg1}<p class="sutta_dps">${word.source1} ${word.sutta1}</p></p>
+    % endif
+    % if word.eg2 != '':
+    <p>${word.eg2}<p class="sutta_dps">${word.source2} ${word.sutta2}</p></p>
+    % endif
+    % if word.eg3 != '' and word.chapter3 != 'SBS':  # FIXME Is a 'SBS' check should be here?
+    <p>${word.eg3}<p class="sutta_dps">${word.source3} ${word.sutta3}</p></p>
+    % endif
+
+    <p>
+    Пожалуйста, подскажите более подходящий 
+    ${google_link_template.format(args=f'entry.438735500={word.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}', text='пример.')}
+    </p>
+</div>
 </body>

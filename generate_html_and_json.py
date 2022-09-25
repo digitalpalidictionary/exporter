@@ -151,32 +151,6 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
             text_full += f'. санск. корень: {w.sk_root}'
 
 
-        # examples
-
-        html_string += f'<div id="example_dps_{w.pali_}" class="content_dps hidden">'
-
-        html_string += f'<p>'
-
-        if w.eg1 != "":
-
-            html_string += f'{w.eg1}<p class="sutta_dps">{w.source1} {w.sutta1}</p>'
-
-        if w.eg2 != "":
-
-            html_string += f'<p>{w.eg2}<p class="sutta_dps">{w.source2} {w.sutta2}</p>'
-
-        if w.eg3 != "" and w.chapter3 != "SBS":
-
-            html_string += f'<p> {w.eg3}<p class="sutta_dps"> {w.source3} {w.sutta3}</p>'
-
-        html_string += (
-            '<p>Пожалуйста, подскажите более подходящий ' +
-            GOOGLE_LINK_TEMPLATE.format(
-                args=f'entry.438735500={w.pali}&entry.326955045=Пример2&entry.1433863141=GoldenDict {today}',
-                text='пример.') +
-            '</p>')
-        html_string += '</div>'
-
         # inflection table
 
         if w.pos not in indeclinables:
