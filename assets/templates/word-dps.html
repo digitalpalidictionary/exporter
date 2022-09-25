@@ -1,0 +1,83 @@
+<%
+    google_link_template = (
+        '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
+        'usp=pp_url&{args}" target="_blank">{text}</a>')
+
+    button_template = (
+        '<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)"'
+        ' data-target="{target}">{name}</a>')
+    examples = [i for i in [word.eg1, word.eg2, word.eg3] if i != '']
+
+    pos_string = ''
+    if word.pos != '':
+        pos_entries = [i for i in [word.pos, word.grammar, word.derived, word.neg, word.verb, word.trans] if i != '']
+        pos_string += ', '.join(pos_entries)
+        if word.case != '':
+            pos_string += f'({word.case})'
+%>
+
+<body>
+${meaning}
+
+<div class="button-box">
+    % if word.meaning != '':
+    ${button_template.format(target=f'grammar_dps_{word.pali_}', name='грамматика')}
+    % endif
+    % if len(examples) == 1:
+    ${button_template.format(target=f'example_dps_{word.pali_}', name="пример")}
+    % elif len(examples) > 1:
+    ${button_template.format(target=f'example_dps_{word.pali_}', name='примеры')}
+    % endif
+    % if word.pos in conjugations:
+    ${button_template.format(target=f'conjugation_dps_{word.pali_}', name='спряжения')}
+    % endif
+    % if word.pos in declensions:
+    ${button_template.format(target=f'declension_dps_{word.pali_}', name='склонения')}
+    % endif
+</div>
+
+<div id="grammar_dps_${word.pali_}" class="content_dps hidden">
+    <table class = "table1_dps">
+        % if word.pos != '':
+        <tr>
+            <th>часть речи</th>
+            <td>${pos_string}</td>
+        </tr>
+        % endif
+
+        <tr valign="top"><th>английский</th><td><b>{word.meaning}</b></td></tr>
+
+        % if word.russian != "":
+        <tr valign="top"><th>русский</th><td><b>{word.russian}</b></td></tr>'
+        % endif
+
+        % if word.root != "":
+        <tr valign="top"><th>корень</th><td>${word.root}</td></tr>
+        % endif
+        % if word.base != "":
+        <tr valign="top"><th>основа</th><td>${word.base}</td></tr>
+        % endif
+        % if word.construction != "":
+        <tr valign="top"><th>образование</th><td>${word.construction}</td></tr>
+        % endif
+        % if word.var != "":
+        <tr valign="top"><th>вариант</th><td>${word.var}</td></tr>
+        % endif
+        % if word.comm != "":
+        <tr valign="top"><th>комментарий</th><td>${word.comm}</td></tr>
+        % endif
+        % if word.notes != "":
+        <tr valign="top"><th>заметки</th><td>${word.notes}</td></tr>
+        % endif
+        % if word.sk != "":
+        <tr valign="top"><th>санскрит</th><td><i>${word.sk}</i></td></tr>
+        % endif
+        % if word.sk_root != "":
+        <tr valign="top"><th>санск. корень</th><td><i>${word.sk_root}</i></td></tr>
+        % endif
+    </table>
+    <p>
+        ${google_link_template.format(args=f'entry.438735500={word.pali}&entry.1433863141=GoldenDict {today}', text='Пожалуйста, сообщите об ошибке.')}
+    </p>
+</div>'
+</body>

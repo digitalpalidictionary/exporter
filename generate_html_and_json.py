@@ -4,12 +4,20 @@ from datetime import date
 from datetime import datetime
 import stat
 import time
-import pandas as pd
 import os
 from timeis import timeis, yellow, green, red, line
 
-from helpers import DataFrames, DpsWord, ResourcePaths, get_resource_paths, parse_data_frames
-from html_components import render_header_tmpl, render_feedback_tmpl, render_word_meaning
+import pandas as pd
+
+from helpers import DataFrames
+from helpers import DpsWord
+from helpers import ResourcePaths
+from helpers import get_resource_paths
+from helpers import parse_data_frames
+from html_components import render_header_tmpl
+from html_components import render_feedback_tmpl
+from html_components import render_word_meaning
+from html_components import render_word_dps_tmpl
 
 GOOGLE_LINK_TEMPLATE = (
     '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
@@ -18,7 +26,16 @@ GOOGLE_LINK_TEMPLATE = (
 
 def generate_html_and_json(generate_roots: bool = True):
     rsc = get_resource_paths()
+    _generate_html_and_json(
+        rsc=rsc,
+        generate_roots=generate_roots)
 
+
+def generate_html_and_json_sbs(generate_roots: bool = True):
+        ...
+
+
+def _generate_html_and_json(rsc, generate_roots: bool = True):
     data = parse_data_frames(rsc)
     today = date.today()
 
@@ -55,6 +72,7 @@ def generate_html_and_json(generate_roots: bool = True):
         if row % 5000 == 0 or row % df_length == 0:
             print(f"{timeis()} {row}/{df_length}\t{w.pali}")
 
+        # TODO Purge from here
         indeclinables = ["abbrev", "abs", "ger", "ind", "inf", "prefix", "sandhi", "idiom"]
         conjugations = ["aor", "cond", "fut", "imp", "imperf", "opt", "perf", "pr"]
         declensions = ["adj", "card", "cs", "fem", "letter", "masc", "nt", "ordin", "pp", "pron", "prp", "ptp", "root", "suffix", "ve"]
@@ -67,109 +85,71 @@ def generate_html_and_json(generate_roots: bool = True):
 
         html_string += render_header_tmpl(css=words_css, js=buttons_js)
 
-        html_string += "<body>"
+        # TODO BEGIN 
 
         # summary
-
-        r = render_word_meaning(w)
-        html_string += r['html']
+        r = render_word_meaning(w)  # TODO Move to Mako template
+        html_string += render_word_dps_tmpl(w, r['html'])
         text_full += r['full']
         text_concise += r['concise']
 
-        # buttons
-
-        html_string += '<div class="button-box">'
-        examples = [i for i in [w.eg1, w.eg2, w.eg3] if i != ""]
-
-        if w.meaning != "":
-            html_string += button_template.format(target=f'grammar_dps_{w.pali_}', name='грамматика')
-
-        if len(examples) == 1:
-            html_string += button_template.format(target=f'example_dps_{w.pali_}', name="пример")
-        elif len(examples) > 1:
-            html_string += button_template.format(target=f'example_dps_{w.pali_}', name='примеры')
-
-        if w.pos in conjugations:
-            html_string += button_template.format(target=f'conjugation_dps_{w.pali_}', name='спряжения')
-
-        if w.pos in declensions:
-            html_string += button_template.format(target=f'declension_dps_{w.pali_}', name='склонения')
-
-        html_string += button_template.format(target=f'feedback_dps_{w.pali_}', name='о словаре')
-        html_string += '</div>'
-
         # grammar
-
-        html_string += f'<div id="grammar_dps_{w.pali_}" class="content_dps hidden">'
-        html_string += f'<table class = "table1_dps">'
         if w.pos != "":
-            html_string += f'<tr><th>часть речи</th><td>{w.pos}'
-            text_full += f"{w.pali}. {w.pos}"
+            #html_string += f'<tr><th>часть речи</th><td>{w.pos}'
+            text_full += f"{w.pali}. {w.pos}" # TODO
 
         for i in [w.grammar, w.derived, w.neg, w.verb, w.trans]:
             if i != '':
-                html_string += f", {i}"
+                #html_string += f", {i}"
                 text_full += f", {i}"
 
         if w.case != '':
-            html_string += f' ({w.case})'
+            #html_string += f' ({w.case})'
             text_full += f' ({w.case})'
 
-        html_string += f'</td></tr>'
-        html_string += f'<tr valign="top"><th>английский</th><td><b>{w.meaning}</b>'
         text_full += f'. {w.meaning}'
 
         if w.russian != "":
-            html_string += f'</td></tr>'
-            html_string += f'<tr valign="top"><th>русский</th><td><b>{w.russian}</b>'
+            #html_string += f'</td></tr>'
+            #html_string += f'<tr valign="top"><th>русский</th><td><b>{w.russian}</b>'
             text_full += f'. {w.russian}'
 
-        html_string += f'</td></tr>'
-
         if w.root != "":
-            html_string += f'<tr valign="top"><th>корень</th><td>{w.root}</td></tr>'
+            #html_string += f'<tr valign="top"><th>корень</th><td>{w.root}</td></tr>'
             text_full += f'. корень: {w.root}'
 
         if w.base != "":
-            html_string += f'<tr valign="top"><th>основа</th><td>{w.base}</td></tr>'
+            #html_string += f'<tr valign="top"><th>основа</th><td>{w.base}</td></tr>'
             text_full += f'. основа: {w.base}'
 
         if w.construction != "":
-            html_string += f'<tr valign="top"><th>образование</th><td>{w.construction}</td></tr>'
+            #html_string += f'<tr valign="top"><th>образование</th><td>{w.construction}</td></tr>'
             construction_text = re.sub("<br/>", ", ", w.construction)
             text_full += f'. образование: {construction_text}'
 
         if w.var != "":
-            html_string += f'<tr valign="top"><th>вариант</th><td>{w.var}</td></tr>'
+            #html_string += f'<tr valign="top"><th>вариант</th><td>{w.var}</td></tr>'
             text_full += f'вариант: {w.var}'
 
         if w.comm != "":
-            html_string += f'<tr valign="top"><th>комментарий</th><td>{w.comm}</td></tr>'
+            #html_string += f'<tr valign="top"><th>комментарий</th><td>{w.comm}</td></tr>'
             comm_text = re.sub("<br/>", " ", w.comm)
             comm_text = re.sub("<b>", "", comm_text)
             comm_text = re.sub("</b>", "", comm_text)
             text_full += f'. комментарий: {comm_text}'
 
         if w.notes != "":
-            html_string += f'<tr valign="top"><th>заметки</th><td>{w.notes}</td></tr>'
+            #html_string += f'<tr valign="top"><th>заметки</th><td>{w.notes}</td></tr>'
             text_full += f'. заметки: {w.notes}'
 
         if w.sk != "":
-            html_string += f'<tr valign="top"><th>санскрит</th><td><i>{w.sk}</i></td></tr>'
+            #html_string += f'<tr valign="top"><th>санскрит</th><td><i>{w.sk}</i></td></tr>'
             text_full += f'. санскрит: {w.sk}'
 
         if w.sk_root != "":
-            html_string += f'<tr valign="top"><th>санск. корень</th><td><i>{w.sk_root}</i></td></tr>'
+            #html_string += f'<tr valign="top"><th>санск. корень</th><td><i>{w.sk_root}</i></td></tr>'
             text_full += f'. санск. корень: {w.sk_root}'
 
-        html_string += f'</table>'
-        html_string += (
-            '<p>' +
-            GOOGLE_LINK_TEMPLATE.format(
-                args=f'entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}',
-                text='Пожалуйста, сообщите об ошибке.') +
-            '</p>')
-        html_string += f'</div>'
 
         # examples
 

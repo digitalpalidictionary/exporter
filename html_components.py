@@ -1,14 +1,19 @@
 import re
 
+from mako.template import Template
+from mako import exceptions
+
 from datetime import date
 from typing import TypedDict
 from helpers import DpsWord
-from mako.template import Template
+
+import timeis
 
 header_tmpl = Template(filename='./assets/templates/header.html')
 feedback_tmpl = Template(filename='./assets/templates/feedback-dps.html')
 feedback_tmpl_sbs = Template(filename='./assets/templates/feedback-sbs.html')
 feedback_tmpl_test = Template(filename='./assets/templates/feedback-test.html')
+word_dps_tmpl = Template(filename='./assets/templates/word-dps.html')
 
 
 def render_header_tmpl(css: str, js: str) -> str:
@@ -28,6 +33,28 @@ def render_feedback_tmpl_sbs(w: DpsWord) -> str:
 def render_feedback_tmpl_test(w: DpsWord) -> str:
     today = date.today()
     return str(feedback_tmpl_test.render(w=w, today=today))
+
+
+def render_word_dps_tmpl(word: DpsWord, meaning: str) -> str:
+    indeclinables = ["abbrev", "abs", "ger", "ind", "inf", "prefix", "sandhi", "idiom"]
+    conjugations = ["aor", "cond", "fut", "imp", "imperf", "opt", "perf", "pr"]
+    declensions = [
+        "adj", "card", "cs", "fem", "letter", "masc", "nt", "ordin", "pp", "pron",
+        "prp", "ptp", "root", "suffix", "ve"
+    ]
+    try:
+        return word_dps_tmpl.render(
+            conjugations=conjugations,
+            declensions=declensions,
+            indeclinables=indeclinables,
+            meaning=meaning,
+            today=date.today(),
+            word=word)
+    except:
+        print(f'{timeis.red} Template exception')
+        print(exceptions.text_error_template().render())
+        print(f'{timeis.line}{timeis.white}')
+
 
 
 class RenderResult(TypedDict):
