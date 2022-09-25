@@ -10,7 +10,6 @@ from helpers import DpsWord
 import timeis
 
 header_tmpl = Template(filename='./assets/templates/header.html')
-feedback_tmpl = Template(filename='./assets/templates/feedback-dps.html')
 feedback_tmpl_sbs = Template(filename='./assets/templates/feedback-sbs.html')
 feedback_tmpl_test = Template(filename='./assets/templates/feedback-test.html')
 word_dps_tmpl = Template(filename='./assets/templates/word-dps.html')
@@ -18,11 +17,6 @@ word_dps_tmpl = Template(filename='./assets/templates/word-dps.html')
 
 def render_header_tmpl(css: str, js: str) -> str:
     return str(header_tmpl.render(css=css, js=js))
-
-
-def render_feedback_tmpl(w: DpsWord) -> str:
-    today = date.today()
-    return str(feedback_tmpl.render(w=w, today=today))
 
 
 def render_feedback_tmpl_sbs(w: DpsWord) -> str:
@@ -35,7 +29,7 @@ def render_feedback_tmpl_test(w: DpsWord) -> str:
     return str(feedback_tmpl_test.render(w=w, today=today))
 
 
-def render_word_dps_tmpl(word: DpsWord, meaning: str) -> str:
+def render_word_dps_tmpl(word: DpsWord, meaning: str, table_data_read: str) -> str:
     indeclinables = ["abbrev", "abs", "ger", "ind", "inf", "prefix", "sandhi", "idiom"]
     conjugations = ["aor", "cond", "fut", "imp", "imperf", "opt", "perf", "pr"]
     declensions = [
@@ -48,6 +42,7 @@ def render_word_dps_tmpl(word: DpsWord, meaning: str) -> str:
             declensions=declensions,
             indeclinables=indeclinables,
             meaning=meaning,
+            table_data_read=table_data_read,
             today=date.today(),
             word=word)
     except:

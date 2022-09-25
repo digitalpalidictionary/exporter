@@ -15,7 +15,6 @@ from helpers import ResourcePaths
 from helpers import get_resource_paths
 from helpers import parse_data_frames
 from html_components import render_header_tmpl
-from html_components import render_feedback_tmpl
 from html_components import render_word_meaning
 from html_components import render_word_dps_tmpl
 
@@ -73,9 +72,9 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
             print(f"{timeis()} {row}/{df_length}\t{w.pali}")
 
         # TODO Purge from here
-        indeclinables = ["abbrev", "abs", "ger", "ind", "inf", "prefix", "sandhi", "idiom"]
-        conjugations = ["aor", "cond", "fut", "imp", "imperf", "opt", "perf", "pr"]
-        declensions = ["adj", "card", "cs", "fem", "letter", "masc", "nt", "ordin", "pp", "pron", "prp", "ptp", "root", "suffix", "ve"]
+        indeclinables = {"abbrev", "abs", "ger", "ind", "inf", "prefix", "sandhi", "idiom"}
+        conjugations = {"aor", "cond", "fut", "imp", "imperf", "opt", "perf", "pr"}
+        declensions = {"adj", "card", "cs", "fem", "letter", "masc", "nt", "ordin", "pp", "pron", "prp", "ptp", "root", "suffix", "ve"}
 
         html_string = ""
         text_full = ""
@@ -89,65 +88,51 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
 
         # summary
         r = render_word_meaning(w)  # TODO Move to Mako template
-        html_string += render_word_dps_tmpl(w, r['html'])
         text_full += r['full']
         text_concise += r['concise']
 
         # grammar
         if w.pos != "":
-            #html_string += f'<tr><th>часть речи</th><td>{w.pos}'
             text_full += f"{w.pali}. {w.pos}" # TODO
 
         for i in [w.grammar, w.derived, w.neg, w.verb, w.trans]:
             if i != '':
-                #html_string += f", {i}"
                 text_full += f", {i}"
 
         if w.case != '':
-            #html_string += f' ({w.case})'
             text_full += f' ({w.case})'
 
         text_full += f'. {w.meaning}'
 
         if w.russian != "":
-            #html_string += f'</td></tr>'
-            #html_string += f'<tr valign="top"><th>русский</th><td><b>{w.russian}</b>'
             text_full += f'. {w.russian}'
 
         if w.root != "":
-            #html_string += f'<tr valign="top"><th>корень</th><td>{w.root}</td></tr>'
             text_full += f'. корень: {w.root}'
 
         if w.base != "":
-            #html_string += f'<tr valign="top"><th>основа</th><td>{w.base}</td></tr>'
             text_full += f'. основа: {w.base}'
 
         if w.construction != "":
-            #html_string += f'<tr valign="top"><th>образование</th><td>{w.construction}</td></tr>'
             construction_text = re.sub("<br/>", ", ", w.construction)
             text_full += f'. образование: {construction_text}'
 
         if w.var != "":
-            #html_string += f'<tr valign="top"><th>вариант</th><td>{w.var}</td></tr>'
             text_full += f'вариант: {w.var}'
 
         if w.comm != "":
-            #html_string += f'<tr valign="top"><th>комментарий</th><td>{w.comm}</td></tr>'
             comm_text = re.sub("<br/>", " ", w.comm)
             comm_text = re.sub("<b>", "", comm_text)
             comm_text = re.sub("</b>", "", comm_text)
             text_full += f'. комментарий: {comm_text}'
 
         if w.notes != "":
-            #html_string += f'<tr valign="top"><th>заметки</th><td>{w.notes}</td></tr>'
             text_full += f'. заметки: {w.notes}'
 
         if w.sk != "":
-            #html_string += f'<tr valign="top"><th>санскрит</th><td><i>{w.sk}</i></td></tr>'
             text_full += f'. санскрит: {w.sk}'
 
         if w.sk_root != "":
-            #html_string += f'<tr valign="top"><th>санск. корень</th><td><i>{w.sk_root}</i></td></tr>'
             text_full += f'. санск. корень: {w.sk_root}'
 
 
@@ -156,6 +141,7 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
         if w.pos not in indeclinables:
             table_path = rsc['inflections_dir'].joinpath("output/html tables/").joinpath(w.pali + ".html")
 
+            # TODO To html_components
             table_data_read = ''
             try:
                 with open(table_path) as f:
@@ -164,35 +150,10 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
                 inflection_table_error_string += w.pali + ", "
                 error_log.write(f"error reading inflection table: {w.pali}.html\n")
 
-            if w.pos in declensions:
-                html_string += f'<div id="declension_dps_{w.pali_}" class="content_dps hidden">'
+        html_string += render_word_dps_tmpl(w, r['html'], table_data_read=table_data_read)
+        #html_string += render_feedback_tmpl(w)  # TODO
 
-            if w.pos in conjugations:
-                html_string += f'<div id="conjugation_dps_{w.pali_}" class="content_dps hidden">'
-
-            html_string += f'{table_data_read}'
-
-            if w.pos != "sandhi" and w.pos != "idiom":
-                if w.pos in declensions:
-                    html_string += (
-                        '<p>У вас есть предложение?' +
-                        GOOGLE_LINK_TEMPLATE.format(
-                            args=f'entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}',
-                            text='Пожалуйста, сообщите об ошибке.') +
-                        '</p>')
-
-                if w.pos in conjugations:
-                    html_string += (
-                        '<p>У вас есть предложение? ' +
-                        GOOGLE_LINK_TEMPLATE.format(
-                            args=f'entry.438735500={w.pali}&entry.1433863141=GoldenDict {today}',
-                            text='Пожалуйста, сообщите об ошибке.') +
-                        '</p>')
-            html_string += '</div>'
-
-        html_string += render_feedback_tmpl(w)
-
-        html_string += f'</body></html>'
+        html_string += '</html>'
 
         # write gd.json
 
