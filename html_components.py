@@ -15,6 +15,16 @@ feedback_tmpl_test = Template(filename='./assets/templates/feedback-test.html')
 word_dps_tmpl = Template(filename='./assets/templates/word-dps.html')
 
 
+def _render(template: Template, **kwargs) -> str:
+    try:
+        return template.render(**kwargs)
+    except Exception as error:
+        print(f'{timeis.red} Template exception')
+        print(exceptions.text_error_template().render())
+        print(f'{timeis.line}{timeis.white}')
+        raise error from None
+
+
 def render_header_tmpl(css: str, js: str) -> str:
     return str(header_tmpl.render(css=css, js=js))
 
@@ -30,19 +40,14 @@ def render_feedback_tmpl_test(w: DpsWord) -> str:
 
 
 def render_word_dps_tmpl(word: DpsWord, table_data_read: str) -> str:
-    try:
-        return word_dps_tmpl.render(
-            conjugations=helpers.CONJUGATIONS,
-            declensions=helpers.DECLENSIONS,
-            indeclinables=helpers.INDECLINABLES,
-            table_data_read=table_data_read,
-            today=date.today(),
-            word=word)
-    except Exception as error:
-        print(f'{timeis.red} Template exception')
-        print(exceptions.text_error_template().render())
-        print(f'{timeis.line}{timeis.white}')
-        raise error from None
+    return _render(
+        word_dps_tmpl,
+        conjugations=helpers.CONJUGATIONS,
+        declensions=helpers.DECLENSIONS,
+        indeclinables=helpers.INDECLINABLES,
+        table_data_read=table_data_read,
+        today=date.today(),
+        word=word)
 
 
 class RenderResult(TypedDict):
@@ -52,11 +57,9 @@ class RenderResult(TypedDict):
 
 
 def render_word_meaning(w: DpsWord) -> RenderResult:
-    text_full = ""
     text_concise = ""
 
     if w.russian == "":
-        text_full += f"""{w.pali}. {w.pos}. {w.meaning}. [в процессе]"""
         text_concise += f"""{w.pali}. {w.pos}. {w.meaning}."""
 
     else:
@@ -68,7 +71,7 @@ def render_word_meaning(w: DpsWord) -> RenderResult:
 
     return RenderResult(
         html = '',  # TODO Deprecate
-        full = text_full,
+        full = '',  # TODO Deprecate
         concise = text_concise,
     )
 

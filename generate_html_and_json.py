@@ -1,11 +1,12 @@
 import pickle
 import re
-from datetime import date
-from datetime import datetime
 import stat
 import time
 import os
-from timeis import timeis, yellow, green, red, line
+
+from datetime import date
+from datetime import datetime
+from typing import Any
 
 import pandas as pd
 
@@ -18,6 +19,7 @@ from helpers import parse_data_frames
 from html_components import render_header_tmpl
 from html_components import render_word_dps_tmpl
 from html_components import render_word_meaning
+from timeis import timeis, yellow, green, red, line
 
 GOOGLE_LINK_TEMPLATE = (
     '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
@@ -36,6 +38,56 @@ def generate_html_and_json_sbs(generate_roots: bool = True):
         ...
 
 
+# TODO docstring
+def _string_if(condition: Any, string: str) -> str:
+    """
+    """
+    if condition:
+        return string
+    return ''
+
+
+def _format_if(string: str, template: str) -> str:
+    """
+    """
+    if len(string) > 0:
+        return template.format(string)
+    return ''
+
+
+def _full_text_dps_entry(word: DpsWord) -> str:
+    comm_text = re.sub('<br/>', ' ', word.comm)
+    comm_text = re.sub('<b>', '', comm_text)
+    comm_text = re.sub('</b>', '', comm_text)
+
+    construction_text = re.sub('<br/>', ', ', word.construction)
+
+    result = ''
+    # FIXME Seems conditions is broken when word.russian != ''
+    result += _string_if(not word.russian, f'{word.pali}. {word.pos}. {word.meaning}. [в процессе]')
+    result += _string_if(word.pos, f'{word.pali}. {word.pos}')
+
+    for i in [word.grammar, word.derived, word.neg, word.verb, word.trans]:
+        result += _string_if(i, f', {i}')
+
+    result += _string_if(word.case, f' ({word.case})')
+    result += f'. {word.meaning}'
+    result += _string_if(word.russian, f'. {word.russian}')
+    result += _string_if(word.root, f'. корень: {word.root}')
+    result += _format_if(word.base, '. основа: {}')
+
+    result += _format_if(construction_text, '. образование: {}')
+
+    result += _format_if(word.var, 'вариант: {}')
+    result += _format_if(comm_text, '. комментарий: {}')
+    result += _format_if(word.notes, '. заметки: {}')
+    result += _format_if(word.sk, '. санскрит: {}')
+    result += _format_if(word.sk_root, '. санск. корень: {}')
+    result += '\n'
+
+    return result
+
+
 def _generate_html_and_json(rsc, generate_roots: bool = True):
     data = parse_data_frames(rsc)
     today = date.today()
@@ -47,7 +99,7 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
     error_log = open(rsc['error_log_dir'].joinpath("exporter errorlog.txt"), "w")
 
     html_data_list = []
-    text_data_full = ""
+    text_data_full = ''
     text_data_concise = ""
 
     inflection_table_error_string = ""
@@ -67,68 +119,25 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
         buttons_js = f.read()
 
     for row in range(df_length):
-
         w = DpsWord(df, row)
 
         if row % 5000 == 0 or row % df_length == 0:
             print(f"{timeis()} {row}/{df_length}\t{w.pali}")
 
-        html_string = ""
-        text_full = ""
-        text_concise = ""
+        html_string = ''
+        text_full = _full_text_dps_entry(word=w)
+        text_concise = ''
 
         # html head & style
-
         html_string += render_header_tmpl(css=words_css, js=buttons_js)
 
         # summary
         r = render_word_meaning(w)
-        text_full += r['full']
         text_concise += r['concise']
 
         # grammar
-        if w.pos != "":
-            text_full += f"{w.pali}. {w.pos}" # TODO
-
-        for i in [w.grammar, w.derived, w.neg, w.verb, w.trans]:
-            if i != '':
-                text_full += f", {i}"
-
-        if w.case != '':
-            text_full += f' ({w.case})'
-
-        text_full += f'. {w.meaning}'
-
-        if w.russian != "":
-            text_full += f'. {w.russian}'
-
-        if w.root != "":
-            text_full += f'. корень: {w.root}'
-
-        if w.base != "":
-            text_full += f'. основа: {w.base}'
-
         if w.construction != "":
             construction_text = re.sub("<br/>", ", ", w.construction)
-            text_full += f'. образование: {construction_text}'
-
-        if w.var != "":
-            text_full += f'вариант: {w.var}'
-
-        if w.comm != "":
-            comm_text = re.sub("<br/>", " ", w.comm)
-            comm_text = re.sub("<b>", "", comm_text)
-            comm_text = re.sub("</b>", "", comm_text)
-            text_full += f'. комментарий: {comm_text}'
-
-        if w.notes != "":
-            text_full += f'. заметки: {w.notes}'
-
-        if w.sk != "":
-            text_full += f'. санскрит: {w.sk}'
-
-        if w.sk_root != "":
-            text_full += f'. санск. корень: {w.sk_root}'
 
         # inflection table
         if w.pos not in INDECLINABLES:
@@ -146,7 +155,6 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
         html_string += '</html>'
 
         # write gd.json
-
         inflections_path = rsc['inflections_dir'].joinpath("output/inflections translit/").joinpath(w.pali)
 
         if inflections_path.exists():
@@ -154,14 +162,13 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
                 synonyms = pickle.load(syn_file)
                 synonyms = (synonyms)
         else:
-            synonyms_error_string += w.pali +", "
+            synonyms_error_string += w.pali + ', '
             error_log.write(f"error reading synonyms - {w.pali}\n")
             synonyms = ""
 
         # data compiling
-
         html_data_list += [[f"{w.pali}", f'{html_string}', "", synonyms]]
-        text_data_full += f"{text_full}\n"
+        text_data_full += text_full
         text_data_concise += f"{text_concise}\n"
 
         if row % 100 == 0:
@@ -178,19 +185,16 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
         print(f"{timeis()} {red}synonym errors: {synonyms_error_string}")
 
     # convert ṃ to ṁ
-
-    text_data_full = re.sub("ṃ", "ṁ", text_data_full)
-    text_data_concise = re.sub("ṃ", "ṁ", text_data_concise)
-
+    text_data_full = re.sub('ṃ', 'ṁ', text_data_full)
+    text_data_concise = re.sub('ṃ', 'ṁ', text_data_concise)
 
     # write text versions
-
-    p = rsc['output_share_dir'].joinpath("dps_full.txt")
-    with open(p, "w", encoding ="utf-8") as f:
+    p = rsc['output_share_dir'].joinpath('dps_full.txt')
+    with open(p, 'w', encoding='UTF-8') as f:
         f.write(text_data_full)
 
-    p = rsc['output_share_dir'].joinpath("dps_concise.txt")
-    with open(p, "w", encoding ="utf-8") as f:
+    p = rsc['output_share_dir'].joinpath('dps_concise.txt')
+    with open(p, 'w', encoding='UTF-8') as f:
         f.write(text_data_concise)
 
     if generate_roots:
