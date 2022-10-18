@@ -10,12 +10,15 @@ from generate_html_and_json import generate_html_and_json
 from generate_html_and_json import generate_html_and_json_sbs
 from generate_html_and_json_test import generate_html_and_json_test
 from helpers import ResourcePaths
-from helpers import copy_goldendict, get_resource_paths, get_resource_paths_sbs, get_resource_paths_test
+from helpers import copy_goldendict
+from helpers import get_resource_paths_dps
+from helpers import get_resource_paths_sbs
+from helpers import get_resource_paths_test
 
 
 app = typer.Typer()
 
-RSC = get_resource_paths()
+RSC = get_resource_paths_dps()
 
 
 @app.command()
@@ -72,7 +75,7 @@ def _run_generate_goldendict(rsc: ResourcePaths, ifo: 'StarDictIfo', move_to_des
 def run_generate_goldendict(move_to_dest: bool = True):
     from simsapa.app.stardict import ifo_from_opts, StarDictIfo
 
-    rsc = get_resource_paths()
+    rsc = get_resource_paths_dps()
 
     ifo = ifo_from_opts({
             "bookname": "Пали Словарь",

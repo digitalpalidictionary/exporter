@@ -1,4 +1,5 @@
 from datetime import date
+from pathlib import Path
 from typing import TypedDict
 
 from mako import exceptions
@@ -9,10 +10,8 @@ import timeis
 
 from helpers import DpsWord
 
-header_tmpl = Template(filename='./assets/templates/header.html')
-feedback_tmpl_sbs = Template(filename='./assets/templates/feedback-sbs.html')
-feedback_tmpl_test = Template(filename='./assets/templates/feedback-test.html')
-word_dps_tmpl = Template(filename='./assets/templates/word-dps.html')
+HEADER_TMPL = Template(filename='./assets/templates/header.html')
+FEEDBACK_TMPL_TEST = Template(filename='./assets/templates/feedback-test.html')
 
 
 def _render(template: Template, **kwargs) -> str:
@@ -26,22 +25,18 @@ def _render(template: Template, **kwargs) -> str:
 
 
 def render_header_tmpl(css: str, js: str) -> str:
-    return str(header_tmpl.render(css=css, js=js))
-
-
-def render_feedback_tmpl_sbs(w: DpsWord) -> str:
-    today = date.today()
-    return str(feedback_tmpl_sbs.render(w=w, today=today))
+    return str(HEADER_TMPL.render(css=css, js=js))
 
 
 def render_feedback_tmpl_test(w: DpsWord) -> str:
     today = date.today()
-    return str(feedback_tmpl_test.render(w=w, today=today))
+    return str(FEEDBACK_TMPL_TEST.render(w=w, today=today))
 
 
-def render_word_dps_tmpl(word: DpsWord, table_data_read: str) -> str:
+def render_word_tmpl(template_path: Path, word: DpsWord, table_data_read: str) -> str:
+    template = Template(filename=str(template_path))
     return _render(
-        word_dps_tmpl,
+        template,
         conjugations=helpers.CONJUGATIONS,
         declensions=helpers.DECLENSIONS,
         indeclinables=helpers.INDECLINABLES,
@@ -68,11 +63,10 @@ def render_word_meaning(w: DpsWord) -> RenderResult:
 
         text_concise += f""" {w.russian}"""
 
-
     return RenderResult(
-        html = '',  # TODO Deprecate
-        full = '',  # TODO Deprecate
-        concise = text_concise,
+        html='',  # TODO Deprecate
+        full='',  # TODO Deprecate
+        concise=text_concise,
     )
 
 
@@ -107,12 +101,13 @@ def render_word_meaning_sbs(w: DpsWord) -> RenderResult:
         concise=text_concise,
     )
 
+
 def render_word_meaning_test(w: DpsWord) -> RenderResult:
     html_string = ""
     text_full = ""
     text_concise = ""
 
-    html_string += f"""<div class="content_test"><p>"""
+    html_string += """<div class="content_test"><p>"""
 
     if w.ex != "":
         html_string += f"""<b>(ex.{w.ex}) | </b>"""
@@ -123,8 +118,8 @@ def render_word_meaning_test(w: DpsWord) -> RenderResult:
         html_string += f"""{w.pos}. <b>{w.meaning}</b>"""
 
         if w.chapter2 != "":
-            html_string += f""" | <i>[sbs]</i>"""
-    
+            html_string += """ | <i>[sbs]</i>"""
+
     else:
         if w.count != "":
             html_string += f"""(cl.{w.cl}).#{w.count}. | """
@@ -132,17 +127,17 @@ def render_word_meaning_test(w: DpsWord) -> RenderResult:
         html_string += f"""{w.pos}. <b>{w.meaning}</b>"""
 
         if w.chapter2 != "":
-            html_string += f""" | <i>[sbs]</i>"""
+            html_string += """ | <i>[sbs]</i>"""
 
-    html_string += f"""</p>"""
+    html_string += """</p>"""
 
     if w.russian != "":
         html_string += f"""<p>{w.russian}</p>"""
 
-    html_string += f"""</div>"""
+    html_string += """</div>"""
 
     return RenderResult(
-        html = html_string,
-        full = text_full,
-        concise = text_concise,
+        html=html_string,
+        full=text_full,
+        concise=text_concise,
     )

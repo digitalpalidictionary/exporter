@@ -41,6 +41,7 @@ class ResourcePaths(TypedDict):
     gd_json_path: Path
     icon_path: Path
     output_stardict_zip_path: Path
+    word_template_path: Path
 
 
 def parse_data_frames(rsc: ResourcePaths) -> DataFrames:
@@ -62,7 +63,7 @@ def parse_data_frames(rsc: ResourcePaths) -> DataFrames:
     )
 
 
-def get_resource_paths() -> ResourcePaths:
+def get_resource_paths_dps() -> ResourcePaths:
     s = os.getenv('DPS_DIR')
     if s is None:
         print(f"{timeis()} {red}ERROR! DPS_DIR is not set.")
@@ -90,6 +91,7 @@ def get_resource_paths() -> ResourcePaths:
         inflections_dir=dps_dir.joinpath("inflection/"),
         words_path=dps_dir.joinpath("spreadsheets/dps-full.csv"),
         icon_path=Path("./logo/book.bmp"),
+        word_template_path=Path('./assets/templates/word-dps.html'),
     )
 
     # ensure write dirs exist
@@ -130,6 +132,7 @@ def get_resource_paths_sbs() -> ResourcePaths:
         inflections_dir=dps_dir.joinpath("inflection/"),
         words_path=dps_dir.joinpath("spreadsheets/sbs-pd.csv"),
         icon_path=Path("./logo/head_brown.bmp"),
+        word_template_path=Path('./assets/templates/word-sbs.html'),
     )
 
     # ensure write dirs exist

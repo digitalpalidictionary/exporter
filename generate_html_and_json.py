@@ -14,12 +14,14 @@ from helpers import DataFrames
 from helpers import DpsWord
 from helpers import INDECLINABLES
 from helpers import ResourcePaths
-from helpers import get_resource_paths
+from helpers import get_resource_paths_dps
 from helpers import get_resource_paths_sbs
 from helpers import parse_data_frames
 from html_components import render_header_tmpl
-from html_components import render_word_dps_tmpl
+from html_components import render_word_tmpl
 from html_components import render_word_meaning
+from html_components import render_word_meaning_sbs
+
 from timeis import timeis, yellow, green, red, line
 
 GOOGLE_LINK_TEMPLATE = (
@@ -31,7 +33,7 @@ ENCODING = 'UTF-8'
 
 # TODO
 def generate_html_and_json(generate_roots: bool = True):
-    rsc = get_resource_paths()
+    rsc = get_resource_paths_dps()
     _generate_html_and_json(
         rsc=rsc,
         generate_roots=generate_roots,
@@ -143,10 +145,10 @@ def _generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
 
     html_data_list = []
     text_data_full = ''
-    text_data_concise = ""
+    text_data_concise = ''
 
-    inflection_table_error_string = ""
-    synonyms_error_string = ""
+    inflection_table_error_string = ''
+    synonyms_error_string = ''
 
     df = data['words_df']
     df_length = data['words_df'].shape[0]
@@ -175,7 +177,11 @@ def _generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
         html_string += render_header_tmpl(css=words_css, js=buttons_js)
 
         # summary
-        r = render_word_meaning(w)
+        if kind == 'dps':
+            r = render_word_meaning(w)
+        elif kind == 'sbs':
+            r = render_word_meaning_sbs(w)
+
         text_concise += r['concise']
 
         # inflection table
@@ -190,7 +196,7 @@ def _generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
                 inflection_table_error_string += w.pali + ", "
                 error_log += f'error reading inflection table: {w.pali}.html\n'
 
-        html_string += render_word_dps_tmpl(w, table_data_read=table_data_read)
+        html_string += render_word_tmpl(rsc['word_template_path'], w, table_data_read=table_data_read)
         html_string += '</html>'
 
         # write gd.json
@@ -316,8 +322,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         abbrev_data_list += [[f"{abbrev}", f'{html_string}', "", synonyms]]
 
 
-# generate help html
-
+  # generate help html
     print(f"{timeis()} {green}generating help html")
 
     help_data_list = []
@@ -481,6 +486,7 @@ def generate_roots_html_and_json_sbs(data: DataFrames, rsc: ResourcePaths, html_
 
         html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform?usp=pp_url&entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}" target="_blank">Report a mistake.</a></p>"""
 
+        rsc['output_help_html_dir'].mkdir(parents=True, exist_ok=True)  # TODO Move out of the loop
         p = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
 
         with open(p, 'w') as f:
@@ -489,9 +495,8 @@ def generate_roots_html_and_json_sbs(data: DataFrames, rsc: ResourcePaths, html_
         # compile root data into list
         synonyms = [abbrev, meaning]
         abbrev_data_list += [[f"{abbrev}", f"""{html_string}""", "", synonyms]]
-        
-# generate help html
 
+    # generate help html
     print(f"{timeis()} {green}generating help html")
 
     help_data_list = []
