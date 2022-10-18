@@ -7,7 +7,7 @@ import typer
 
 from timeis import timeis, yellow, green, line
 from generate_html_and_json import generate_html_and_json
-from generate_html_and_json_sbs import generate_html_and_json_sbs
+from generate_html_and_json import generate_html_and_json_sbs
 from generate_html_and_json_test import generate_html_and_json_test
 from helpers import ResourcePaths
 from helpers import copy_goldendict, get_resource_paths, get_resource_paths_sbs, get_resource_paths_test

@@ -15,6 +15,7 @@ from helpers import DpsWord
 from helpers import INDECLINABLES
 from helpers import ResourcePaths
 from helpers import get_resource_paths
+from helpers import get_resource_paths_sbs
 from helpers import parse_data_frames
 from html_components import render_header_tmpl
 from html_components import render_word_dps_tmpl
@@ -33,11 +34,17 @@ def generate_html_and_json(generate_roots: bool = True):
     rsc = get_resource_paths()
     _generate_html_and_json(
         rsc=rsc,
-        generate_roots=generate_roots)
+        generate_roots=generate_roots,
+        kind='dps')
 
 
 def generate_html_and_json_sbs(generate_roots: bool = True):
-    ...
+    rsc = get_resource_paths_sbs()
+    # TODO Recheck rsc
+    _generate_html_and_json(
+        rsc=rsc,
+        generate_roots=generate_roots,
+        kind='sbs')
 
 
 # TODO docstring
@@ -90,7 +97,42 @@ def _full_text_dps_entry(word: DpsWord) -> str:
     return result
 
 
-def _generate_html_and_json(rsc, generate_roots: bool = True):
+# TODO SBS
+def _full_text_sbs_entry(word: DpsWord) -> str:
+    comm_text = re.sub('<br/>', ' ', word.comm)
+    comm_text = re.sub('<b>', '', comm_text)
+    comm_text = re.sub('</b>', '', comm_text)
+
+    construction_text = re.sub('<br/>', ', ', word.construction)
+
+    result = ''
+    # FIXME Seems conditions is broken when word.russian != ''
+    result += _string_if(not word.russian, f'{word.pali}. {word.pos}. {word.meaning}. [в процессе]')
+    result += _string_if(word.pos, f'{word.pali}. {word.pos}')
+
+    for i in [word.grammar, word.derived, word.neg, word.verb, word.trans]:
+        result += _string_if(i, f', {i}')
+
+    result += _string_if(word.case, f' ({word.case})')
+    result += f'. {word.meaning}'
+    result += _string_if(word.russian, f'. {word.russian}')
+    result += _string_if(word.root, f'. корень: {word.root}')
+    result += _format_if(word.base, '. основа: {}')
+
+    result += _format_if(construction_text, '. образование: {}')
+
+    result += _format_if(word.var, 'вариант: {}')
+    result += _format_if(comm_text, '. комментарий: {}')
+    result += _format_if(word.notes, '. заметки: {}')
+    result += _format_if(word.sk, '. санскрит: {}')
+    result += _format_if(word.sk_root, '. санск. корень: {}')
+    result += '\n'
+
+    return result
+
+
+# TODO Delete kind or make Enum
+def _generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
     data = parse_data_frames(rsc)
 
     print(f"{timeis()} {yellow}generate html and json")
@@ -122,7 +164,11 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
             print(f"{timeis()} {row}/{df_length}\t{w.pali}")
 
         html_string = ''
-        text_full = _full_text_dps_entry(word=w)
+        if kind == 'dps':
+            text_full = _full_text_dps_entry(word=w)
+        elif kind == 'sbs':
+            text_full = _full_text_sbs_entry(word=w)
+
         text_concise = ''
 
         # html head & style
@@ -131,10 +177,6 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
         # summary
         r = render_word_meaning(w)
         text_concise += r['concise']
-
-        # grammar
-        if w.construction != "":
-            construction_text = re.sub("<br/>", ", ", w.construction)
 
         # inflection table
         if w.pos not in INDECLINABLES:
@@ -197,11 +239,13 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
         f.write(text_data_concise)
 
     if generate_roots:
-        generate_roots_html_and_json(data, rsc, html_data_list)
-        # delete_unused_html_files()
+        if kind == 'dps':
+            generate_roots_html_and_json(data, rsc, html_data_list)
+        elif kind == 'sbs':
+            generate_roots_html_and_json_sbs(data, rsc, html_data_list)
 
+# TODO Implement templates
 def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data_list):
-
     # html list > dataframe
     pali_data_df = pd.DataFrame(html_data_list)
     pali_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
@@ -382,32 +426,176 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
     print(f"{timeis()} {line}")
 
+# TODO Merge to generate_html_and_json()
+def generate_roots_html_and_json_sbs(data: DataFrames, rsc: ResourcePaths, html_data_list):
+    # html list > dataframe
+    pali_data_df = pd.DataFrame(html_data_list)
+    pali_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
 
-def delete_unused_html_files():
-    print(f"{timeis()} {green}deleting unused html files")
-    now = datetime.now()
-    date = now.strftime("%d")
-    for root, dirs, files in os.walk("output/html/", topdown=True):
-        for file in files:
-            stats = os.stat(f"output/html/{file}")
-            mod_time = time.ctime (stats [stat.ST_CTIME])
-            mod_time_date = re.sub("(.[^ ]+) (.[^ ]+) (.[^ ]+).+", r"\3", mod_time)
-            if date != int(mod_time_date):
-                try:
-                    os.remove(f"output/html/{file}")
-                    print(f"{timeis()} {file}")
-                except:
-                    print(f"{timeis()} {red}{file} not found")
+    # generate abbreviations html
+    print(f"{timeis()} {green}generating abbreviations html")
 
-    print(f"{timeis()} {green}deleting unused roots html files")
-    for root, dirs, files in os.walk("output/root html/", topdown=True):
-        for file in files:
-            stats = os.stat(f"output/root html/{file}")
-            mod_time = time.ctime (stats [stat.ST_CTIME])
-            mod_time_date = re.sub("(.[^ ]+) (.[^ ]+) (.[^ ]+).+", r"\3", mod_time)
-            if date != int(mod_time_date):
-                try:
-                    os.remove(f"output/root html/{file}")
-                    print(f"{timeis()} {file}")
-                except:
-                    print(f"{timeis()} {red}{file} not found")
+    abbrev_data_list = []
+
+    today = date.today()
+
+    with open(rsc['dict_help_css_path'], 'r') as f:
+        abbrev_css = f.read()
+
+    abbrev_df = data['abbrev_df']
+    abbrev_df_length = len(abbrev_df)
+
+    for row in range(abbrev_df_length):
+
+        html_string = ""
+
+        abbrev = abbrev_df.iloc[row,0]
+        meaning = abbrev_df.iloc[row,1]
+        pali_meaning = abbrev_df.iloc[row,2]
+        # ru_meaning = abbrev_df.iloc[row,3]
+        examp = abbrev_df.iloc[row,4]
+        expl = abbrev_df.iloc[row,5]
+
+        css = f"{abbrev_css}"
+        html_string += render_header_tmpl(css=css, js="")
+
+        html_string += "<body>"
+
+        # summary
+
+        html_string += f"""<div class="help"><p>abbreviation. <b>{abbrev}</b>. {meaning}. """
+
+        if pali_meaning != "":
+            html_string += f"""{pali_meaning}. """
+
+        # if ru_meaning != "":
+        #     html_string += f"""{ru_meaning}. """
+
+        if examp != "":
+            html_string += f"""<br>e.g. {examp}. """
+
+        if expl != "":
+            html_string += f"""<br>{expl}."""
+
+        html_string += f"""</p></div>"""
+
+        html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform?usp=pp_url&entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}" target="_blank">Report a mistake.</a></p>"""
+
+        p = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
+
+        with open(p, 'w') as f:
+            f.write(html_string)
+
+        # compile root data into list
+        synonyms = [abbrev, meaning]
+        abbrev_data_list += [[f"{abbrev}", f"""{html_string}""", "", synonyms]]
+        
+# generate help html
+
+    print(f"{timeis()} {green}generating help html")
+
+    help_data_list = []
+
+    with open(rsc['dict_help_css_path'], 'r') as f:
+        help_css = f.read()
+
+    help_df = data['help_df']
+    help_df_length = len(help_df)
+
+    for row in range(help_df_length):
+
+        html_string = ""
+
+        help_title = help_df.iloc[row,0]
+        meaning = help_df.iloc[row,1]
+
+        css = f"{help_css}"
+        html_string += render_header_tmpl(css=css, js="")
+
+        html_string += "<body>"
+
+        # summary
+
+        html_string += f"""<div class="help"><p>help. <b>{help_title}</b>. {meaning}</p></div>"""
+
+        p = rsc['output_help_html_dir'].joinpath(f"{help_title}.html")
+
+        with open(p, 'w') as f:
+            f.write(html_string)
+
+        # compile root data into list
+        synonyms = [help_title]
+        help_data_list += [[f"{help_title}", f"""{html_string}""", "", synonyms]]
+
+
+        # generate epd html
+
+    print(f"{timeis()} {green}generating epd html")
+
+    df = data['words_df']
+    df_length = data['words_df'].shape[0]
+    pos_exclude_list = ["abbrev", "cs", "letter","root", "suffix", "ve"]
+
+    epd = {}
+
+    for row in range(df_length): #df_length
+        w = DpsWord(df, row)
+        meanings_list = []
+        w.meaning = re.sub("\?\?", "", w.meaning)
+
+        if row % 10000 == 0:
+            print(f"{timeis()} {row}/{df_length}\t{w.pali}")      
+
+        if w.meaning != "" and \
+        w.pos not in pos_exclude_list:
+
+            meanings_clean = re.sub(fr" \(.+?\)", "", w.meaning)                    # remove all space brackets
+            meanings_clean = re.sub(fr"\(.+?\) ", "", meanings_clean)           # remove all brackets space
+            meanings_clean = re.sub(fr"(^ | $)", "", meanings_clean)            # remove space at start and fin
+            meanings_clean = re.sub(fr"  ", " ", meanings_clean)                    # remove double spaces
+            meanings_clean = re.sub(fr" ;|; ", ";", meanings_clean)                 # remove space around ;
+            meanings_clean = re.sub(fr"\(comm\).+$", "", meanings_clean)   # remove commentary meanings
+            meanings_clean = re.sub(fr"lit.+$", "", meanings_clean)         # remove lit meanings
+            meanings_list = meanings_clean.split(";")
+
+            for meaning in meanings_list:
+                if meaning in epd.keys() and w.case =="":
+                    epd[meaning] = f"{epd[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {w.meaning}"
+                if meaning in epd.keys() and w.case !="":
+                    epd[meaning] = f"{epd[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {w.meaning} ({w.case})"
+                if meaning not in epd.keys() and w.case =="":
+                    epd.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {w.meaning}"})
+                if meaning not in epd.keys() and w.case !="":
+                    epd.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {w.meaning} ({w.case})"})
+
+    with open(rsc['epd_css_path'], 'r') as f:
+        epd_css = f.read()
+
+    epd_data_list = []
+
+    for key, value in epd.items():
+        html_string = ""
+        html_string = epd_css
+        html_string += f"<body><div class ='epd_sbs'><p>{value}</p></div></body></html>"
+        epd_data_list += [[f"{key}", f"""{html_string}""", "", ""]]
+
+    # roots > dataframe > json
+
+    print(f"{timeis()} {green}generating json")
+
+    abbrev_data_df = pd.DataFrame(abbrev_data_list)
+    abbrev_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+
+    help_data_df = pd.DataFrame(help_data_list)
+    help_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+
+    epd_data_df = pd.DataFrame(epd_data_list)
+    epd_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+
+    pali_data_df = pd.concat([pali_data_df, abbrev_data_df, help_data_df, epd_data_df])
+
+    print(f"{timeis()} {green}saving html to json")
+
+    pali_data_df.to_json(rsc['gd_json_path'], force_ascii=False, orient="records", indent=6)
+
+    print(f"{timeis()} {line}")
