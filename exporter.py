@@ -33,7 +33,6 @@ def run_generate_html_and_json_test(generate_roots: bool = True):
     generate_html_and_json_test(generate_roots)
 
 
-
 def _run_generate_goldendict(rsc: ResourcePaths, ifo: 'StarDictIfo', move_to_dest: bool = True):
     """Generate a Stardict-format .zip for GoldenDict."""
 

@@ -25,6 +25,8 @@ GOOGLE_LINK_TEMPLATE = (
     '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
     'usp=pp_url&{args}" target="_blank">{text}</a>')
 
+ENCODING = 'UTF-8'
+
 
 # TODO
 def generate_html_and_json(generate_roots: bool = True):
@@ -35,7 +37,7 @@ def generate_html_and_json(generate_roots: bool = True):
 
 
 def generate_html_and_json_sbs(generate_roots: bool = True):
-        ...
+    ...
 
 
 # TODO docstring
@@ -90,13 +92,12 @@ def _full_text_dps_entry(word: DpsWord) -> str:
 
 def _generate_html_and_json(rsc, generate_roots: bool = True):
     data = parse_data_frames(rsc)
-    today = date.today()
 
     print(f"{timeis()} {yellow}generate html and json")
     print(f"{timeis()} {line}")
     print(f"{timeis()} {green}generating dps html")
 
-    error_log = open(rsc['error_log_dir'].joinpath("exporter errorlog.txt"), "w")
+    error_log = ''
 
     html_data_list = []
     text_data_full = ''
@@ -108,14 +109,10 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
     df = data['words_df']
     df_length = data['words_df'].shape[0]
 
-    button_template = (
-        '<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)"'
-        ' data-target="{target}">{name}</a>')
-
-    with open(rsc['dict_words_css_path'], 'r') as f:
+    with open(rsc['dict_words_css_path'], 'r', encoding=ENCODING) as f:
         words_css = f.read()
 
-    with open(rsc['buttons_js_path'], 'r') as f:
+    with open(rsc['buttons_js_path'], 'r', encoding=ENCODING) as f:
         buttons_js = f.read()
 
     for row in range(df_length):
@@ -149,7 +146,7 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
                     table_data_read = f.read()
             except FileNotFoundError:
                 inflection_table_error_string += w.pali + ", "
-                error_log.write(f"error reading inflection table: {w.pali}.html\n")
+                error_log += f'error reading inflection table: {w.pali}.html\n'
 
         html_string += render_word_dps_tmpl(w, table_data_read=table_data_read)
         html_string += '</html>'
@@ -163,7 +160,7 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
                 synonyms = (synonyms)
         else:
             synonyms_error_string += w.pali + ', '
-            error_log.write(f"error reading synonyms - {w.pali}\n")
+            error_log += f'error reading synonyms - {w.pali}\n'
             synonyms = ""
 
         # data compiling
@@ -176,7 +173,9 @@ def _generate_html_and_json(rsc, generate_roots: bool = True):
             with open(p, "w", encoding="utf-8") as f:
                 f.write(html_string)
 
-    error_log.close()
+    error_log_path = rsc['error_log_dir'].joinpath("exporter errorlog.txt")
+    with open(error_log_path, 'w', encoding=ENCODING) as error_log_file:
+        error_log_file.write(error_log)
 
     if inflection_table_error_string != "":
         print(f"{timeis()} {red}inflection table errors: {inflection_table_error_string}")
