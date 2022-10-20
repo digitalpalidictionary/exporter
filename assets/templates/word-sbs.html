@@ -59,35 +59,35 @@
         </tr>
         % endif
 
-        <tr valign="top"><th>английский</th><td><b>${word.meaning}</b></td></tr>
+        <tr valign="top"><th>Meaning</th><td><b>${word.meaning}</b></td></tr>
 
-        % if word.meaning != "":
-        <tr valign="top"><th>русский</th><td><b>${word.meaning}</b></td></tr>
+        % if word.meaning != '':
+        <tr valign="top"><th>Russian</th><td><b>${word.russian}</b></td></tr>
         % endif
 
-        % if word.root != "":
-        <tr valign="top"><th>корень</th><td>${word.root}</td></tr>
+        % if word.root != '':
+        <tr valign="top"><th>Root</th><td>${word.root}</td></tr>
         % endif
-        % if word.base != "":
-        <tr valign="top"><th>основа</th><td>${word.base}</td></tr>
+        % if word.base != '':
+        <tr valign="top"><th>Base</th><td>${word.base}</td></tr>
         % endif
-        % if word.construction != "":
-        <tr valign="top"><th>образование</th><td>${word.construction}</td></tr>
+        % if word.construction != '':
+        <tr valign="top"><th>Construction</th><td>${word.construction}</td></tr>
         % endif
-        % if word.var != "":
-        <tr valign="top"><th>вариант</th><td>${word.var}</td></tr>
+        % if word.var != '':
+        <tr valign="top"><th>Variant</th><td>${word.var}</td></tr>
         % endif
-        % if word.comm != "":
-        <tr valign="top"><th>комментарий</th><td>${word.comm}</td></tr>
+        % if word.comm != '':
+        <tr valign="top"><th>Commentary</th><td>${word.comm}</td></tr>
         % endif
-        % if word.notes != "":
-        <tr valign="top"><th>заметки</th><td>${word.notes}</td></tr>
+        % if word.notes != '':
+        <tr valign="top"><th>Notes</th><td>${word.notes}</td></tr>
         % endif
-        % if word.sk != "":
-        <tr valign="top"><th>санскрит</th><td><i>${word.sk}</i></td></tr>
+        % if word.sk != '':
+        <tr valign="top"><th>Sanskrit</th><td><i>${word.sk}</i></td></tr>
         % endif
-        % if word.sk_root != "":
-        <tr valign="top"><th>санск. корень</th><td><i>${word.sk_root}</i></td></tr>
+        % if word.sk_root != '':
+        <tr valign="top"><th>Sk root</th><td><i>${word.sk_root}</i></td></tr>
         % endif
     </table>
     <p>
