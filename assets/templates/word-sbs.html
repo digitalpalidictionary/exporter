@@ -137,42 +137,50 @@ ${table_data_read}
 </div>
 % endif
 
-<div id="feedback_dps_${word.pali_}" class="content_dps hidden">
-    <p>
-        Это образовательный проект и находится на стадии тестирования и редактирования.
-        <br>
-        Словарь основывается на DPD <b>Электронный Словарь Пали (Дост. Бодхираса).</b>
-        <br>
-        <b>Помощь.</b> Чтобы увидеть подробное описание пожалуйста кликните на любое заглавие или сокращение.
-        
-        Список литературы можно увидеть в статье <b>Источники</b>
-    </p>
-  
-    <p>
-        <a class="link" href="${google_href.format(args='')}" target="_blank">
-            Сообщить об ошибке.
-        </a>
-        <span>
-            Ваши предложения и комментарии будут неоценимой помощью в улучшении
-            качества данной работы и будут полезны всем пользователям словаря.
-        </span>
-    </p>
+<div id="feedback_sbs_${word.pali_}" class="content_sbs hidden">
+  <!-- <a
+    class="button_sbs close"
+    href="javascript:void(0);"
+    onclick="button_click(this)"
+    data-target="feedback_sbs_${word.pali_}">
+    feedback
+  </a> -->
 
-    <p>
-      <span>Ваша версия словаря от <b>${today}</b>. Пожалуйста, регулярно проверяйте наличие обновлений.</span>
-    </p>
+  <p>
+    SBS Pāḷi Dictionary is a work in progress, it is analysis of the words from SBS Pāḷi-English Recitation. It made available for testing and feedback purposes.
+    <br>
+    This work based on <a class="link" href="https://digitalpalidictionary.github.io/">DPD</a><span></span> <b>Digital Pāḷi Dictionary by Ven. Bodhirasa. </b> <br>(Please explore this website to learn more about GoldenDict features)
+    <br>
+    <b>Help.</b> Click on any heading or abbrevaiation to get contextual help.
+    <br>
+    The list of literature you can see in <b>Info</b>
+  </p>
 
-    <p>
-      <a class="link" href="https://devamitta.github.io/">Веб страница</a>.
-      <span>Можно найти свежую версию словаря; узнать больше о функциях, как установить и настроить.</span>
-    </p>
-  
-    <p>
-      <a class="link" href="${mailto_href}">Принять участие</a>.
-      <span>Если вы программист или хорошо знаете Пали или как-то хотите
-        поддержать проект, помощь приветствуется!</span>
-    </p>
+  <p>
+    <a
+      class="link"
+      href="https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform?usp=pp_url&entry.438735500=${word.pali}&entry.1433863141=GoldenDict ${today}"
+      >
+      Report a mistake.
+    </a>
+    <span> Did you spot a mistake in the dictionary? Have a bright idea? Please report it. It
+      generally takes less than a minute, and your corrections and suggestions help to improve the quality of this
+      dictionary for everyone who uses it.</span>
+    </a>
+  </p>
+
+  <p>
+    <a
+      class="link"
+      href="https://sasanarakkha.github.io/study-tools/SBS_P%C4%81li_Dictionary/SBS_P%C4%81li_Dictionary.html"
+      >
+      Get updated.
+    </a>
+    <span>
+      Please regularly check for new version.
+    </span>
+    <p> You are using SBS Pāḷi Dictionary for GoldenDict created on <b>${today}</b>.</p>
+  </p>
 </div>
-</body>
 
 ## vi: syn=mako
