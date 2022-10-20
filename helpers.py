@@ -1,5 +1,6 @@
 from datetime import date
 from pathlib import Path
+from typing import Any
 from typing import TypedDict
 
 import os
@@ -15,6 +16,14 @@ from timeis import timeis, green, red
 
 
 load_dotenv()
+
+
+INDECLINABLES = {"abbrev", "abs", "ger", "ind", "inf", "prefix", "sandhi", "idiom"}
+CONJUGATIONS = {"aor", "cond", "fut", "imp", "imperf", "opt", "perf", "pr"}
+DECLENSIONS = {
+    "adj", "card", "cs", "fem", "letter", "masc", "nt", "ordin", "pp", "pron",
+    "prp", "ptp", "root", "suffix", "ve"
+}
 
 
 class DataFrames(TypedDict):
@@ -255,9 +264,21 @@ class DpsWord:
         self.count: str = df.loc[row, "count"]
 
 
-INDECLINABLES = {"abbrev", "abs", "ger", "ind", "inf", "prefix", "sandhi", "idiom"}
-CONJUGATIONS = {"aor", "cond", "fut", "imp", "imperf", "opt", "perf", "pr"}
-DECLENSIONS = {
-    "adj", "card", "cs", "fem", "letter", "masc", "nt", "ordin", "pp", "pron",
-    "prp", "ptp", "root", "suffix", "ve"
-}
+def string_if(condition: Any, string: str) -> str:
+    """ Get the second arg if the first is true, empty string otherwise
+    """
+    if condition:
+        return string
+    return ''
+
+
+def format_if(string: str, template: str) -> str:
+    """ Format the second arg with the first if not empty
+
+    :param string: any text
+    :param template: template in form of 'string with a placeholder {}'
+    :return: formatted template if the string is not empty or empty string
+    """
+    if len(string) > 0:
+        return template.format(string)
+    return ''

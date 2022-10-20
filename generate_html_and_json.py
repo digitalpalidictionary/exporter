@@ -1,12 +1,7 @@
 import pickle
 import re
-import stat
-import time
-import os
 
 from datetime import date
-from datetime import datetime
-from typing import Any
 
 import pandas as pd
 
@@ -14,9 +9,9 @@ from helpers import DataFrames
 from helpers import DpsWord
 from helpers import INDECLINABLES
 from helpers import ResourcePaths
-from helpers import get_resource_paths_dps
-from helpers import get_resource_paths_sbs
+from helpers import format_if
 from helpers import parse_data_frames
+from helpers import string_if
 from html_components import render_header_tmpl
 from html_components import WordTemplate
 from html_components import render_word_meaning
@@ -31,44 +26,6 @@ GOOGLE_LINK_TEMPLATE = (
 ENCODING = 'UTF-8'
 
 
-# TODO Move to exporter.py and decorate with app.command
-def generate_html_and_json(generate_roots: bool = True):
-    rsc = get_resource_paths_dps()
-    _generate_html_and_json(
-        rsc=rsc,
-        generate_roots=generate_roots,
-        kind='dps')
-
-
-def generate_html_and_json_sbs(generate_roots: bool = True):
-    rsc = get_resource_paths_sbs()
-    # TODO Recheck rsc
-    _generate_html_and_json(
-        rsc=rsc,
-        generate_roots=generate_roots,
-        kind='sbs')
-
-
-# TODO docstring
-# TODO to helpers
-def _string_if(condition: Any, string: str) -> str:
-    """
-    """
-    if condition:
-        return string
-    return ''
-
-
-# TODO docstring
-# TODO to helpers
-def _format_if(string: str, template: str) -> str:
-    """
-    """
-    if len(string) > 0:
-        return template.format(string)
-    return ''
-
-
 def _full_text_dps_entry(word: DpsWord) -> str:
     comm_text = re.sub('<br/>', ' ', word.comm)
     comm_text = re.sub('<b>', '', comm_text)
@@ -78,25 +35,25 @@ def _full_text_dps_entry(word: DpsWord) -> str:
 
     result = ''
     # FIXME Seems conditions is broken when word.russian != ''
-    result += _string_if(not word.russian, f'{word.pali}. {word.pos}. {word.meaning}. [в процессе]')
-    result += _string_if(word.pos, f'{word.pali}. {word.pos}')
+    result += string_if(not word.russian, f'{word.pali}. {word.pos}. {word.meaning}. [в процессе]')
+    result += string_if(word.pos, f'{word.pali}. {word.pos}')
 
     for i in [word.grammar, word.derived, word.neg, word.verb, word.trans]:
-        result += _string_if(i, f', {i}')
+        result += string_if(i, f', {i}')
 
-    result += _string_if(word.case, f' ({word.case})')
+    result += string_if(word.case, f' ({word.case})')
     result += f'. {word.meaning}'
-    result += _string_if(word.russian, f'. {word.russian}')
-    result += _string_if(word.root, f'. корень: {word.root}')
-    result += _format_if(word.base, '. основа: {}')
+    result += string_if(word.russian, f'. {word.russian}')
+    result += string_if(word.root, f'. корень: {word.root}')
+    result += format_if(word.base, '. основа: {}')
 
-    result += _format_if(construction_text, '. образование: {}')
+    result += format_if(construction_text, '. образование: {}')
 
-    result += _format_if(word.var, 'вариант: {}')
-    result += _format_if(comm_text, '. комментарий: {}')
-    result += _format_if(word.notes, '. заметки: {}')
-    result += _format_if(word.sk, '. санскрит: {}')
-    result += _format_if(word.sk_root, '. санск. корень: {}')
+    result += format_if(word.var, 'вариант: {}')
+    result += format_if(comm_text, '. комментарий: {}')
+    result += format_if(word.notes, '. заметки: {}')
+    result += format_if(word.sk, '. санскрит: {}')
+    result += format_if(word.sk_root, '. санск. корень: {}')
     result += '\n'
 
     return result
@@ -112,32 +69,32 @@ def _full_text_sbs_entry(word: DpsWord) -> str:
 
     result = ''
     # FIXME Seems conditions is broken when word.russian != ''
-    result += _string_if(not word.russian, f'{word.pali}. {word.pos}. {word.meaning}. [в процессе]')
-    result += _string_if(word.pos, f'{word.pali}. {word.pos}')
+    result += string_if(not word.russian, f'{word.pali}. {word.pos}. {word.meaning}. [в процессе]')
+    result += string_if(word.pos, f'{word.pali}. {word.pos}')
 
     for i in [word.grammar, word.derived, word.neg, word.verb, word.trans]:
-        result += _string_if(i, f', {i}')
+        result += string_if(i, f', {i}')
 
-    result += _string_if(word.case, f' ({word.case})')
+    result += string_if(word.case, f' ({word.case})')
     result += f'. {word.meaning}'
-    result += _string_if(word.russian, f'. {word.russian}')
-    result += _string_if(word.root, f'. корень: {word.root}')
-    result += _format_if(word.base, '. основа: {}')
+    result += string_if(word.russian, f'. {word.russian}')
+    result += string_if(word.root, f'. корень: {word.root}')
+    result += format_if(word.base, '. основа: {}')
 
-    result += _format_if(construction_text, '. образование: {}')
+    result += format_if(construction_text, '. образование: {}')
 
-    result += _format_if(word.var, 'вариант: {}')
-    result += _format_if(comm_text, '. комментарий: {}')
-    result += _format_if(word.notes, '. заметки: {}')
-    result += _format_if(word.sk, '. санскрит: {}')
-    result += _format_if(word.sk_root, '. санск. корень: {}')
+    result += format_if(word.var, 'вариант: {}')
+    result += format_if(comm_text, '. комментарий: {}')
+    result += format_if(word.notes, '. заметки: {}')
+    result += format_if(word.sk, '. санскрит: {}')
+    result += format_if(word.sk_root, '. санск. корень: {}')
     result += '\n'
 
     return result
 
 
 # TODO Delete kind or make Enum
-def _generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
+def generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
     data = parse_data_frames(rsc)
 
     print(f"{timeis()} {yellow}generate html and json")

@@ -7,7 +7,6 @@ import typer
 
 from timeis import timeis, yellow, green, line
 from generate_html_and_json import generate_html_and_json
-from generate_html_and_json import generate_html_and_json_sbs
 from helpers import ResourcePaths
 from helpers import copy_goldendict
 from helpers import get_resource_paths_dps
@@ -21,12 +20,21 @@ RSC = get_resource_paths_dps()
 
 @app.command()
 def run_generate_html_and_json(generate_roots: bool = True):
-    generate_html_and_json(generate_roots)
+    rsc = get_resource_paths_dps()
+    generate_html_and_json(
+        rsc=rsc,
+        generate_roots=generate_roots,
+        kind='dps')
 
 
 @app.command()
 def run_generate_html_and_json_sbs(generate_roots: bool = True):
-    generate_html_and_json_sbs(generate_roots)
+    rsc = get_resource_paths_sbs()
+    # TODO Recheck rsc
+    generate_html_and_json(
+        rsc=rsc,
+        generate_roots=generate_roots,
+        kind='sbs')
 
 
 def _run_generate_goldendict(rsc: ResourcePaths, ifo: 'StarDictIfo', move_to_dest: bool = True):
