@@ -12,26 +12,36 @@
 
     pos_string = ''
     if word.pos != '':
-        pos_entries = [i for i in [word.pos, word.grammar, word.derived, word.neg, word.verb, word.trans] if i != '']
+        pos_entries = [i for i in [word.pos, word.grammar, f'from {word.derived}', word.neg, word.verb, word.trans] if i != '']
         pos_string += ', '.join(pos_entries)
         if word.case != '':
             pos_string += f'({word.case})'
 %>
 
+## TODO To lib
+<%def name='string_if(value)'>${value if value else ''}</%def>
+
+<%def name='list_non_empty(values)'>
+<% result = ', '.join([str(i) for i in values if i]) %>
+${result}
+</%def>
+
 <body>
-% if word.meaning == '':
-<div class="content_sbs"><p>${word.pos}. <b>${word.meaning}</b> [в процессе]</p></div>
-% else:
 <div class="content_sbs">
     <p>
+        % if word.ex != '':
+        <b>(cl.${word.ex}) | </b>
+        %endif
         % if word.pos != '':
-        ${word.pos}
+        ${word.pos}.
         % endif
+        % if word.sbs_meaning != '':
+        <b>${word.sbs_meaning}</b>
+        % else:
         <b>${word.meaning}</b>
+        % endif
     </p>
 </div>
-% endif
-
 
 <div class="button-box">
     % if word.meaning != '':
@@ -43,25 +53,26 @@
     ${button_template.format(target=f'example_sbs_{word.pali_}', name='examples')}
     % endif
     % if word.pos in conjugations:
-    ${button_template.format(target=f'conjugation_sbs_{word.pali_}', name='спряжения')}
+    ${button_template.format(target=f'conjugation_sbs_{word.pali_}', name='conjugation')}
     % endif
     % if word.pos in declensions:
-    ${button_template.format(target=f'declension_sbs_{word.pali_}', name='склонения')}
+    ${button_template.format(target=f'declension_sbs_{word.pali_}', name='declensions')}
     % endif
+    ${button_template.format(target=f'feedback_sbs_{word.pali_}', name='feedback')}
 </div>
 
 <div id="grammar_sbs_${word.pali_}" class="content_sbs hidden">
     <table class = "table1_sbs">
         % if word.pos != '':
         <tr>
-            <th>часть речи</th>
+            <th>Grammar</th>
             <td>${pos_string}</td>
         </tr>
         % endif
 
         <tr valign="top"><th>Meaning</th><td><b>${word.meaning}</b></td></tr>
 
-        % if word.meaning != '':
+        % if word.russian!= '':
         <tr valign="top"><th>Russian</th><td><b>${word.russian}</b></td></tr>
         % endif
 
@@ -92,26 +103,53 @@
     </table>
     <p>
         <a class="link" target="_blank" href="${google_href.format(args='')}">
-            Пожалуйста, сообщите об ошибке.
+            Report a mistake.
         </a>
     </p>
 </div>
 
 <div id="example_sbs_${word.pali_}" class="content_sbs hidden">
-    ## FIXME Nested pars
     % if word.eg1 != '':
-    <p>${word.eg1}<p class="sutta_sbs">${word.source1} ${word.sutta1}</p></p>
+    <p>
+        ${word.eg1}<p class="sutta_sbs">${word.source1} ${word.sutta1}</p>
+        % if word.chapter1 != '':
+        <p class="sutta_sbs">
+            ${list_non_empty([word.chapter1, word.sbs_pali_chant1, word.sbs_eng_chant1])}
+        </p>
+        % endif
+    </p>
     % endif
     % if word.eg2 != '':
-    <p>${word.eg2}<p class="sutta_sbs">${word.source2} ${word.sutta2}</p></p>
+    <p>
+        ${word.eg2}<p class="sutta_sbs">${word.source2} ${word.sutta2}</p>
+        % if word.chapter2 != '':
+        <p class="sutta_sbs">
+            ${list_non_empty([word.chapter2, word.sbs_pali_chant2, word.sbs_eng_chant2])}
+        </p>
+        %endif
+    </p>
     % endif
-    % if word.eg3 != '' and word.chapter3 != 'SBS':  # FIXME Is a 'SBS' check should be here?
-    <p>${word.eg3}<p class="sutta_sbs">${word.source3} ${word.sutta3}</p></p>
+    % if word.eg3 != '':
+    <p>
+        ${word.eg3}
+        <p class="sutta_sbs">
+            ${word.source3} ${word.sutta3}
+            % if word.ex != '':
+            <b>(cl.${word.ex}) | </b>
+            % endif
+            $${word.source3} ${word.sutta3}
+        </p>
+        % if word.chapter3 != '':
+        <p class="sutta_sbs">
+            ${list_non_empty([word.chapter3, word.sbs_pali_chant3, word.sbs_eng_chant3])}
+        </p>
+        % endif
+    </p>
     % endif
 
     <p>
-    Пожалуйста, подскажите более подходящий 
-    <a class="link" target='_blank' href="${google_href.format(args=f'&entry.326955045=Пример2')}">пример</a>.
+    Can you think of a better example?
+    <a class="link" target='_blank' href="${google_href.format(args=f'&entry.326955045=Example2')}">Add it here</a>.
     </p>
 </div>
 
@@ -124,59 +162,58 @@
 ${table_data_read}
     % if word.pos != 'sandhi' and word.pos != 'idiom' and (word.pos in declensions or word.pos in conjugations):
     <p>
-        У вас есть предложение?
+        Have a suggestion?
         <a class="link" target='_blank' href="${google_href.format(args='')}">
-            Пожалуйста, сообщите об ошибке
+            Report a mistake.
         </a>.
     </p>
     % endif
 </div>
 % endif
 
+## TODO Reindent
 <div id="feedback_sbs_${word.pali_}" class="content_sbs hidden">
-  <!-- <a
-    class="button_sbs close"
-    href="javascript:void(0);"
-    onclick="button_click(this)"
-    data-target="feedback_sbs_${word.pali_}">
-    feedback
-  </a> -->
+    ## FIXME Does commented needed?
+    <!-- <a
+      class="button_sbs close"
+      href="javascript:void(0);"
+      onclick="button_click(this)"
+      data-target="feedback_sbs_${word.pali_}">
+      feedback
+    </a> -->
+  
+    <p>
+        SBS Pāḷi Dictionary is a work in progress, it is analysis of the words from SBS Pāḷi-English Recitation. It made available for testing and feedback purposes.
+        <br>
+        This work based on <a class="link" href="https://digitalpalidictionary.github.io/">DPD</a><span></span> <b>Digital Pāḷi Dictionary by Ven. Bodhirasa. </b> <br>(Please explore this website to learn more about GoldenDict features)
+        <br>
+        <b>Help.</b> Click on any heading or abbrevaiation to get contextual help.
+        <br>
+        The list of literature you can see in <b>Info</b>
+    </p>
+  
+    <p>
+        <a
+            class="link"
+            href="https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform?usp=pp_url&entry.438735500=${word.pali}&entry.1433863141=GoldenDict ${today}"
+            >
+            Report a mistake.
+        </a>
+        <span> Did you spot a mistake in the dictionary? Have a bright idea? Please report it. It
+            generally takes less than a minute, and your corrections and suggestions help to improve the quality of this
+            dictionary for everyone who uses it.</span>
+        </a>
+    </p>
 
-  <p>
-    SBS Pāḷi Dictionary is a work in progress, it is analysis of the words from SBS Pāḷi-English Recitation. It made available for testing and feedback purposes.
-    <br>
-    This work based on <a class="link" href="https://digitalpalidictionary.github.io/">DPD</a><span></span> <b>Digital Pāḷi Dictionary by Ven. Bodhirasa. </b> <br>(Please explore this website to learn more about GoldenDict features)
-    <br>
-    <b>Help.</b> Click on any heading or abbrevaiation to get contextual help.
-    <br>
-    The list of literature you can see in <b>Info</b>
-  </p>
-
-  <p>
-    <a
-      class="link"
-      href="https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform?usp=pp_url&entry.438735500=${word.pali}&entry.1433863141=GoldenDict ${today}"
-      >
-      Report a mistake.
-    </a>
-    <span> Did you spot a mistake in the dictionary? Have a bright idea? Please report it. It
-      generally takes less than a minute, and your corrections and suggestions help to improve the quality of this
-      dictionary for everyone who uses it.</span>
-    </a>
-  </p>
-
-  <p>
-    <a
-      class="link"
-      href="https://sasanarakkha.github.io/study-tools/SBS_P%C4%81li_Dictionary/SBS_P%C4%81li_Dictionary.html"
-      >
-      Get updated.
-    </a>
-    <span>
-      Please regularly check for new version.
-    </span>
-    <p> You are using SBS Pāḷi Dictionary for GoldenDict created on <b>${today}</b>.</p>
-  </p>
+    <p>
+      <a class="link" href="https://sasanarakkha.github.io/study-tools/SBS_P%C4%81li_Dictionary/SBS_P%C4%81li_Dictionary.html">
+          Get updated.
+      </a>
+      <span>
+          Please regularly check for new version.
+      </span>
+      <p>You are using SBS Pāḷi Dictionary for GoldenDict created on <b>${today}</b>.</p>
+    </p>
 </div>
 
 ## vi: syn=mako

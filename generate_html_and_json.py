@@ -50,6 +50,7 @@ def generate_html_and_json_sbs(generate_roots: bool = True):
 
 
 # TODO docstring
+# TODO to helpers
 def _string_if(condition: Any, string: str) -> str:
     """
     """
@@ -58,6 +59,8 @@ def _string_if(condition: Any, string: str) -> str:
     return ''
 
 
+# TODO docstring
+# TODO to helpers
 def _format_if(string: str, template: str) -> str:
     """
     """

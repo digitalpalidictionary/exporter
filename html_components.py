@@ -67,33 +67,23 @@ def render_word_meaning(w: DpsWord) -> RenderResult:
     )
 
 
+# TODO Decide to deprecate
 def render_word_meaning_sbs(w: DpsWord) -> RenderResult:
-    html_string = ""
-    text_full = ""
     text_concise = ""
 
-    html_string += '<div class="content_sbs"><p>'
     text_concise += f"{w.pali}."
 
-    if w.ex != "":
-        html_string += f"""<b>(cl.{w.ex}) | </b>"""
-
     if w.pos != "":
-        html_string += f"{w.pos}."
         text_concise += f"{w.pos}."
 
     if w.sbs_meaning != "":
-        html_string += f" <b>{w.sbs_meaning}</b>"
         text_concise += f" {w.sbs_meaning}"
 
     if w.sbs_meaning == "":
-        html_string += f" <b>{w.meaning}</b>"
         text_concise += f" {w.meaning}"
 
-    html_string += "</p></div>"
-
     return RenderResult(
-        html=html_string,
-        full=text_full,
+        html='',  # TODO Deprecate
+        full='',  # TODO Deprecate
         concise=text_concise,
     )
