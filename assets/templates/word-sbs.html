@@ -4,12 +4,8 @@
         f'usp=pp_url&entry.438735500={word.pali}&entry.1433863141=GoldenDict%20{today}'
         '{args}')
 
-    mailto_href = (
-        'mailto:devamitta@sasanarakkha.org?subject='
-        'Участие&body=Пожалуйста, дайте мне знать, как я могу принять участие в развитии Словаря.')
-
     button_template = (
-        '<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)"'
+        '<a class="button_sbs" href="javascript:void(0);" onclick="button_click(this)"'
         ' data-target="{target}">{name}</a>')
 
     examples = [i for i in [word.eg1, word.eg2, word.eg3] if i != '']
@@ -24,9 +20,9 @@
 
 <body>
 % if word.meaning == '':
-<div class="content_dps"><p>${word.pos}. <b>${word.meaning}</b> [в процессе]</p></div>
+<div class="content_sbs"><p>${word.pos}. <b>${word.meaning}</b> [в процессе]</p></div>
 % else:
-<div class="content_dps">
+<div class="content_sbs">
     <p>
         % if word.pos != '':
         ${word.pos}
@@ -39,23 +35,23 @@
 
 <div class="button-box">
     % if word.meaning != '':
-    ${button_template.format(target=f'grammar_dps_{word.pali_}', name='грамматика')}
+    ${button_template.format(target=f'grammar_sbs_{word.pali_}', name='grammar')}
     % endif
     % if len(examples) == 1:
-    ${button_template.format(target=f'example_dps_{word.pali_}', name="пример")}
+    ${button_template.format(target=f'example_sbs_{word.pali_}', name='example')}
     % elif len(examples) > 1:
-    ${button_template.format(target=f'example_dps_{word.pali_}', name='примеры')}
+    ${button_template.format(target=f'example_sbs_{word.pali_}', name='examples')}
     % endif
     % if word.pos in conjugations:
-    ${button_template.format(target=f'conjugation_dps_{word.pali_}', name='спряжения')}
+    ${button_template.format(target=f'conjugation_sbs_{word.pali_}', name='спряжения')}
     % endif
     % if word.pos in declensions:
-    ${button_template.format(target=f'declension_dps_{word.pali_}', name='склонения')}
+    ${button_template.format(target=f'declension_sbs_{word.pali_}', name='склонения')}
     % endif
 </div>
 
-<div id="grammar_dps_${word.pali_}" class="content_dps hidden">
-    <table class = "table1_dps">
+<div id="grammar_sbs_${word.pali_}" class="content_sbs hidden">
+    <table class = "table1_sbs">
         % if word.pos != '':
         <tr>
             <th>часть речи</th>
@@ -101,16 +97,16 @@
     </p>
 </div>
 
-<div id="example_dps_${word.pali_}" class="content_dps hidden">
+<div id="example_sbs_${word.pali_}" class="content_sbs hidden">
     ## FIXME Nested pars
     % if word.eg1 != '':
-    <p>${word.eg1}<p class="sutta_dps">${word.source1} ${word.sutta1}</p></p>
+    <p>${word.eg1}<p class="sutta_sbs">${word.source1} ${word.sutta1}</p></p>
     % endif
     % if word.eg2 != '':
-    <p>${word.eg2}<p class="sutta_dps">${word.source2} ${word.sutta2}</p></p>
+    <p>${word.eg2}<p class="sutta_sbs">${word.source2} ${word.sutta2}</p></p>
     % endif
     % if word.eg3 != '' and word.chapter3 != 'SBS':  # FIXME Is a 'SBS' check should be here?
-    <p>${word.eg3}<p class="sutta_dps">${word.source3} ${word.sutta3}</p></p>
+    <p>${word.eg3}<p class="sutta_sbs">${word.source3} ${word.sutta3}</p></p>
     % endif
 
     <p>
@@ -121,9 +117,9 @@
 
 % if word.pos not in indeclinables:
     % if word.pos in declensions:
-<div id="declension_dps_${word.pali_}" class="content_dps hidden">
+<div id="declension_sbs_${word.pali_}" class="content_sbs hidden">
     % elif word.pos in conjugations:
-<div id="conjugation_dps_${word.pali_}" class="content_dps hidden">
+<div id="conjugation_sbs_${word.pali_}" class="content_sbs hidden">
     % endif
 ${table_data_read}
     % if word.pos != 'sandhi' and word.pos != 'idiom' and (word.pos in declensions or word.pos in conjugations):
