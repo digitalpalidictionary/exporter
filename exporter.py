@@ -8,12 +8,10 @@ import typer
 from timeis import timeis, yellow, green, line
 from generate_html_and_json import generate_html_and_json
 from generate_html_and_json import generate_html_and_json_sbs
-from generate_html_and_json_test import generate_html_and_json_test
 from helpers import ResourcePaths
 from helpers import copy_goldendict
 from helpers import get_resource_paths_dps
 from helpers import get_resource_paths_sbs
-from helpers import get_resource_paths_test
 
 
 app = typer.Typer()
@@ -29,11 +27,6 @@ def run_generate_html_and_json(generate_roots: bool = True):
 @app.command()
 def run_generate_html_and_json_sbs(generate_roots: bool = True):
     generate_html_and_json_sbs(generate_roots)
-
-
-@app.command()
-def run_generate_html_and_json_test(generate_roots: bool = True):
-    generate_html_and_json_test(generate_roots)
 
 
 def _run_generate_goldendict(rsc: ResourcePaths, ifo: 'StarDictIfo', move_to_dest: bool = True):
@@ -98,22 +91,6 @@ def run_generate_goldendict_sbs(move_to_dest: bool = True):
         "author": "Devamitta Bhikkhu",
         "description": "words from the SBS Pāḷi-English Recitation an other Pāḷi study tools",
         "email": "sasanarakkha.org",
-    })
-
-    return _run_generate_goldendict(rsc, ifo, move_to_dest)
-
-
-@app.command()
-def run_generate_goldendict_test(move_to_dest: bool = True):
-    from simsapa.app.stardict import ifo_from_opts, StarDictIfo
-
-    rsc = get_resource_paths_test()
-
-    ifo = ifo_from_opts({
-        "bookname": "DPS",
-        "author": "Devamitta Bhikkhu",
-        "description": "words from the Devamitta Pāḷi Study",
-        "email": "devamitta@sasanarakkha.org",
     })
 
     return _run_generate_goldendict(rsc, ifo, move_to_dest)

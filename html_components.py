@@ -11,7 +11,6 @@ import timeis
 from helpers import DpsWord
 
 HEADER_TMPL = Template(filename='./assets/templates/header.html')
-FEEDBACK_TMPL_TEST = Template(filename='./assets/templates/feedback-test.html')
 
 
 def _render(template: Template, **kwargs) -> str:
@@ -26,11 +25,6 @@ def _render(template: Template, **kwargs) -> str:
 
 def render_header_tmpl(css: str, js: str) -> str:
     return str(HEADER_TMPL.render(css=css, js=js))
-
-
-def render_feedback_tmpl_test(w: DpsWord) -> str:
-    today = date.today()
-    return str(FEEDBACK_TMPL_TEST.render(w=w, today=today))
 
 
 def render_word_tmpl(template_path: Path, word: DpsWord, table_data_read: str) -> str:
@@ -94,47 +88,6 @@ def render_word_meaning_sbs(w: DpsWord) -> RenderResult:
         text_concise += f" {w.meaning}"
 
     html_string += "</p></div>"
-
-    return RenderResult(
-        html=html_string,
-        full=text_full,
-        concise=text_concise,
-    )
-
-
-def render_word_meaning_test(w: DpsWord) -> RenderResult:
-    html_string = ""
-    text_full = ""
-    text_concise = ""
-
-    html_string += """<div class="content_test"><p>"""
-
-    if w.ex != "":
-        html_string += f"""<b>(ex.{w.ex}) | </b>"""
-
-        if w.count != "":
-            html_string += f"""#{w.count}. | """
-
-        html_string += f"""{w.pos}. <b>{w.meaning}</b>"""
-
-        if w.chapter2 != "":
-            html_string += """ | <i>[sbs]</i>"""
-
-    else:
-        if w.count != "":
-            html_string += f"""(cl.{w.cl}).#{w.count}. | """
-
-        html_string += f"""{w.pos}. <b>{w.meaning}</b>"""
-
-        if w.chapter2 != "":
-            html_string += """ | <i>[sbs]</i>"""
-
-    html_string += """</p>"""
-
-    if w.russian != "":
-        html_string += f"""<p>{w.russian}</p>"""
-
-    html_string += """</div>"""
 
     return RenderResult(
         html=html_string,

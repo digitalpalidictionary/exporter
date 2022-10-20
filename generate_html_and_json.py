@@ -31,7 +31,7 @@ GOOGLE_LINK_TEMPLATE = (
 ENCODING = 'UTF-8'
 
 
-# TODO
+# TODO Move to exporter.py and decorate with app.command
 def generate_html_and_json(generate_roots: bool = True):
     rsc = get_resource_paths_dps()
     _generate_html_and_json(
