@@ -27,16 +27,19 @@ def render_header_tmpl(css: str, js: str) -> str:
     return str(HEADER_TMPL.render(css=css, js=js))
 
 
-def render_word_tmpl(template_path: Path, word: DpsWord, table_data_read: str) -> str:
-    template = Template(filename=str(template_path))
-    return _render(
-        template,
-        conjugations=helpers.CONJUGATIONS,
-        declensions=helpers.DECLENSIONS,
-        indeclinables=helpers.INDECLINABLES,
-        table_data_read=table_data_read,
-        today=date.today(),
-        word=word)
+class WordTemplate:
+    def __init__(self, template_path: Path):
+        self._template = Template(filename=str(template_path))
+
+    def render(self, word: DpsWord, table_data_read: str) -> str:
+        return _render(
+            self._template,
+            conjugations=helpers.CONJUGATIONS,
+            declensions=helpers.DECLENSIONS,
+            indeclinables=helpers.INDECLINABLES,
+            table_data_read=table_data_read,
+            today=date.today(),
+            word=word)
 
 
 class RenderResult(TypedDict):

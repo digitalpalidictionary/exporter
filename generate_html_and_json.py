@@ -18,7 +18,7 @@ from helpers import get_resource_paths_dps
 from helpers import get_resource_paths_sbs
 from helpers import parse_data_frames
 from html_components import render_header_tmpl
-from html_components import render_word_tmpl
+from html_components import WordTemplate
 from html_components import render_word_meaning
 from html_components import render_word_meaning_sbs
 
@@ -159,6 +159,8 @@ def _generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
     with open(rsc['buttons_js_path'], 'r', encoding=ENCODING) as f:
         buttons_js = f.read()
 
+    word_template = WordTemplate(rsc['word_template_path'])
+
     for row in range(df_length):
         w = DpsWord(df, row)
 
@@ -196,7 +198,7 @@ def _generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
                 inflection_table_error_string += w.pali + ", "
                 error_log += f'error reading inflection table: {w.pali}.html\n'
 
-        html_string += render_word_tmpl(rsc['word_template_path'], w, table_data_read=table_data_read)
+        html_string += word_template.render(w, table_data_read=table_data_read)
         html_string += '</html>'
 
         inflections_path = rsc['inflections_dir'].joinpath("output/inflections translit/").joinpath(w.pali)
