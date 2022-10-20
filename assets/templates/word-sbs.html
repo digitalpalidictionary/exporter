@@ -18,9 +18,6 @@
             pos_string += f'({word.case})'
 %>
 
-## TODO To lib
-<%def name='string_if(value)'>${value if value else ''}</%def>
-
 <%def name='list_non_empty(values)'>
 <% result = ', '.join([str(i) for i in values if i]) %>
 ${result}
