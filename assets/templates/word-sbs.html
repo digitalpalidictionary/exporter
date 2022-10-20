@@ -23,7 +23,7 @@
 %>
 
 <body>
-% if word.russian == '':
+% if word.meaning == '':
 <div class="content_dps"><p>${word.pos}. <b>${word.meaning}</b> [в процессе]</p></div>
 % else:
 <div class="content_dps">
@@ -31,7 +31,7 @@
         % if word.pos != '':
         ${word.pos}
         % endif
-        <b>${word.russian}</b>
+        <b>${word.meaning}</b>
     </p>
 </div>
 % endif
@@ -65,8 +65,8 @@
 
         <tr valign="top"><th>английский</th><td><b>${word.meaning}</b></td></tr>
 
-        % if word.russian != "":
-        <tr valign="top"><th>русский</th><td><b>${word.russian}</b></td></tr>
+        % if word.meaning != "":
+        <tr valign="top"><th>русский</th><td><b>${word.meaning}</b></td></tr>
         % endif
 
         % if word.root != "":
@@ -138,15 +138,6 @@ ${table_data_read}
 % endif
 
 <div id="feedback_dps_${word.pali_}" class="content_dps hidden">
-    ## TODO Is this necessary?
-    <!-- <a
-      class="button_dps close"
-      href="javascript:void(0);"
-      onclick="button_click(this)"
-      data-target="feedback_dps_${word.pali_}">
-      закрыть
-    </a> -->
-
     <p>
         Это образовательный проект и находится на стадии тестирования и редактирования.
         <br>

@@ -199,7 +199,6 @@ def _generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
         html_string += render_word_tmpl(rsc['word_template_path'], w, table_data_read=table_data_read)
         html_string += '</html>'
 
-        # write gd.json
         inflections_path = rsc['inflections_dir'].joinpath("output/inflections translit/").joinpath(w.pali)
 
         if inflections_path.exists():
@@ -215,6 +214,11 @@ def _generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
         html_data_list += [[f"{w.pali}", f'{html_string}', "", synonyms]]
         text_data_full += text_full
         text_data_concise += f"{text_concise}\n"
+
+        # TODO Delete before merge
+        if w.pali == 'akata 1':
+            with open('output/cur.html', 'w') as f:
+                f.write(html_string)
 
         if row % 100 == 0:
             p = rsc['output_html_dir'].joinpath(f"{w.pali} (sample).html")
