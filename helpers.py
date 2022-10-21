@@ -255,8 +255,7 @@ class DpsWord:
         self.chapter3: str = df.loc[row, "Chapter 3"]
         self.sbs_index: str = df.loc[row, "Index"]
         self.var: str = df.loc[row, "Variant"]
-        self.comm: str = df.loc[row, "Commentary"]  # FIXME Redefined on the next line
-        self.comm: str = re.sub(r"(.+)\.$", "\\1", self.comm)
+        self.comm: str = re.sub(r"(.+)\.$", "\\1", df.loc[row, "Commentary"])
         self.notes: str = df.loc[row, "Notes"]
         self.stem: str = df.loc[row, "Stem"]
         self.ex: str = df.loc[row, "ex"]

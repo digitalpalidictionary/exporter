@@ -17,7 +17,7 @@ from html_components import WordTemplate
 from html_components import render_word_meaning
 from html_components import render_word_meaning_sbs
 
-from timeis import timeis, yellow, green, red, line
+from timeis import timeis, yellow, green, red, line  # FIXME Use lib
 
 GOOGLE_LINK_TEMPLATE = (
     '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
@@ -480,8 +480,7 @@ def generate_roots_html_and_json_sbs(data: DataFrames, rsc: ResourcePaths, html_
         help_title = help_df.iloc[row,0]
         meaning = help_df.iloc[row,1]
 
-        css = f"{help_css}"
-        html_string += render_header_tmpl(css=css, js="")
+        html_string += render_header_tmpl(css=help_css, js='')
 
         html_string += "<body>"
 
