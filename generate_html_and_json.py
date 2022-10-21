@@ -170,10 +170,10 @@ def generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
         else:
             synonyms_error_string += w.pali + ', '
             error_log += f'error reading synonyms - {w.pali}\n'
-            synonyms = ""
+            synonyms = ''
 
         # data compiling
-        html_data_list += [[f"{w.pali}", f'{html_string}', "", synonyms]]
+        html_data_list += [[f"{w.pali}", f'{html_string}', '', synonyms]]
         text_data_full += text_full
         text_data_concise += f"{text_concise}\n"
 
@@ -191,10 +191,10 @@ def generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
     with open(error_log_path, 'w', encoding=ENCODING) as error_log_file:
         error_log_file.write(error_log)
 
-    if inflection_table_error_string != "":
+    if inflection_table_error_string != '':
         print(f"{timeis()} {red}inflection table errors: {inflection_table_error_string}")
 
-    if synonyms_error_string != "":
+    if synonyms_error_string != '':
         print(f"{timeis()} {red}synonym errors: {synonyms_error_string}")
 
     # convert ṃ to ṁ
@@ -211,13 +211,12 @@ def generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
         f.write(text_data_concise)
 
     if generate_roots:
-        if kind == 'dps':
-            generate_roots_html_and_json(data, rsc, html_data_list)
-        elif kind == 'sbs':
-            generate_roots_html_and_json_sbs(data, rsc, html_data_list)
+        generate_roots_html_and_json(data, rsc, html_data_list, kind=kind)
 
 # TODO Implement templates
-def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data_list):
+# TODO Fix ugly kind arg
+# TODO Split
+def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data_list, kind: str):
     # html list > dataframe
     pali_data_df = pd.DataFrame(html_data_list)
     pali_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
@@ -238,7 +237,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
     for row in range(abbrev_df_length):
 
-        html_string = ""
+        html_string = ''
 
         abbrev = abbrev_df.iloc[row, 0]
         meaning = abbrev_df.iloc[row, 1]
@@ -248,7 +247,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         expl = abbrev_df.iloc[row, 5]
 
         css = f"{abbrev_css}"
-        html_string += render_header_tmpl(css=css, js="")
+        html_string += render_header_tmpl(css=css, js='')
 
         html_string += "<body>"
 
@@ -256,26 +255,31 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         html_string += f'<div class="help"><p>abbreviation. <b>{abbrev}</b>. {meaning}. '
 
-        if pali_meaning != "":
+        if pali_meaning != '':
             html_string += f'{pali_meaning}. '
 
-        if ru_meaning != "":
-            html_string += f'{ru_meaning}. '
+        if kind == 'dps':
+            if ru_meaning != '':
+                html_string += f'{ru_meaning}. '
 
-        if examp != "":
+        if examp != '':
             html_string += f'<br>e.g. {examp}. '
 
-        if expl != "":
+        if expl != '':
             html_string += f'<br>{expl}.'
 
         html_string += '</p></div>'
 
-        html_string += (
-            '<p>' +
-            GOOGLE_LINK_TEMPLATE.format(
-                args=f'entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}',
-                text='Сообщить об ошибке.') +
-            '</p>')
+        if kind == 'dps':
+            html_string += (
+                '<p>' +
+                GOOGLE_LINK_TEMPLATE.format(
+                    args=f'entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}',
+                    text='Сообщить об ошибке.') +
+                '</p>')
+        else:
+            # TODO
+            html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform?usp=pp_url&entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}" target="_blank">Report a mistake.</a></p>"""
 
         part_file = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
 
@@ -285,7 +289,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
         # compile root data into list
         synonyms = [abbrev, meaning]
-        abbrev_data_list += [[f"{abbrev}", f'{html_string}', "", synonyms]]
+        abbrev_data_list += [[f"{abbrev}", f'{html_string}', '', synonyms]]
 
 
   # generate help html
@@ -304,181 +308,10 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
     for row in range(help_df_length):
 
-        html_string = ""
+        html_string = ''
 
         help_title = help_df.iloc[row, 0]
         meaning = help_df.iloc[row, 1]
-
-        html_string += render_header_tmpl(css=help_css, js="")
-
-        html_string += "<body>"
-
-        # summary
-
-        html_string += f'<div class="help"><p>помощь. <b>{help_title}</b>. {meaning}</p></div>'
-
-        p = rsc['output_help_html_dir'].joinpath(f"{help_title}.html")
-
-        with open(p, 'w') as f:
-            f.write(html_string)
-
-        # compile root data into list
-        synonyms = [help_title]
-        help_data_list += [[f"{help_title}", f'{html_string}', "", synonyms]]
-
-
-    # generate rpd html
-    print(f"{timeis()} {green}generating rpd html")
-
-    df = data['words_df']
-    df_length = data['words_df'].shape[0]
-    pos_exclude_list = ["abbrev", "cs", "letter", "root", "suffix", "ve"]
-
-    rpd = {}
-
-    for row in range(df_length):  # df_length
-        w = DpsWord(df, row)
-        meanings_list = []
-        w.russian = re.sub(r'\?\?', "", w.russian)
-
-        if row % 10000 == 0:
-            print(f"{timeis()} {row}/{df_length}\t{w.pali}")
-
-        if w.russian != "" and w.pos not in pos_exclude_list:
-
-            meanings_clean = re.sub(fr" \(.+?\)", "", w.russian)          # remove all space brackets
-            meanings_clean = re.sub(fr"\(.+?\) ", "", meanings_clean)     # remove all brackets space
-            meanings_clean = re.sub(fr"(^ | $)", "", meanings_clean)      # remove space at start and fin
-            meanings_clean = re.sub(fr"  ", " ", meanings_clean)          # remove double spaces
-            meanings_clean = re.sub(fr" ;|; ", ";", meanings_clean)       # remove space around ;
-            meanings_clean = re.sub(fr"\(комм\).+$", "", meanings_clean)  # remove commentary meanings
-            meanings_clean = re.sub(fr"досл.+$", "", meanings_clean)      # remove lit meanings
-            meanings_list = meanings_clean.split(";")
-
-            for russian in meanings_list:
-                if russian in rpd.keys() and w.case == "":
-                    rpd[russian] = f"{rpd[russian]}<br><b>{w.pali_clean}</b> {w.pos}. {w.russian}"
-                if russian in rpd.keys() and w.case != "":
-                    rpd[russian] = f"{rpd[russian]}<br><b>{w.pali_clean}</b> {w.pos}. {w.russian} ({w.case})"
-                if russian not in rpd.keys() and w.case == "":
-                    rpd.update({russian: f"<b>{w.pali_clean}</b> {w.pos}. {w.russian}"})
-                if russian not in rpd.keys() and w.case != "":
-                    rpd.update({russian: f"<b>{w.pali_clean}</b> {w.pos}. {w.russian} ({w.case})"})
-
-    with open(rsc['rpd_css_path'], 'r') as f:
-        rpd_css = f.read()
-
-    rpd_data_list = []
-
-    for key, value in rpd.items():
-        html_string = ""
-        html_string = rpd_css
-        html_string += f"<body><div class ='rpd'><p>{value}</p></div></body></html>"
-        rpd_data_list += [[f"{key}", f'{html_string}', "", ""]]
-
-    # roots > dataframe > json
-
-    print(f"{timeis()} {green}generating json")
-
-    abbrev_data_df = pd.DataFrame(abbrev_data_list)
-    abbrev_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
-
-    help_data_df = pd.DataFrame(help_data_list)
-    help_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
-
-    rpd_data_df = pd.DataFrame(rpd_data_list)
-    rpd_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
-
-    pali_data_df = pd.concat([pali_data_df, abbrev_data_df, help_data_df, rpd_data_df])
-
-    print(f"{timeis()} {green}saving html to json")
-
-    pali_data_df.to_json(rsc['gd_json_path'], force_ascii=False, orient="records", indent=6)
-
-    print(f"{timeis()} {line}")
-
-# TODO Merge to generate_html_and_json()
-def generate_roots_html_and_json_sbs(data: DataFrames, rsc: ResourcePaths, html_data_list):
-    # html list > dataframe
-    pali_data_df = pd.DataFrame(html_data_list)
-    pali_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
-
-    # generate abbreviations html
-    print(f"{timeis()} {green}generating abbreviations html")
-
-    abbrev_data_list = []
-
-    today = date.today()
-
-    with open(rsc['dict_help_css_path'], 'r') as f:
-        abbrev_css = f.read()
-
-    abbrev_df = data['abbrev_df']
-    abbrev_df_length = len(abbrev_df)
-
-    for row in range(abbrev_df_length):
-
-        html_string = ""
-
-        abbrev = abbrev_df.iloc[row,0]
-        meaning = abbrev_df.iloc[row,1]
-        pali_meaning = abbrev_df.iloc[row,2]
-        # ru_meaning = abbrev_df.iloc[row,3]
-        examp = abbrev_df.iloc[row,4]
-        expl = abbrev_df.iloc[row,5]
-
-        css = f"{abbrev_css}"
-        html_string += render_header_tmpl(css=css, js="")
-
-        html_string += "<body>"
-
-        # summary
-
-        html_string += f"""<div class="help"><p>abbreviation. <b>{abbrev}</b>. {meaning}. """
-
-        if pali_meaning != "":
-            html_string += f"""{pali_meaning}. """
-
-        # if ru_meaning != "":
-        #     html_string += f"""{ru_meaning}. """
-
-        if examp != "":
-            html_string += f"""<br>e.g. {examp}. """
-
-        if expl != "":
-            html_string += f"""<br>{expl}."""
-
-        html_string += f"""</p></div>"""
-
-        html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform?usp=pp_url&entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}" target="_blank">Report a mistake.</a></p>"""
-
-        rsc['output_help_html_dir'].mkdir(parents=True, exist_ok=True)  # TODO Move out of the loop
-        p = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
-
-        with open(p, 'w') as f:
-            f.write(html_string)
-
-        # compile root data into list
-        synonyms = [abbrev, meaning]
-        abbrev_data_list += [[f"{abbrev}", f"""{html_string}""", "", synonyms]]
-
-    # generate help html
-    print(f"{timeis()} {green}generating help html")
-
-    help_data_list = []
-
-    with open(rsc['dict_help_css_path'], 'r') as f:
-        help_css = f.read()
-
-    help_df = data['help_df']
-    help_df_length = len(help_df)
-
-    for row in range(help_df_length):
-
-        html_string = ""
-
-        help_title = help_df.iloc[row,0]
-        meaning = help_df.iloc[row,1]
 
         html_string += render_header_tmpl(css=help_css, js='')
 
@@ -486,7 +319,10 @@ def generate_roots_html_and_json_sbs(data: DataFrames, rsc: ResourcePaths, html_
 
         # summary
 
-        html_string += f"""<div class="help"><p>help. <b>{help_title}</b>. {meaning}</p></div>"""
+        if kind == 'dps':
+            html_string += f'<div class="help"><p>помощь. <b>{help_title}</b>. {meaning}</p></div>'
+        else:
+            html_string += f"""<div class="help"><p>help. <b>{help_title}</b>. {meaning}</p></div>"""
 
         p = rsc['output_help_html_dir'].joinpath(f"{help_title}.html")
 
@@ -495,59 +331,59 @@ def generate_roots_html_and_json_sbs(data: DataFrames, rsc: ResourcePaths, html_
 
         # compile root data into list
         synonyms = [help_title]
-        help_data_list += [[f"{help_title}", f"""{html_string}""", "", synonyms]]
+        help_data_list += [[f"{help_title}", f'{html_string}', '', synonyms]]
 
 
-        # generate epd html
-
-    print(f"{timeis()} {green}generating epd html")
+    # Generate definition HTML
+    print(f"{timeis()} {green}generating definition HTML")
 
     df = data['words_df']
     df_length = data['words_df'].shape[0]
-    pos_exclude_list = ["abbrev", "cs", "letter","root", "suffix", "ve"]
+    pos_exclude_list = ["abbrev", "cs", "letter", "root", "suffix", "ve"]
 
-    epd = {}
+    definition = {}
 
-    for row in range(df_length): #df_length
+    for row in range(df_length):  # df_length
         w = DpsWord(df, row)
         meanings_list = []
-        w.meaning = re.sub("\?\?", "", w.meaning)
+        meaning_data = w.russian if kind == 'dps' else w.meaning
+        meaning_data = re.sub(r'\?\?', '', meaning_data)
 
         if row % 10000 == 0:
-            print(f"{timeis()} {row}/{df_length}\t{w.pali}")      
+            print(f"{timeis()} {row}/{df_length}\t{w.pali}")
 
-        if w.meaning != "" and \
-        w.pos not in pos_exclude_list:
+        if meaning_data != '' and w.pos not in pos_exclude_list:
 
-            meanings_clean = re.sub(fr" \(.+?\)", "", w.meaning)                    # remove all space brackets
-            meanings_clean = re.sub(fr"\(.+?\) ", "", meanings_clean)           # remove all brackets space
-            meanings_clean = re.sub(fr"(^ | $)", "", meanings_clean)            # remove space at start and fin
-            meanings_clean = re.sub(fr"  ", " ", meanings_clean)                    # remove double spaces
-            meanings_clean = re.sub(fr" ;|; ", ";", meanings_clean)                 # remove space around ;
-            meanings_clean = re.sub(fr"\(comm\).+$", "", meanings_clean)   # remove commentary meanings
-            meanings_clean = re.sub(fr"lit.+$", "", meanings_clean)         # remove lit meanings
-            meanings_list = meanings_clean.split(";")
+            meanings_clean = re.sub(r' \(.+?\)', '', meaning_data)       # remove all space brackets
+            meanings_clean = re.sub(r'\(.+?\) ', '', meanings_clean)     # remove all brackets space
+            meanings_clean = re.sub(r'(^ | $)', '', meanings_clean)      # remove space at start and fin
+            meanings_clean = re.sub(r'  ', ' ', meanings_clean)          # remove double spaces
+            meanings_clean = re.sub(r' ;|; ', ';', meanings_clean)       # remove space around semicolons
+            meanings_clean = re.sub(r'\((комм|comm)\).+$', '', meanings_clean)  # remove commentary meanings
+            meanings_clean = re.sub(r'(досл|lit).+$', '', meanings_clean)      # remove lit meanings
+            meanings_list = meanings_clean.split(';')
 
             for meaning in meanings_list:
-                if meaning in epd.keys() and w.case =="":
-                    epd[meaning] = f"{epd[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {w.meaning}"
-                if meaning in epd.keys() and w.case !="":
-                    epd[meaning] = f"{epd[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {w.meaning} ({w.case})"
-                if meaning not in epd.keys() and w.case =="":
-                    epd.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {w.meaning}"})
-                if meaning not in epd.keys() and w.case !="":
-                    epd.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {w.meaning} ({w.case})"})
+                if meaning in definition.keys() and w.case == '':
+                    definition[meaning] = f"{definition[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {meaning_data}"
+                if meaning in definition.keys() and w.case != '':
+                    definition[meaning] = f"{definition[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {meaning_data} ({w.case})"
+                if meaning not in definition.keys() and w.case == '':
+                    definition.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {meaning_data}"})
+                if meaning not in definition.keys() and w.case != '':
+                    definition.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {meaning_data} ({w.case})"})
 
-    with open(rsc['epd_css_path'], 'r') as f:
-        epd_css = f.read()
+    with open(rsc['definition_css_path'], 'r') as f:
+        definition_css = f.read()
 
-    epd_data_list = []
+    definition_data_list = []
 
-    for key, value in epd.items():
-        html_string = ""
-        html_string = epd_css
-        html_string += f"<body><div class ='epd_sbs'><p>{value}</p></div></body></html>"
-        epd_data_list += [[f"{key}", f"""{html_string}""", "", ""]]
+    div_class = 'rpd' if kind == 'dps' else 'epd_sbs'
+    for key, value in definition.items():
+        html_string = ''
+        html_string = definition_css
+        html_string += f"<body><div class='{div_class}'><p>{value}</p></div></body></html>"
+        definition_data_list += [[f"{key}", f'{html_string}', '', '']]
 
     # roots > dataframe > json
 
@@ -559,10 +395,10 @@ def generate_roots_html_and_json_sbs(data: DataFrames, rsc: ResourcePaths, html_
     help_data_df = pd.DataFrame(help_data_list)
     help_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
 
-    epd_data_df = pd.DataFrame(epd_data_list)
-    epd_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+    definition_data_df = pd.DataFrame(definition_data_list)
+    definition_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
 
-    pali_data_df = pd.concat([pali_data_df, abbrev_data_df, help_data_df, epd_data_df])
+    pali_data_df = pd.concat([pali_data_df, abbrev_data_df, help_data_df, definition_data_df])
 
     print(f"{timeis()} {green}saving html to json")
 
