@@ -2,6 +2,7 @@ import pickle
 import re
 
 from datetime import date
+from typing import List
 
 import pandas as pd
 import rich
@@ -217,7 +218,6 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
     if generate_roots:
         generate_roots_html_and_json(data, rsc, html_data_list)
 
-# TODO Implement templates
 def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data_list):
     # html list > dataframe
     pali_data_df = pd.DataFrame(html_data_list)
@@ -247,8 +247,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     rich.print(f'{timeis()} {line}')
 
 
-# TODO Declaration
-def _generate_abbreviations_html(data, rsc):
+def _generate_abbreviations_html(data: DataFrames, rsc: ResourcePaths) -> List[List[str]]:
     kind = rsc['kind']
 
     rich.print(f'{timeis()} [green]generating abbreviations html')
@@ -321,8 +320,7 @@ def _generate_abbreviations_html(data, rsc):
     return abbrev_data_list
 
 
-# TODO Signature
-def _generate_help_html(data, rsc):
+def _generate_help_html(data: DataFrames, rsc: ResourcePaths) -> List[List[str]]:
     rich.print(f'{timeis()} [green]generating help html[/green]')
 
     help_data_list = []
@@ -366,8 +364,7 @@ def _generate_help_html(data, rsc):
     return help_data_list
 
 
-# TODO Signature
-def _generate_definition_html(data, rsc):
+def _generate_definition_html(data: DataFrames, rsc: ResourcePaths) -> List[List[str]]:
     kind = rsc['kind']
     rich.print(f'{timeis()} [green]generating definition HTML[/green]')
 
