@@ -9,6 +9,7 @@ import rich
 from helpers import DataFrames
 from helpers import DpsWord
 from helpers import INDECLINABLES
+from helpers import Kind
 from helpers import ResourcePaths
 from helpers import format_if
 from helpers import parse_data_frames
@@ -95,9 +96,10 @@ def _full_text_sbs_entry(word: DpsWord) -> str:
     return result
 
 
-# TODO Delete kind or make Enum
-def generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
+def generate_html_and_json(rsc, generate_roots: bool = True):
     data = parse_data_frames(rsc)
+    kind = rsc['kind']
+    assert kind in list(Kind), 'Invalid kind get from resources'
 
     rich.print(f'{timeis()} [yellow]generate html and json[/yellow]')
     rich.print(f'{timeis()} {line}')
@@ -130,9 +132,9 @@ def generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
            rich.print(f'{timeis()} {row}/{df_length}\t{w.pali}')
 
         html_string = ''
-        if kind == 'dps':
+        if kind is Kind.DPS:
             text_full = _full_text_dps_entry(word=w)
-        elif kind == 'sbs':
+        elif kind is Kind.SBS:
             text_full = _full_text_sbs_entry(word=w)
 
         text_concise = ''
@@ -141,9 +143,9 @@ def generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
         html_string += render_header_tmpl(css=words_css, js=buttons_js)
 
         # summary
-        if kind == 'dps':
+        if kind is Kind.DPS:
             r = render_word_meaning(w)
-        elif kind == 'sbs':
+        elif kind is Kind.SBS:
             r = render_word_meaning_sbs(w)
 
         text_concise += r['concise']
@@ -213,18 +215,17 @@ def generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
         f.write(text_data_concise)
 
     if generate_roots:
-        generate_roots_html_and_json(data, rsc, html_data_list, kind=kind)
+        generate_roots_html_and_json(data, rsc, html_data_list)
 
 # TODO Implement templates
-# TODO Fix ugly kind arg
-def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data_list, kind: str):
+def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data_list):
     # html list > dataframe
     pali_data_df = pd.DataFrame(html_data_list)
     pali_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
 
-    abbrev_data_list = _generate_abbreviations_html(data, rsc, kind)
-    help_data_list = _generate_help_html(data, rsc, kind)
-    definition_data_list = _generate_definition_html(data, rsc, kind)
+    abbrev_data_list = _generate_abbreviations_html(data, rsc)
+    help_data_list = _generate_help_html(data, rsc)
+    definition_data_list = _generate_definition_html(data, rsc)
 
     # roots > dataframe > json
     rich.print(f'{timeis()} [green]generating json[/green]')
@@ -247,7 +248,9 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
 
 # TODO Declaration
-def _generate_abbreviations_html(data, rsc, kind):
+def _generate_abbreviations_html(data, rsc):
+    kind = rsc['kind']
+
     rich.print(f'{timeis()} [green]generating abbreviations html')
 
     abbrev_data_list = []
@@ -271,19 +274,18 @@ def _generate_abbreviations_html(data, rsc, kind):
         examp = abbrev_df.iloc[row, 4]
         expl = abbrev_df.iloc[row, 5]
 
-        css = f"{abbrev_css}"
+        css = f'{abbrev_css}'
         html_string += render_header_tmpl(css=css, js='')
 
-        html_string += "<body>"
+        html_string += '<body>'
 
         # summary
-
         html_string += f'<div class="help"><p>abbreviation. <b>{abbrev}</b>. {meaning}. '
 
         if pali_meaning != '':
             html_string += f'{pali_meaning}. '
 
-        if kind == 'dps':
+        if kind is Kind.DPS:
             if ru_meaning != '':
                 html_string += f'{ru_meaning}. '
 
@@ -295,7 +297,7 @@ def _generate_abbreviations_html(data, rsc, kind):
 
         html_string += '</p></div>'
 
-        if kind == 'dps':
+        if kind is Kind.DPS:
             html_string += (
                 '<p>' +
                 GOOGLE_LINK_TEMPLATE.format(
@@ -306,7 +308,7 @@ def _generate_abbreviations_html(data, rsc, kind):
             # TODO
             html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform?usp=pp_url&entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}" target="_blank">Report a mistake.</a></p>"""
 
-        part_file = rsc['output_help_html_dir'].joinpath(f"{abbrev}.html")
+        part_file = rsc['output_help_html_dir'].joinpath(f'{abbrev}.html')
 
         rsc['output_help_html_dir'].mkdir(parents=True, exist_ok=True)  # TODO Move out of the loop
         with open(part_file, 'w') as f:
@@ -320,7 +322,7 @@ def _generate_abbreviations_html(data, rsc, kind):
 
 
 # TODO Signature
-def _generate_help_html(data, rsc, kind):
+def _generate_help_html(data, rsc):
     rich.print(f'{timeis()} [green]generating help html[/green]')
 
     help_data_list = []
@@ -347,7 +349,7 @@ def _generate_help_html(data, rsc, kind):
 
         # summary
 
-        if kind == 'dps':
+        if rsc['kind'] is Kind.DPS:
             html_string += f'<div class="help"><p>помощь. <b>{help_title}</b>. {meaning}</p></div>'
         else:
             html_string += f"""<div class="help"><p>help. <b>{help_title}</b>. {meaning}</p></div>"""
@@ -365,7 +367,8 @@ def _generate_help_html(data, rsc, kind):
 
 
 # TODO Signature
-def _generate_definition_html(data, rsc, kind):
+def _generate_definition_html(data, rsc):
+    kind = rsc['kind']
     rich.print(f'{timeis()} [green]generating definition HTML[/green]')
 
     df = data['words_df']
@@ -377,7 +380,7 @@ def _generate_definition_html(data, rsc, kind):
     for row in range(df_length):  # df_length
         w = DpsWord(df, row)
         meanings_list = []
-        meaning_data = w.russian if kind == 'dps' else w.meaning
+        meaning_data = w.russian if kind is Kind.DPS else w.meaning
         meaning_data = re.sub(r'\?\?', '', meaning_data)
 
         if row % 10000 == 0:
@@ -409,7 +412,7 @@ def _generate_definition_html(data, rsc, kind):
 
     definition_data_list = []
 
-    div_class = 'rpd' if kind == 'dps' else 'epd_sbs'
+    div_class = 'rpd' if kind is Kind.DPS else 'epd_sbs'
     for key, value in definition.items():
         html_string = ''
         html_string = definition_css

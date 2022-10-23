@@ -23,8 +23,7 @@ def run_generate_html_and_json(generate_roots: bool = True):
     rsc = get_resource_paths_dps()
     generate_html_and_json(
         rsc=rsc,
-        generate_roots=generate_roots,
-        kind='dps')
+        generate_roots=generate_roots)
 
 
 @app.command()
@@ -33,8 +32,7 @@ def run_generate_html_and_json_sbs(generate_roots: bool = True):
     # TODO Recheck rsc
     generate_html_and_json(
         rsc=rsc,
-        generate_roots=generate_roots,
-        kind='sbs')
+        generate_roots=generate_roots)
 
 
 def _run_generate_goldendict(rsc: ResourcePaths, ifo: 'StarDictIfo', move_to_dest: bool = True):

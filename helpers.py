@@ -1,12 +1,13 @@
-from datetime import date
-from pathlib import Path
-from typing import Any
-from typing import TypedDict
-
+import enum
 import os
 import re
 import subprocess
 import sys
+
+from datetime import date
+from pathlib import Path
+from typing import Any
+from typing import TypedDict
 
 import pandas as pd
 
@@ -26,6 +27,13 @@ DECLENSIONS = {
 }
 
 
+class Kind(enum.Enum):
+    """ Marks type of building dict
+    """
+    SBS = enum.auto()
+    DPS = enum.auto()
+
+
 class DataFrames(TypedDict):
     words_df: DataFrame
     abbrev_df: DataFrame
@@ -33,6 +41,7 @@ class DataFrames(TypedDict):
 
 
 class ResourcePaths(TypedDict):
+    kind: Kind
     output_dir: Path
     output_html_dir: Path
     output_help_html_dir: Path
@@ -80,6 +89,7 @@ def get_resource_paths_dps() -> ResourcePaths:
         dps_dir = Path(s)
 
     rsc = ResourcePaths(
+        kind = Kind.DPS,
         # Project output
         output_dir=Path("./output/"),
         output_html_dir=Path("./output/html/"),
@@ -121,6 +131,7 @@ def get_resource_paths_sbs() -> ResourcePaths:
         dps_dir = Path(s)
 
     rsc = ResourcePaths(
+        kind = Kind.SBS,
         # Project output
         output_dir=Path("./output/"),
         output_html_dir=Path("./output/html/"),

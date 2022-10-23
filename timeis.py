@@ -62,5 +62,4 @@ def today():
     today = now.strftime("%d")
     return today
 
-# print(today())
 timeis()
