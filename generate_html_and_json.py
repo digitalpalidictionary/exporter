@@ -4,6 +4,7 @@ import re
 from datetime import date
 
 import pandas as pd
+import rich
 
 from helpers import DataFrames
 from helpers import DpsWord
@@ -17,7 +18,8 @@ from html_components import WordTemplate
 from html_components import render_word_meaning
 from html_components import render_word_meaning_sbs
 
-from timeis import timeis, yellow, green, red, line  # FIXME Use lib
+from timeis import yellow, green, red, line  # FIXME Use lib
+from timeis_rich import timeis  # TODO Use rich logging handler
 
 GOOGLE_LINK_TEMPLATE = (
     '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
@@ -97,9 +99,9 @@ def _full_text_sbs_entry(word: DpsWord) -> str:
 def generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
     data = parse_data_frames(rsc)
 
-    print(f"{timeis()} {yellow}generate html and json")
-    print(f"{timeis()} {line}")
-    print(f"{timeis()} {green}generating dps html")
+    rich.print(f'{timeis()} [yellow]generate html and json[/yellow]')
+    rich.print(f'{timeis()} {line}')
+    rich.print(f'{timeis()} [green]generating dps html[/green]')
 
     error_log = ''
 
@@ -125,7 +127,7 @@ def generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
         w = DpsWord(df, row)
 
         if row % 5000 == 0 or row % df_length == 0:
-            print(f"{timeis()} {row}/{df_length}\t{w.pali}")
+           rich.print(f'{timeis()} {row}/{df_length}\t{w.pali}')
 
         html_string = ''
         if kind == 'dps':
@@ -192,10 +194,10 @@ def generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
         error_log_file.write(error_log)
 
     if inflection_table_error_string != '':
-        print(f"{timeis()} {red}inflection table errors: {inflection_table_error_string}")
+        rich.print(f'{timeis()} [red]inflection table errors: {inflection_table_error_string}[/red]')
 
     if synonyms_error_string != '':
-        print(f"{timeis()} {red}synonym errors: {synonyms_error_string}")
+        rich.print(f'{timeis()} [red]synonym errors: {synonyms_error_string}[/red]')
 
     # convert ṃ to ṁ
     text_data_full = re.sub('ṃ', 'ṁ', text_data_full)
@@ -215,7 +217,6 @@ def generate_html_and_json(rsc, kind: str, generate_roots: bool = True):
 
 # TODO Implement templates
 # TODO Fix ugly kind arg
-# TODO Split
 def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data_list, kind: str):
     # html list > dataframe
     pali_data_df = pd.DataFrame(html_data_list)
@@ -226,7 +227,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     definition_data_list = _generate_definition_html(data, rsc, kind)
 
     # roots > dataframe > json
-    print(f"{timeis()} {green}generating json")
+    rich.print(f'{timeis()} [green]generating json[/green]')
 
     abbrev_data_df = pd.DataFrame(abbrev_data_list)
     abbrev_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
@@ -238,16 +239,16 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     definition_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
     pali_data_df = pd.concat([pali_data_df, abbrev_data_df, help_data_df, definition_data_df])
 
-    print(f"{timeis()} {green}saving html to json")
+    rich.print(f'{timeis()} [green]saving html to json[/green]')
 
     pali_data_df.to_json(rsc['gd_json_path'], force_ascii=False, orient="records", indent=6)
 
-    print(f"{timeis()} {line}")
+    rich.print(f'{timeis()} {line}')
 
 
 # TODO Declaration
 def _generate_abbreviations_html(data, rsc, kind):
-    print(f"{timeis()} {green}generating abbreviations html")
+    rich.print(f'{timeis()} [green]generating abbreviations html')
 
     abbrev_data_list = []
 
@@ -320,7 +321,7 @@ def _generate_abbreviations_html(data, rsc, kind):
 
 # TODO Signature
 def _generate_help_html(data, rsc, kind):
-    print(f"{timeis()} {green}generating help html")
+    rich.print(f'{timeis()} [green]generating help html[/green]')
 
     help_data_list = []
 
@@ -365,7 +366,7 @@ def _generate_help_html(data, rsc, kind):
 
 # TODO Signature
 def _generate_definition_html(data, rsc, kind):
-    print(f"{timeis()} {green}generating definition HTML")
+    rich.print(f'{timeis()} [green]generating definition HTML[/green]')
 
     df = data['words_df']
     df_length = data['words_df'].shape[0]
@@ -380,17 +381,17 @@ def _generate_definition_html(data, rsc, kind):
         meaning_data = re.sub(r'\?\?', '', meaning_data)
 
         if row % 10000 == 0:
-            print(f"{timeis()} {row}/{df_length}\t{w.pali}")
+           rich.print(f'{timeis()} {row}/{df_length}\t{w.pali}')
 
         if meaning_data != '' and w.pos not in pos_exclude_list:
 
-            meanings_clean = re.sub(r' \(.+?\)', '', meaning_data)       # remove all space brackets
-            meanings_clean = re.sub(r'\(.+?\) ', '', meanings_clean)     # remove all brackets space
-            meanings_clean = re.sub(r'(^ | $)', '', meanings_clean)      # remove space at start and fin
-            meanings_clean = re.sub(r'  ', ' ', meanings_clean)          # remove double spaces
-            meanings_clean = re.sub(r' ;|; ', ';', meanings_clean)       # remove space around semicolons
+            meanings_clean = re.sub(r' \(.+?\)', '', meaning_data)              # remove all space brackets
+            meanings_clean = re.sub(r'\(.+?\) ', '', meanings_clean)            # remove all brackets space
+            meanings_clean = re.sub(r'(^ | $)', '', meanings_clean)             # remove space at start and fin
+            meanings_clean = re.sub(r'  ', ' ', meanings_clean)                 # remove double spaces
+            meanings_clean = re.sub(r' ;|; ', ';', meanings_clean)              # remove space around semicolons
             meanings_clean = re.sub(r'\((комм|comm)\).+$', '', meanings_clean)  # remove commentary meanings
-            meanings_clean = re.sub(r'(досл|lit).+$', '', meanings_clean)      # remove lit meanings
+            meanings_clean = re.sub(r'(досл|lit).+$', '', meanings_clean)       # remove lit meanings
             meanings_list = meanings_clean.split(';')
 
             for meaning in meanings_list:
