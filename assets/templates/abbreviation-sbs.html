@@ -1,0 +1,38 @@
+<%
+    google_href = (
+        '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
+        'usp=pp_url&{args}" target="_blank">{text}</a>')
+%>
+
+<body>
+
+# summary
+html_string += f'<div class="help"><p>abbreviation. <b>{abbrev}</b>. {meaning}. '
+
+if pali_meaning != '':
+    html_string += f'{pali_meaning}. '
+
+if kind is Kind.DPS:
+    if ru_meaning != '':
+        html_string += f'{ru_meaning}. '
+
+if examp != '':
+    html_string += f'<br>e.g. {examp}. '
+
+if expl != '':
+    html_string += f'<br>{expl}.'
+
+html_string += '</p></div>'
+
+if kind is Kind.DPS:
+    html_string += (
+        '<p>' +
+        GOOGLE_LINK_TEMPLATE.format(
+            args=f'entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}',
+            text='Сообщить об ошибке.') +
+        '</p>')
+else:
+    # TODO
+    html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform?usp=pp_url&entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}" target="_blank">Report a mistake.</a></p>"""
+
+## vi: syn=mako

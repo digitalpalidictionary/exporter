@@ -19,11 +19,11 @@ from timeis import timeis, green, red
 load_dotenv()
 
 
-INDECLINABLES = {"abbrev", "abs", "ger", "ind", "inf", "prefix", "sandhi", "idiom"}
-CONJUGATIONS = {"aor", "cond", "fut", "imp", "imperf", "opt", "perf", "pr"}
+INDECLINABLES = {'abbrev', 'abs', 'ger', 'ind', 'inf', 'prefix', 'sandhi', 'idiom'}
+CONJUGATIONS = {'aor', 'cond', 'fut', 'imp', 'imperf', 'opt', 'perf', 'pr'}
 DECLENSIONS = {
-    "adj", "card", "cs", "fem", "letter", "masc", "nt", "ordin", "pp", "pron",
-    "prp", "ptp", "root", "suffix", "ve"
+    'adj', 'card', 'cs', 'fem', 'letter', 'masc', 'nt', 'ordin', 'pp', 'pron',
+    'prp', 'ptp', 'root', 'suffix', 've'
 }
 
 
@@ -58,6 +58,7 @@ class ResourcePaths(TypedDict):
     gd_json_path: Path
     icon_path: Path
     output_stardict_zip_path: Path
+    abbreviation_template_path: Path
     word_template_path: Path
 
 
@@ -65,13 +66,13 @@ def parse_data_frames(rsc: ResourcePaths) -> DataFrames:
     """Parse csv files into pandas data frames"""
 
     words_df = pd.read_csv(rsc['words_path'], sep="\t", dtype=str)
-    words_df = words_df.fillna("")
+    words_df = words_df.fillna('')
 
     abbrev_df = pd.read_csv(rsc['abbrev_path'], sep="\t", dtype=str)
-    abbrev_df.fillna("", inplace=True)
+    abbrev_df.fillna('', inplace=True)
 
     help_df = pd.read_csv(rsc['help_path'], sep="\t", dtype=str)
-    help_df.fillna("", inplace=True)
+    help_df.fillna('', inplace=True)
 
     return DataFrames(
         words_df=words_df,
@@ -89,26 +90,27 @@ def get_resource_paths_dps() -> ResourcePaths:
         dps_dir = Path(s)
 
     rsc = ResourcePaths(
-        kind = Kind.DPS,
+        kind=Kind.DPS,
         # Project output
-        output_dir=Path("./output/"),
-        output_html_dir=Path("./output/html/"),
-        output_help_html_dir=Path("./output/help html/"),
-        output_share_dir=Path("./share/"),
-        gd_json_path=Path("./output/gd.json"),
-        output_stardict_zip_path=Path("ru-pali-dictionary.zip"),
-        error_log_dir=Path("./errorlogs/"),
+        output_dir=Path('./output/'),
+        output_html_dir=Path('./output/html/'),
+        output_help_html_dir=Path('./output/help html/'),
+        output_share_dir=Path('./share/'),
+        gd_json_path=Path('./output/gd.json'),
+        output_stardict_zip_path=Path('ru-pali-dictionary.zip'),
+        error_log_dir=Path('./errorlogs/'),
         # Project assets
-        dict_words_css_path=Path("./assets/words-dps.css"),
-        dict_help_css_path=Path("./assets/help.css"),
-        definition_css_path=Path("./assets/rpd.css"),
-        buttons_js_path=Path("./assets/buttons-dps.js"),
-        abbrev_path=Path("./assets/abbreviations.csv"),
-        help_path=Path("./assets/help.csv"),
+        dict_words_css_path=Path('./assets/words-dps.css'),
+        dict_help_css_path=Path('./assets/help.css'),
+        definition_css_path=Path('./assets/rpd.css'),
+        buttons_js_path=Path('./assets/buttons-dps.js'),
+        abbrev_path=Path('./assets/abbreviations.csv'),
+        help_path=Path('./assets/help.csv'),
         # Project input
-        inflections_dir=dps_dir.joinpath("inflection/"),
-        words_path=dps_dir.joinpath("spreadsheets/dps-full.csv"),
-        icon_path=Path("./logo/book.bmp"),
+        abbreviation_template_path=Path('./assets/templates/abbreviation-dps.html'),
+        inflections_dir=dps_dir.joinpath('inflection/'),
+        words_path=dps_dir.joinpath('spreadsheets/dps-full.csv'),
+        icon_path=Path('./logo/book.bmp'),
         word_template_path=Path('./assets/templates/word-dps.html'),
     )
 
@@ -131,26 +133,27 @@ def get_resource_paths_sbs() -> ResourcePaths:
         dps_dir = Path(s)
 
     rsc = ResourcePaths(
-        kind = Kind.SBS,
+        kind=Kind.SBS,
         # Project output
-        output_dir=Path("./output/"),
-        output_html_dir=Path("./output/html/"),
-        output_help_html_dir=Path("./output/help html/"),
-        output_share_dir=Path("./share/"),
-        gd_json_path=Path("./output/gd.json"),
-        output_stardict_zip_path=Path("sbs-pd.zip"),
-        error_log_dir=Path("./errorlogs/"),
+        output_dir=Path('./output/'),
+        output_html_dir=Path('./output/html/'),
+        output_help_html_dir=Path('./output/help html/'),
+        output_share_dir=Path('./share/'),
+        gd_json_path=Path('./output/gd.json'),
+        output_stardict_zip_path=Path('sbs-pd.zip'),
+        error_log_dir=Path('./errorlogs/'),
         # Project assets
-        dict_words_css_path=Path("./assets/words-sbs.css"),
-        dict_help_css_path=Path("./assets/help.css"),
-        definition_css_path=Path("./assets/epd.css"),
-        buttons_js_path=Path("./assets/buttons-sbs.js"),
-        abbrev_path=Path("./assets/abbreviations.csv"),
-        help_path=Path("./assets/help.csv"),
+        dict_words_css_path=Path('./assets/words-sbs.css'),
+        dict_help_css_path=Path('./assets/help.css'),
+        definition_css_path=Path('./assets/epd.css'),
+        buttons_js_path=Path('./assets/buttons-sbs.js'),
+        abbrev_path=Path('./assets/abbreviations.csv'),
+        help_path=Path('./assets/help.csv'),
         # Project input
-        inflections_dir=dps_dir.joinpath("inflection/"),
-        words_path=dps_dir.joinpath("spreadsheets/sbs-pd.csv"),
-        icon_path=Path("./logo/head_brown.bmp"),
+        inflections_dir=dps_dir.joinpath('inflection/'),
+        words_path=dps_dir.joinpath('spreadsheets/sbs-pd.csv'),
+        icon_path=Path('./logo/head_brown.bmp'),
+        abbreviation_template_path=Path('./assets/templates/abbreviation-sbs.html'),
         word_template_path=Path('./assets/templates/word-sbs.html'),
     )
 
@@ -166,8 +169,6 @@ def get_resource_paths_sbs() -> ResourcePaths:
 
 def copy_goldendict(src_path: Path, dest_dir: Path):
     print(f"{timeis()} {green}copying goldendict to share")
-
-    today = date.today()
 
     # file name without .zip suffix
     dest_base = src_path.name.replace(src_path.suffix, '')
@@ -187,7 +188,7 @@ class DpsWord:
     def __init__(self, df: DataFrame, row: int):
         self.pali: str = df.loc[row, "Pāli1"]
         self.pali_: str = "_" + re.sub(" ", "_", self.pali)
-        self.pali_clean: str = re.sub(r" \d*$", "", self.pali)
+        self.pali_clean: str = re.sub(r" \d*$", '', self.pali)
         self.fin: str = df.loc[row, "Fin"]
         self.pos: str = df.loc[row, "POS"]
         self.grammar: str = df.loc[row, "Grammar"]

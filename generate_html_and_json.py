@@ -15,17 +15,14 @@ from helpers import ResourcePaths
 from helpers import format_if
 from helpers import parse_data_frames
 from helpers import string_if
-from html_components import render_header_tmpl
+from html_components import AbbreviationTemplate
 from html_components import WordTemplate
+from html_components import render_header_tmpl
 from html_components import render_word_meaning
 from html_components import render_word_meaning_sbs
 
 from timeis import yellow, green, red, line  # FIXME Use lib
 from timeis_rich import timeis  # TODO Use rich logging handler
-
-GOOGLE_LINK_TEMPLATE = (
-    '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
-    'usp=pp_url&{args}" target="_blank">{text}</a>')
 
 ENCODING = 'UTF-8'
 
@@ -172,7 +169,7 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
             synonyms = ''
 
         # data compiling
-        html_data_list += [[f"{w.pali}", f'{html_string}', '', synonyms]]
+        html_data_list += [[w.pali, html_string, '', synonyms]]
         text_data_full += text_full
         text_data_concise += f"{text_concise}\n"
 
@@ -213,6 +210,8 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     pali_data_df = pd.DataFrame(html_data_list)
     pali_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
 
+    rsc['output_help_html_dir'].mkdir(parents=True, exist_ok=True)
+
     abbrev_data_list = _generate_abbreviations_html(data, rsc)
     help_data_list = _generate_help_html(data, rsc)
     definition_data_list = _generate_definition_html(data, rsc)
@@ -238,13 +237,9 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
 
 def _generate_abbreviations_html(data: DataFrames, rsc: ResourcePaths) -> List[List[str]]:
-    kind = rsc['kind']
-
     rich.print(f'{timeis()} [green]generating abbreviations html')
 
     abbrev_data_list = []
-
-    today = date.today()
 
     with open(rsc['dict_help_css_path'], 'r', encoding=ENCODING) as f:
         abbrev_css = f.read()
@@ -252,60 +247,31 @@ def _generate_abbreviations_html(data: DataFrames, rsc: ResourcePaths) -> List[L
     abbrev_df = data['abbrev_df']
     abbrev_df_length = len(abbrev_df)
 
+    abbreviation_template = AbbreviationTemplate(rsc['abbreviation_template_path'])
+
     for row in range(abbrev_df_length):
+        abbrev_series = abbrev_df.iloc[row]
+        abbrev = abbrev_series[0]
+        meaning = abbrev_series[1]
 
-        html_string = ''
-
-        abbrev = abbrev_df.iloc[row, 0]
-        meaning = abbrev_df.iloc[row, 1]
-        pali_meaning = abbrev_df.iloc[row, 2]
-        ru_meaning = abbrev_df.iloc[row, 3]
-        examp = abbrev_df.iloc[row, 4]
-        expl = abbrev_df.iloc[row, 5]
-
-        css = f'{abbrev_css}'
-        html_string += render_header_tmpl(css=css, js='')
-
-        html_string += '<body>'
-
-        # summary
-        html_string += f'<div class="help"><p>abbreviation. <b>{abbrev}</b>. {meaning}. '
-
-        if pali_meaning != '':
-            html_string += f'{pali_meaning}. '
-
-        if kind is Kind.DPS:
-            if ru_meaning != '':
-                html_string += f'{ru_meaning}. '
-
-        if examp != '':
-            html_string += f'<br>e.g. {examp}. '
-
-        if expl != '':
-            html_string += f'<br>{expl}.'
-
-        html_string += '</p></div>'
-
-        if kind is Kind.DPS:
-            html_string += (
-                '<p>' +
-                GOOGLE_LINK_TEMPLATE.format(
-                    args=f'entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}',
-                    text='Сообщить об ошибке.') +
-                '</p>')
-        else:
-            # TODO
-            html_string += f"""<p><a class="link" href="https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform?usp=pp_url&entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}" target="_blank">Report a mistake.</a></p>"""
+        # TODO Try to include into the template
+        html_string = render_header_tmpl(css=abbrev_css, js='')  # TODO Make class
+        html_string += abbreviation_template.render(abbrev_series)
+        html_string += '</html>'
 
         part_file = rsc['output_help_html_dir'].joinpath(f'{abbrev}.html')
 
-        rsc['output_help_html_dir'].mkdir(parents=True, exist_ok=True)  # TODO Move out of the loop
         with open(part_file, 'w', encoding=ENCODING) as f:
             f.write(html_string)
 
         # compile root data into list
         synonyms = [abbrev, meaning]
-        abbrev_data_list += [[f"{abbrev}", f'{html_string}', '', synonyms]]
+
+        # TODO Purge
+        if abbrev == 'acc':
+            with open('output/acc_cur.html', 'w') as f:
+                f.write(html_string)
+        abbrev_data_list += [[abbrev, html_string, '', synonyms]]
 
     return abbrev_data_list
 
@@ -347,7 +313,7 @@ def _generate_help_html(data: DataFrames, rsc: ResourcePaths) -> List[List[str]]
 
         # compile root data into list
         synonyms = [help_title]
-        help_data_list += [[f"{help_title}", f'{html_string}', '', synonyms]]
+        help_data_list += [[help_title, html_string, '', synonyms]]
 
     return help_data_list
 
@@ -402,6 +368,6 @@ def _generate_definition_html(data: DataFrames, rsc: ResourcePaths) -> List[List
         html_string = ''
         html_string = definition_css
         html_string += f"<body><div class='{div_class}'><p>{value}</p></div></body></html>"
-        definition_data_list += [[f"{key}", f'{html_string}', '', '']]
+        definition_data_list += [[key, html_string, '', '']]
 
     return definition_data_list

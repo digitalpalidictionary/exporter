@@ -4,6 +4,8 @@ from typing import TypedDict
 
 from mako import exceptions
 from mako.template import Template
+from pandas.core.frame import DataFrame
+from pandas.core.frame import Series
 
 import helpers
 import timeis
@@ -27,10 +29,15 @@ def render_header_tmpl(css: str, js: str) -> str:
     return str(HEADER_TMPL.render(css=css, js=js))
 
 
-class WordTemplate:
+class TemplateBase:
     def __init__(self, template_path: Path):
         self._template = Template(filename=str(template_path))
 
+    def render(self, *args) -> str:
+        raise NotImplementedError(f'{self.__name__} is abstract')
+
+
+class WordTemplate(TemplateBase):
     def render(self, word: DpsWord, table_data_read: str) -> str:
         return _render(
             self._template,
@@ -38,8 +45,14 @@ class WordTemplate:
             declensions=helpers.DECLENSIONS,
             indeclinables=helpers.INDECLINABLES,
             table_data_read=table_data_read,
-            today=date.today(),
+            today=date.today(),  # FIXME Move to template
             word=word)
+
+class AbbreviationTemplate(TemplateBase):
+    def render(self, abbreviation: Series) -> str:
+        return _render(
+          self._template,
+          abbreviation=abbreviation)
 
 
 def render_word_meaning(word: DpsWord) -> str:
