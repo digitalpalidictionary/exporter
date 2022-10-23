@@ -42,48 +42,34 @@ class WordTemplate:
             word=word)
 
 
-class RenderResult(TypedDict):
-    html: str
-    full: str
-    concise: str
+def render_word_meaning(w: DpsWord) -> str:
+    text_concise = ''
 
-
-def render_word_meaning(w: DpsWord) -> RenderResult:
-    text_concise = ""
-
-    if w.russian == "":
-        text_concise += f"""{w.pali}. {w.pos}. {w.meaning}."""
+    if w.russian == '':
+        text_concise += f'{w.pali}. {w.pos}. {w.meaning}.'
 
     else:
-        if w.pos != "":
+        if w.pos != '':
             text_concise += f"{w.pali}. {w.pos}."
 
-        text_concise += f""" {w.russian}"""
+        text_concise += f' {w.russian}'
 
-    return RenderResult(
-        html='',  # TODO Deprecate
-        full='',  # TODO Deprecate
-        concise=text_concise,
-    )
+    return text_concise,
 
 
 # TODO Decide to deprecate
 def render_word_meaning_sbs(w: DpsWord) -> RenderResult:
-    text_concise = ""
+    text_concise = ''
 
-    text_concise += f"{w.pali}."
+    text_concise += f'{w.pali}.'
 
-    if w.pos != "":
+    if w.pos != '':
         text_concise += f"{w.pos}."
 
-    if w.sbs_meaning != "":
+    if w.sbs_meaning != '':
         text_concise += f" {w.sbs_meaning}"
 
-    if w.sbs_meaning == "":
+    if w.sbs_meaning == '':
         text_concise += f" {w.meaning}"
 
-    return RenderResult(
-        html='',  # TODO Deprecate
-        full='',  # TODO Deprecate
-        concise=text_concise,
-    )
+    return text_concise,

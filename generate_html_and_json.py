@@ -38,7 +38,6 @@ def _full_text_dps_entry(word: DpsWord) -> str:
     construction_text = re.sub('<br/>', ', ', word.construction)
 
     result = ''
-    # FIXME Seems conditions is broken when word.russian != ''
     result += string_if(not word.russian, f'{word.pali}. {word.pos}. {word.meaning}. [в процессе]')
     result += string_if(word.pos, f'{word.pali}. {word.pos}')
 
@@ -63,7 +62,6 @@ def _full_text_dps_entry(word: DpsWord) -> str:
     return result
 
 
-# TODO SBS
 def _full_text_sbs_entry(word: DpsWord) -> str:
     comm_text = re.sub('<br/>', ' ', word.comm)
     comm_text = re.sub('<b>', '', comm_text)
@@ -72,8 +70,6 @@ def _full_text_sbs_entry(word: DpsWord) -> str:
     construction_text = re.sub('<br/>', ', ', word.construction)
 
     result = ''
-    # FIXME Seems conditions is broken when word.russian != ''
-    result += string_if(not word.russian, f'{word.pali}. {word.pos}. {word.meaning}. [в процессе]')
     result += string_if(word.pos, f'{word.pali}. {word.pos}')
 
     for i in [word.grammar, word.derived, word.neg, word.verb, word.trans]:
@@ -82,16 +78,16 @@ def _full_text_sbs_entry(word: DpsWord) -> str:
     result += string_if(word.case, f' ({word.case})')
     result += f'. {word.meaning}'
     result += string_if(word.russian, f'. {word.russian}')
-    result += string_if(word.root, f'. корень: {word.root}')
-    result += format_if(word.base, '. основа: {}')
+    result += string_if(word.root, f'. root: {word.root}')
+    result += format_if(word.base, '. base: {}')
 
-    result += format_if(construction_text, '. образование: {}')
+    result += format_if(construction_text, '. construction: {}')
 
-    result += format_if(word.var, 'вариант: {}')
-    result += format_if(comm_text, '. комментарий: {}')
-    result += format_if(word.notes, '. заметки: {}')
-    result += format_if(word.sk, '. санскрит: {}')
-    result += format_if(word.sk_root, '. санск. корень: {}')
+    result += format_if(word.var, 'variant: {}')
+    result += format_if(comm_text, '. commentary: {}')
+    result += format_if(word.notes, '. notes: {}')
+    result += format_if(word.sk, '. sanskrit: {}')
+    result += format_if(word.sk_root, '. sk. root: {}')
     result += '\n'
 
     return result
@@ -145,11 +141,10 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
 
         # summary
         if kind is Kind.DPS:
-            r = render_word_meaning(w)
+            text_concise += render_word_meaning(w)
         elif kind is Kind.SBS:
-            r = render_word_meaning_sbs(w)
+            text_concise += render_word_meaning_sbs(w)
 
-        text_concise += r['concise']
 
         # inflection table
         if w.pos not in INDECLINABLES:
@@ -335,7 +330,6 @@ def _generate_help_html(data: DataFrames, rsc: ResourcePaths) -> List[List[str]]
     help_df_length = len(help_df)
 
     for row in range(help_df_length):
-
         html_string = ''
 
         help_title = help_df.iloc[row, 0]
@@ -346,15 +340,14 @@ def _generate_help_html(data: DataFrames, rsc: ResourcePaths) -> List[List[str]]
         html_string += "<body>"
 
         # summary
-
         if rsc['kind'] is Kind.DPS:
             html_string += f'<div class="help"><p>помощь. <b>{help_title}</b>. {meaning}</p></div>'
         else:
-            html_string += f"""<div class="help"><p>help. <b>{help_title}</b>. {meaning}</p></div>"""
+            html_string += f'<div class="help"><p>help. <b>{help_title}</b>. {meaning}</p></div>'
 
         p = rsc['output_help_html_dir'].joinpath(f"{help_title}.html")
 
-        with open(p, 'w') as f:
+        with open(p, 'w', encoding=ENCODING) as f:
             f.write(html_string)
 
         # compile root data into list
@@ -374,7 +367,7 @@ def _generate_definition_html(data: DataFrames, rsc: ResourcePaths) -> List[List
 
     definition = {}
 
-    for row in range(df_length):  # df_length
+    for row in range(df_length):
         w = DpsWord(df, row)
         meanings_list = []
         meaning_data = w.russian if kind is Kind.DPS else w.meaning
