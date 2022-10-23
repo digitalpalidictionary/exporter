@@ -221,8 +221,32 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     pali_data_df = pd.DataFrame(html_data_list)
     pali_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
 
-    # generate abbreviations html
+    abbrev_data_list = _generate_abbreviations_html(data, rsc, kind)
+    help_data_list = _generate_help_html(data, rsc, kind)
+    definition_data_list = _generate_definition_html(data, rsc, kind)
 
+    # roots > dataframe > json
+    print(f"{timeis()} {green}generating json")
+
+    abbrev_data_df = pd.DataFrame(abbrev_data_list)
+    abbrev_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+
+    help_data_df = pd.DataFrame(help_data_list)
+    help_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+
+    definition_data_df = pd.DataFrame(definition_data_list)
+    definition_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
+    pali_data_df = pd.concat([pali_data_df, abbrev_data_df, help_data_df, definition_data_df])
+
+    print(f"{timeis()} {green}saving html to json")
+
+    pali_data_df.to_json(rsc['gd_json_path'], force_ascii=False, orient="records", indent=6)
+
+    print(f"{timeis()} {line}")
+
+
+# TODO Declaration
+def _generate_abbreviations_html(data, rsc, kind):
     print(f"{timeis()} {green}generating abbreviations html")
 
     abbrev_data_list = []
@@ -291,8 +315,11 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         synonyms = [abbrev, meaning]
         abbrev_data_list += [[f"{abbrev}", f'{html_string}', '', synonyms]]
 
+    return abbrev_data_list
 
-  # generate help html
+
+# TODO Signature
+def _generate_help_html(data, rsc, kind):
     print(f"{timeis()} {green}generating help html")
 
     help_data_list = []
@@ -333,8 +360,11 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         synonyms = [help_title]
         help_data_list += [[f"{help_title}", f'{html_string}', '', synonyms]]
 
+    return help_data_list
 
-    # Generate definition HTML
+
+# TODO Signature
+def _generate_definition_html(data, rsc, kind):
     print(f"{timeis()} {green}generating definition HTML")
 
     df = data['words_df']
@@ -385,23 +415,4 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
         html_string += f"<body><div class='{div_class}'><p>{value}</p></div></body></html>"
         definition_data_list += [[f"{key}", f'{html_string}', '', '']]
 
-    # roots > dataframe > json
-
-    print(f"{timeis()} {green}generating json")
-
-    abbrev_data_df = pd.DataFrame(abbrev_data_list)
-    abbrev_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
-
-    help_data_df = pd.DataFrame(help_data_list)
-    help_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
-
-    definition_data_df = pd.DataFrame(definition_data_list)
-    definition_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
-
-    pali_data_df = pd.concat([pali_data_df, abbrev_data_df, help_data_df, definition_data_df])
-
-    print(f"{timeis()} {green}saving html to json")
-
-    pali_data_df.to_json(rsc['gd_json_path'], force_ascii=False, orient="records", indent=6)
-
-    print(f"{timeis()} {line}")
+    return definition_data_list
