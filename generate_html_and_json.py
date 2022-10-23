@@ -30,6 +30,7 @@ GOOGLE_LINK_TEMPLATE = (
 ENCODING = 'UTF-8'
 
 
+# TODO Merge with sbs version (use a dict for lang-specific entries)
 def _full_text_dps_entry(word: DpsWord) -> str:
     comm_text = re.sub('<br/>', ' ', word.comm)
     comm_text = re.sub('<b>', '', comm_text)
@@ -126,7 +127,7 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
         w = DpsWord(df, row)
 
         if row % 5000 == 0 or row % df_length == 0:
-           rich.print(f'{timeis()} {row}/{df_length}\t{w.pali}')
+            rich.print(f'{timeis()} {row}/{df_length}\t{w.pali}')
 
         html_string = ''
         if kind is Kind.DPS:
@@ -145,14 +146,13 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
         elif kind is Kind.SBS:
             text_concise += render_word_meaning_sbs(w)
 
-
         # inflection table
         if w.pos not in INDECLINABLES:
             table_path = rsc['inflections_dir'].joinpath("output/html tables/").joinpath(w.pali + ".html")
 
             table_data_read = ''
             try:
-                with open(table_path) as f:
+                with open(table_path, encoding=ENCODING) as f:
                     table_data_read = f.read()
             except FileNotFoundError:
                 inflection_table_error_string += w.pali + ", "
@@ -166,7 +166,6 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
         if inflections_path.exists():
             with open(inflections_path, "rb") as syn_file:
                 synonyms = pickle.load(syn_file)
-                synonyms = (synonyms)
         else:
             synonyms_error_string += w.pali + ', '
             error_log += f'error reading synonyms - {w.pali}\n'
@@ -176,11 +175,6 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
         html_data_list += [[f"{w.pali}", f'{html_string}', '', synonyms]]
         text_data_full += text_full
         text_data_concise += f"{text_concise}\n"
-
-        # TODO Delete before merge
-        if w.pali == 'akata 1':
-            with open('output/cur.html', 'w') as f:
-                f.write(html_string)
 
         if row % 100 == 0:
             p = rsc['output_html_dir'].joinpath(f"{w.pali} (sample).html")
@@ -212,6 +206,7 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
 
     if generate_roots:
         generate_roots_html_and_json(data, rsc, html_data_list)
+
 
 def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data_list):
     # html list > dataframe
@@ -251,7 +246,7 @@ def _generate_abbreviations_html(data: DataFrames, rsc: ResourcePaths) -> List[L
 
     today = date.today()
 
-    with open(rsc['dict_help_css_path'], 'r') as f:
+    with open(rsc['dict_help_css_path'], 'r', encoding=ENCODING) as f:
         abbrev_css = f.read()
 
     abbrev_df = data['abbrev_df']
@@ -305,7 +300,7 @@ def _generate_abbreviations_html(data: DataFrames, rsc: ResourcePaths) -> List[L
         part_file = rsc['output_help_html_dir'].joinpath(f'{abbrev}.html')
 
         rsc['output_help_html_dir'].mkdir(parents=True, exist_ok=True)  # TODO Move out of the loop
-        with open(part_file, 'w') as f:
+        with open(part_file, 'w', encoding=ENCODING) as f:
             f.write(html_string)
 
         # compile root data into list
@@ -321,7 +316,7 @@ def _generate_help_html(data: DataFrames, rsc: ResourcePaths) -> List[List[str]]
     help_data_list = []
 
     try:
-        with open(rsc['dict_help_css_path'], 'r') as f:
+        with open(rsc['dict_help_css_path'], 'r', encoding=ENCODING) as f:
             help_css = f.read()
     except FileNotFoundError:
         help_css = ''
@@ -374,7 +369,7 @@ def _generate_definition_html(data: DataFrames, rsc: ResourcePaths) -> List[List
         meaning_data = re.sub(r'\?\?', '', meaning_data)
 
         if row % 10000 == 0:
-           rich.print(f'{timeis()} {row}/{df_length}\t{w.pali}')
+            rich.print(f'{timeis()} {row}/{df_length}\t{w.pali}')
 
         if meaning_data != '' and w.pos not in pos_exclude_list:
 
@@ -388,16 +383,16 @@ def _generate_definition_html(data: DataFrames, rsc: ResourcePaths) -> List[List
             meanings_list = meanings_clean.split(';')
 
             for meaning in meanings_list:
-                if meaning in definition.keys() and w.case == '':
+                if meaning in definition and w.case == '':
                     definition[meaning] = f"{definition[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {meaning_data}"
                 if meaning in definition.keys() and w.case != '':
                     definition[meaning] = f"{definition[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {meaning_data} ({w.case})"
-                if meaning not in definition.keys() and w.case == '':
+                if meaning not in definition and w.case == '':
                     definition.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {meaning_data}"})
-                if meaning not in definition.keys() and w.case != '':
+                if meaning not in definition and w.case != '':
                     definition.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {meaning_data} ({w.case})"})
 
-    with open(rsc['definition_css_path'], 'r') as f:
+    with open(rsc['definition_css_path'], 'r', encoding=ENCODING) as f:
         definition_css = f.read()
 
     definition_data_list = []
