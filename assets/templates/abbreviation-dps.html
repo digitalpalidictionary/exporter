@@ -1,8 +1,10 @@
 <%page args='abbreviation'/>
+<%namespace file='/lib.mako' import='google_href_dps'/>
 <%
     from datetime import date
 
     today = date.today()
+
     abbrev = abbreviation.iloc[0]
     meaning = abbreviation.iloc[1]
     pali_meaning = abbreviation.iloc[2]
@@ -30,7 +32,7 @@
     </div>
 
     <p>
-        <a class="link" target="_blank" href=<%include file='/link-dps.mako' args='args=f"entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}"'/>>Сообщить об ошибке.</a>
+        ${google_href_dps(args=[f'entry.438735500={abbrev}', f'entry.1433863141=GoldenDict {today}'], text='Сообщить об ошибке.')}
     </p>
 </body>
 
