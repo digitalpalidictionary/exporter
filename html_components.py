@@ -4,6 +4,7 @@ from typing import TypedDict
 
 from mako import exceptions
 from mako.template import Template
+from mako.lookup import TemplateLookup
 from pandas.core.frame import DataFrame
 from pandas.core.frame import Series
 
@@ -31,7 +32,12 @@ def render_header_tmpl(css: str, js: str) -> str:
 
 class TemplateBase:
     def __init__(self, template_path: Path):
-        self._template = Template(filename=str(template_path))
+        module_dir = Path(__file__).parent
+        #raise Exception(module_dir)
+        lookup = TemplateLookup(directories=[module_dir / 'assets/templates/'])  # TODO
+        self._template = Template(
+            filename=str(template_path),  # TODO
+            lookup=lookup)
 
     def render(self, *args) -> str:
         raise NotImplementedError(f'{self.__name__} is abstract')

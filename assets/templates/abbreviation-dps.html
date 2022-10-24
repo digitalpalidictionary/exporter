@@ -1,3 +1,4 @@
+<%page args='abbreviation'/>
 <%
     from datetime import date
 
@@ -8,34 +9,28 @@
     ru_meaning = abbreviation.iloc[3]
     examp = abbreviation.iloc[4]
     expl = abbreviation.iloc[5]
-
-    ## TODO Include from outer
-    google_href = (
-        '<a class="link" href="https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0nAOVApM998wM/viewform?'
-        'usp=pp_url&{args}" target="_blank">{text}</a>')
 %>
-
 <body>
     <div class="help">
         <p>
-            abbreviation. <b>${abbrev}</b>. ${meaning}.
-            if pali_meaning != '':
-                ${pali_meaning}.
-
-            if kind is Kind.DPS:
-                if ru_meaning != '':
-                    ${ru_meaning}.
-            <br>
-            if examp != '':
-                e.g. ${examp}.
-            <br>
-            if expl != '':
-                ${expl}.
+            abbreviation. <b>${abbrev}</b>. ${meaning}.\
+%if pali_meaning != '':
+ ${pali_meaning}.\
+%endif
+%if ru_meaning != '':
+ ${ru_meaning}. <br>
+%endif
+            %if examp != '':
+            e.g. ${examp}. <br>
+            %endif
+            %if expl != '':
+            ${expl}.
+            %endif
         </p>
     </div>
 
     <p>
-        ${google_href.format(args=f'entry.438735500={abbrev}&entry.1433863141=GoldenDict {date.today()}', text='Сообщить об ошибке.')}
+        <a class="link" target="_blank" href=<%include file='/link-dps.mako' args='args=f"entry.438735500={abbrev}&entry.1433863141=GoldenDict {today}"'/>>Сообщить об ошибке.</a>
     </p>
 </body>
 
