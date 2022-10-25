@@ -26,40 +26,4 @@ def timeis():
     today = now.strftime("%d")
     return (f"{blue}{current_time}{white}")
 
-
-def timeiz(details):
-    now = datetime.now()
-    current_time = now.strftime("%Y-%m-%d %H:%M:%S")
-    print(f"{blue}{current_time}{white} {details}")
-
-
-def tic():
-    global ticx
-    ticx = datetime.now()
-
-
-def toc():
-    tocx = datetime.now()
-    tictoc = (tocx - ticx)
-    print(f"{timeis()} {line}")
-    print(f"{timeis()} {cyan}{tictoc}")
-    print(f"{timeis()} {line}")
-
-
-def bip():
-    global bipx
-    bipx = timer()
-
-
-def bop():
-    bopx = timer()
-    bipbop = timedelta(seconds=bopx-bipx)
-    return bipbop
-
-def today():
-    now = datetime.now()
-    current_time = now.strftime("%Y-%m-%d %H:%M:%S")
-    today = now.strftime("%d")
-    return today
-
 timeis()

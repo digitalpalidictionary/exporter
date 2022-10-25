@@ -21,8 +21,7 @@ from html_components import render_header_tmpl
 from html_components import render_word_meaning
 from html_components import render_word_meaning_sbs
 
-from timeis import yellow, green, red, line  # FIXME Use lib
-from timeis_rich import timeis  # TODO Use rich logging handler
+from timeis_rich import timeis, line  # TODO Use rich logging handler
 
 ENCODING = 'UTF-8'
 
