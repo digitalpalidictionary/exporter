@@ -1,5 +1,5 @@
 <%page args='abbreviation'/>
-<%namespace file='/lib.mako' import='google_href_dps'/>
+<%namespace file='/lib.mako' import='google_link_dps'/>
 <%
     from datetime import date
 
@@ -20,11 +20,13 @@
  ${pali_meaning}.\
 %endif
 %if ru_meaning != '':
- ${ru_meaning}. <br>
+ ${ru_meaning}.
 %endif
+            <br>
             %if examp != '':
-            e.g. ${examp}. <br>
+            e.g. ${examp}.
             %endif
+            <br>
             %if expl != '':
             ${expl}.
             %endif
@@ -32,7 +34,7 @@
     </div>
 
     <p>
-        ${google_href_dps(args=[f'entry.438735500={abbrev}', f'entry.1433863141=GoldenDict {today}'], text='Сообщить об ошибке.')}
+        ${google_link_dps(args=[f'entry.438735500={abbrev}', f'entry.1433863141=GoldenDict {today}'], text='Сообщить об ошибке.')}
     </p>
 </body>
 

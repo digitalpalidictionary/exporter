@@ -261,8 +261,8 @@ def _generate_abbreviations_html(data: DataFrames, rsc: ResourcePaths) -> List[L
 
         part_file = rsc['output_help_html_dir'].joinpath(f'{abbrev}.html')
 
-        with open(part_file, 'w', encoding=ENCODING) as f:
-            f.write(html_string)
+        with open(part_file, 'w', encoding=ENCODING) as file:
+            file.write(html_string)
 
         # compile root data into list
         synonyms = [abbrev, meaning]
