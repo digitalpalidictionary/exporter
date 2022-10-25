@@ -33,8 +33,7 @@ def render_header_tmpl(css: str, js: str) -> str:
 class TemplateBase:
     def __init__(self, template_path: Path):
         module_dir = Path(__file__).parent
-        #raise Exception(module_dir)
-        lookup = TemplateLookup(directories=[module_dir / 'assets/templates/'])  # TODO
+        lookup = TemplateLookup(directories=[module_dir / 'assets/templates/'])  # TODO To rsc
         self._template = Template(
             filename=str(template_path),  # TODO
             lookup=lookup)
@@ -51,7 +50,6 @@ class WordTemplate(TemplateBase):
             declensions=helpers.DECLENSIONS,
             indeclinables=helpers.INDECLINABLES,
             table_data_read=table_data_read,
-            today=date.today(),  # FIXME Move to template
             word=word)
 
 class AbbreviationTemplate(TemplateBase):

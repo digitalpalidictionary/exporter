@@ -14,3 +14,10 @@ ${_google_link('https://docs.google.com/forms/d/1iMD9sCSWFfJAFCFYuG9HRIyrr9KFRy0
 <%def name='google_link_sbs(entry, text, args=[])'>\
 ${_google_link('https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform', entry, text, args)}\
 </%def>
+
+<%def name='today()'>\
+<%
+    from datetime import date
+%>
+${date.today()}
+</%def>

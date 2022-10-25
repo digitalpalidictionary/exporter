@@ -1,5 +1,5 @@
-<%page args='word'/>
-<%namespace file='/lib.mako' import='google_link_dps'/>
+<%page args='word, conjugations, declensions, indeclinables, table_data_read'/>
+<%namespace file='/lib.mako' import='google_link_dps, today'/>
 <%
     mailto_href = (
         'mailto:devamitta@sasanarakkha.org?subject='
@@ -156,7 +156,7 @@ ${table_data_read}
     </p>
 
     <p>
-      <span>Ваша версия словаря от <b>${today}</b>. Пожалуйста, регулярно проверяйте наличие обновлений.</span>
+      <span>Ваша версия словаря от <b>${today()}</b>. Пожалуйста, регулярно проверяйте наличие обновлений.</span>
     </p>
 
     <p>
