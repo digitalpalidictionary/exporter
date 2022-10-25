@@ -1,9 +1,6 @@
+<%page args='word'/>
+<%namespace file='/lib.mako' import='google_link_sbs'/>
 <%
-    google_href = (
-        'https://docs.google.com/forms/d/e/1FAIpQLScNC5v2gQbBCM3giXfYIib9zrp-WMzwJuf_iVXEMX2re4BFFw/viewform?'
-        f'usp=pp_url&entry.438735500={word.pali}&entry.1433863141=GoldenDict%20{today}'
-        '{args}')
-
     button_template = (
         '<a class="button_sbs" href="javascript:void(0);" onclick="button_click(this)"'
         ' data-target="{target}">{name}</a>')
@@ -99,9 +96,7 @@ ${result}
         % endif
     </table>
     <p>
-        <a class="link" target="_blank" href="${google_href.format(args='')}">
-            Report a mistake.
-        </a>
+        ${google_link_sbs(entry=word.pali, text='Report a mistake')}.
     </p>
 </div>
 
@@ -145,8 +140,8 @@ ${result}
     % endif
 
     <p>
-    Can you think of a better example?
-    <a class="link" target='_blank' href="${google_href.format(args=f'&entry.326955045=Example2')}">Add it here</a>.
+    Can you think of a better example? \
+${google_link_sbs(entry=word.pali, text='Add it here', args=f'&entry.326955045=Example2')}.
     </p>
 </div>
 
@@ -159,10 +154,7 @@ ${result}
 ${table_data_read}
     % if word.pos != 'sandhi' and word.pos != 'idiom' and (word.pos in declensions or word.pos in conjugations):
     <p>
-        Have a suggestion?
-        <a class="link" target='_blank' href="${google_href.format(args='')}">
-            Report a mistake.
-        </a>.
+        Have a suggestion? ${google_link_sbs(entry=word.pali, text='Report a mistake')}.
     </p>
     % endif
 </div>
@@ -196,12 +188,14 @@ ${table_data_read}
     </p>
   
     <p>
-        <a class="link" href="${google_href.format(args='')}">Report a mistake.</a>
-        <span>Did you spot a mistake in the dictionary? Have a bright idea?
-            Please report it. It generally takes less than a minute, and your
-            corrections and suggestions help to improve the quality of this
-            dictionary for everyone who uses it.</span>
-        </a>
+        <%
+        link_text = (
+            '<span>Did you spot a mistake in the dictionary? Have a bright idea?'
+            ' Please report it. It generally takes less than a minute, and your'
+            ' corrections and suggestions help to improve the quality of this'
+            ' dictionary for everyone who uses it.</span>')
+        %>
+        ${google_link_sbs(entry=word.pali, text=link_text)}.
     </p>
 
     <p>

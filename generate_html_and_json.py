@@ -267,10 +267,6 @@ def _generate_abbreviations_html(data: DataFrames, rsc: ResourcePaths) -> List[L
         # compile root data into list
         synonyms = [abbrev, meaning]
 
-        # TODO Purge
-        if abbrev == 'acc':
-            with open('output/acc_cur.html', 'w') as f:
-                f.write(html_string)
         abbrev_data_list += [[abbrev, html_string, '', synonyms]]
 
     return abbrev_data_list
