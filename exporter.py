@@ -3,14 +3,15 @@
 
 import json
 
+import rich
 import typer
 
-from timeis import timeis, yellow, green, line
 from generate_html_and_json import generate_html_and_json
 from helpers import ResourcePaths
 from helpers import copy_goldendict
 from helpers import get_resource_paths_dps
 from helpers import get_resource_paths_sbs
+from helpers import timeis, line  # TODO Use logging with the rich.logging.RichHandler for messages
 
 
 app = typer.Typer()
@@ -41,15 +42,15 @@ def _run_generate_goldendict(rsc: ResourcePaths, ifo: 'StarDictIfo', move_to_des
     # importing Simsapa here so other commands don't have to load it and its numerous dependencies
     from simsapa.app.stardict import export_words_as_stardict_zip, DictEntry
 
-    print(f"{timeis()} {yellow}generate goldendict")
-    print(f"{timeis()} {line}")
+    rich.print(f"{timeis()} [yellow]generate goldendict[/yellow]")
+    rich.print(f"{timeis()} {line()}")
 
-    print(f"{timeis()} {green}reading json")
+    rich.print(f"{timeis()} [green]reading json[/green]")
 
     with open(rsc['gd_json_path'], "r") as f:
         gd_data_read = json.load(f)
 
-    print(f"{timeis()} {green}parsing json")
+    rich.print(f"{timeis()} [green]parsing json[/green]")
 
     def item_to_word(x):
         return DictEntry(
@@ -61,13 +62,13 @@ def _run_generate_goldendict(rsc: ResourcePaths, ifo: 'StarDictIfo', move_to_des
 
     words = list(map(item_to_word, gd_data_read))
 
-    print(f"{timeis()} {green}writing goldendict")
+    rich.print(f"{timeis()} [green]writing goldendict[/green]")
     export_words_as_stardict_zip(words, ifo, rsc['output_stardict_zip_path'], rsc['icon_path'])
 
     if move_to_dest:
         copy_goldendict(rsc['output_stardict_zip_path'], rsc['output_share_dir'])
 
-    print(f"{timeis()} {line}")
+    rich.print(f"{timeis()} {line}")
 
 
 @app.command()
@@ -102,10 +103,6 @@ def run_generate_goldendict_sbs(move_to_dest: bool = True):
     return _run_generate_goldendict(rsc, ifo, move_to_dest)
 
 
-def main():
+if __name__ == "__main__":
     # Process cli with typer.
     app()
-
-
-if __name__ == "__main__":
-    main()

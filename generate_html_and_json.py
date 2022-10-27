@@ -9,21 +9,20 @@ import rich
 
 from helpers import DataFrames
 from helpers import DpsWord
+from helpers import ENCODING
 from helpers import INDECLINABLES
 from helpers import Kind
 from helpers import ResourcePaths
 from helpers import format_if
 from helpers import parse_data_frames
 from helpers import string_if
+from helpers import timeis, line
 from html_components import AbbreviationTemplate
-from html_components import WordTemplate
 from html_components import HeaderTemplate
+from html_components import WordTemplate
 from html_components import render_word_meaning
 from html_components import render_word_meaning_sbs
 
-from timeis_rich import timeis, line  # TODO Use rich logging handler
-
-ENCODING = 'UTF-8'
 
 
 # TODO Merge with sbs version (use a dict for lang-specific entries)
@@ -96,7 +95,7 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
     assert kind in list(Kind), 'Invalid kind get from resources'
 
     rich.print(f'{timeis()} [yellow]generate html and json[/yellow]')
-    rich.print(f'{timeis()} {line}')
+    rich.print(f'{timeis()} {line()}')
     rich.print(f'{timeis()} [green]generating dps html[/green]')
 
     error_log = ''
@@ -233,7 +232,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
 
     pali_data_df.to_json(rsc['gd_json_path'], force_ascii=False, orient="records", indent=6)
 
-    rich.print(f'{timeis()} {line}')
+    rich.print(f'{timeis()} {line()}')
 
 
 def _generate_abbreviations_html(data: DataFrames, rsc: ResourcePaths) -> List[List[str]]:

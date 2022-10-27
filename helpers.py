@@ -4,27 +4,39 @@ import re
 import subprocess
 import sys
 
-from datetime import date
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 from typing import TypedDict
 
 import pandas as pd
+import rich
 
 from dotenv import load_dotenv
 from pandas.core.frame import DataFrame
-from timeis import timeis, green, red
 
 
-load_dotenv()
-
-
+ENCODING = 'UTF-8'
 INDECLINABLES = {'abbrev', 'abs', 'ger', 'ind', 'inf', 'prefix', 'sandhi', 'idiom'}
 CONJUGATIONS = {'aor', 'cond', 'fut', 'imp', 'imperf', 'opt', 'perf', 'pr'}
 DECLENSIONS = {
     'adj', 'card', 'cs', 'fem', 'letter', 'masc', 'nt', 'ordin', 'pp', 'pron',
     'prp', 'ptp', 'root', 'suffix', 've'
 }
+
+
+load_dotenv()
+
+
+def timeis() -> str:
+    """ Returns rich formatted date and time
+    """
+    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return f'[blue]{current_time}[/blue]'
+
+
+def line(length=40) -> str:
+    return '-' * length
 
 
 class Kind(enum.Enum):
@@ -84,7 +96,7 @@ def parse_data_frames(rsc: ResourcePaths) -> DataFrames:
 def get_resource_paths_dps() -> ResourcePaths:
     s = os.getenv('DPS_DIR')
     if s is None:
-        print(f"{timeis()} {red}ERROR! DPS_DIR is not set.")
+        rich.print(f"{timeis()} [red]ERROR! DPS_DIR is not set.[/red]")
         sys.exit(2)
     else:
         dps_dir = Path(s)
@@ -127,7 +139,7 @@ def get_resource_paths_dps() -> ResourcePaths:
 def get_resource_paths_sbs() -> ResourcePaths:
     s = os.getenv('DPS_DIR')
     if s is None:
-        print(f"{timeis()} {red}ERROR! DPS_DIR is not set.")
+        rich.print(f"{timeis()} [red]ERROR! DPS_DIR is not set.[/red]")
         sys.exit(2)
     else:
         dps_dir = Path(s)
@@ -168,7 +180,7 @@ def get_resource_paths_sbs() -> ResourcePaths:
 
 
 def copy_goldendict(src_path: Path, dest_dir: Path):
-    print(f"{timeis()} {green}copying goldendict to share")
+    rich.print(f"{timeis()} [green]copying goldendict to share[/green]")
 
     # file name without .zip suffix
     dest_base = src_path.name.replace(src_path.suffix, '')
@@ -180,7 +192,7 @@ def copy_goldendict(src_path: Path, dest_dir: Path):
             ['mv', '--backup=numbered', src_path, dest_path],
             check=True)
     except Exception as e:
-        print(f"{timeis()} {red}{e}")
+        rich.print(f'{timeis()} [red]{e}[/red]')
         sys.exit(2)
 
 
