@@ -1,33 +1,14 @@
-from datetime import date
 from pathlib import Path
-from typing import TypedDict
 
 from mako import exceptions
 from mako.template import Template
 from mako.lookup import TemplateLookup
-from pandas.core.frame import DataFrame
 from pandas.core.frame import Series
 
 import helpers
 import timeis
 
 from helpers import DpsWord
-
-HEADER_TMPL = Template(filename='./assets/templates/header.html')
-
-
-def _render(template: Template, **kwargs) -> str:
-    try:
-        return template.render(**kwargs)
-    except Exception as error:
-        print(f'{timeis.red} Template exception')
-        print(exceptions.text_error_template().render())
-        print(f'{timeis.line}{timeis.white}')
-        raise error from None
-
-
-def render_header_tmpl(css: str, js: str) -> str:
-    return str(HEADER_TMPL.render(css=css, js=js))
 
 
 class TemplateBase:
@@ -38,25 +19,37 @@ class TemplateBase:
             filename=str(template_path),  # TODO
             lookup=lookup)
 
-    def render(self, *args) -> str:
-        raise NotImplementedError(f'{self.__name__} is abstract')
+    def _render_helper(self, **kwargs) -> str:
+        try:
+            return self._template.render(**kwargs)
+        except Exception as error:
+            print(f'{timeis.red} Template exception')
+            print(exceptions.text_error_template().render())
+            print(f'{timeis.line}{timeis.white}')
+            raise error from None
+
+
+class HeaderTemplate(TemplateBase):
+    def __init__(self):
+        super().__init__('./assets/templates/header.html')
+
+    def render(self, css: str, js: str) -> str:
+        return self._render_helper(css=css, js=js)
 
 
 class WordTemplate(TemplateBase):
     def render(self, word: DpsWord, table_data_read: str) -> str:
-        return _render(
-            self._template,
+        return self._render_helper(
             conjugations=helpers.CONJUGATIONS,
             declensions=helpers.DECLENSIONS,
             indeclinables=helpers.INDECLINABLES,
             table_data_read=table_data_read,
             word=word)
 
+
 class AbbreviationTemplate(TemplateBase):
     def render(self, abbreviation: Series) -> str:
-        return _render(
-          self._template,
-          abbreviation=abbreviation)
+        return self._render_helper(abbreviation=abbreviation)
 
 
 def render_word_meaning(word: DpsWord) -> str:

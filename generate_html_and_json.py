@@ -17,7 +17,7 @@ from helpers import parse_data_frames
 from helpers import string_if
 from html_components import AbbreviationTemplate
 from html_components import WordTemplate
-from html_components import render_header_tmpl
+from html_components import HeaderTemplate
 from html_components import render_word_meaning
 from html_components import render_word_meaning_sbs
 
@@ -117,6 +117,7 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
     with open(rsc['buttons_js_path'], 'r', encoding=ENCODING) as f:
         buttons_js = f.read()
 
+    header_template = HeaderTemplate()
     word_template = WordTemplate(rsc['word_template_path'])
 
     for row in range(df_length):
@@ -134,7 +135,7 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
         text_concise = ''
 
         # html head & style
-        html_string += render_header_tmpl(css=words_css, js=buttons_js)
+        html_string += header_template.render(css=words_css, js=buttons_js)
 
         # summary
         if kind is Kind.DPS:
@@ -246,6 +247,7 @@ def _generate_abbreviations_html(data: DataFrames, rsc: ResourcePaths) -> List[L
     abbrev_df = data['abbrev_df']
     abbrev_df_length = len(abbrev_df)
 
+    header_template = HeaderTemplate()
     abbreviation_template = AbbreviationTemplate(rsc['abbreviation_template_path'])
 
     for row in range(abbrev_df_length):
@@ -253,8 +255,7 @@ def _generate_abbreviations_html(data: DataFrames, rsc: ResourcePaths) -> List[L
         abbrev = abbrev_series[0]
         meaning = abbrev_series[1]
 
-        # TODO Try to include into the template
-        html_string = render_header_tmpl(css=abbrev_css, js='')  # TODO Make class
+        html_string = header_template.render(css=abbrev_css, js='')
         html_string += abbreviation_template.render(abbrev_series)
         html_string += '</html>'
 
@@ -284,6 +285,7 @@ def _generate_help_html(data: DataFrames, rsc: ResourcePaths) -> List[List[str]]
 
     help_df = data['help_df']
     help_df_length = len(help_df)
+    header_template = HeaderTemplate()
 
     for row in range(help_df_length):
         html_string = ''
@@ -291,7 +293,7 @@ def _generate_help_html(data: DataFrames, rsc: ResourcePaths) -> List[List[str]]
         help_title = help_df.iloc[row, 0]
         meaning = help_df.iloc[row, 1]
 
-        html_string += render_header_tmpl(css=help_css, js='')
+        html_string += header_template.render(css=help_css, js='')
 
         html_string += "<body>"
 
