@@ -69,7 +69,7 @@ def _run_generate_goldendict(rsc: ResourcePaths, ifo: 'StarDictIfo', move_to_des
     if move_to_dest:
         copy_goldendict(rsc['output_stardict_zip_path'], rsc['output_share_dir'])
 
-    rich.print(f"{timeis()} {line}")
+    rich.print(f"{timeis()} {line()}")
 
 
 @app.command()
