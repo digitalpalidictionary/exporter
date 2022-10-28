@@ -1,7 +1,6 @@
 import pickle
 import re
 
-from datetime import date
 from typing import List
 
 import pandas as pd
@@ -20,9 +19,6 @@ from helpers import timeis, line
 from html_components import AbbreviationTemplate
 from html_components import HeaderTemplate
 from html_components import WordTemplate
-from html_components import render_word_meaning
-from html_components import render_word_meaning_sbs
-
 
 
 # TODO Merge with sbs version (use a dict for lang-specific entries)
@@ -94,9 +90,9 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
     kind = rsc['kind']
     assert kind in list(Kind), 'Invalid kind get from resources'
 
-    rich.print(f'{timeis()} [yellow]generate html and json[/yellow]')
+    rich.print(f'{timeis()} [yellow]generate html and json')
     rich.print(f'{timeis()} {line()}')
-    rich.print(f'{timeis()} [green]generating dps html[/green]')
+    rich.print(f'{timeis()} [green]generating dps html')
 
     error_log = ''
 
@@ -138,9 +134,24 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
 
         # summary
         if kind is Kind.DPS:
-            text_concise += render_word_meaning(w)
+            if w.russian == '':
+                text_concise += f'{w.pali}. {w.pos}. {w.meaning}.'
+            else:
+                if w.pos != '':
+                    text_concise += f"{w.pali}. {w.pos}."
+                text_concise += f' {w.russian}'
+
         elif kind is Kind.SBS:
-            text_concise += render_word_meaning_sbs(w)
+            text_concise = f'{w.pali}.'
+
+            if w.pos != '':
+                text_concise += f"{w.pos}."
+
+            if w.sbs_meaning != '':
+                text_concise += f" {w.sbs_meaning}"
+
+            if w.sbs_meaning == '':
+                text_concise += f" {w.meaning}"
 
         # inflection table
         if w.pos not in INDECLINABLES:
@@ -182,10 +193,10 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
         error_log_file.write(error_log)
 
     if inflection_table_error_string != '':
-        rich.print(f'{timeis()} [red]inflection table errors: {inflection_table_error_string}[/red]')
+        rich.print(f'{timeis()} [red]inflection table errors: {inflection_table_error_string}')
 
     if synonyms_error_string != '':
-        rich.print(f'{timeis()} [red]synonym errors: {synonyms_error_string}[/red]')
+        rich.print(f'{timeis()} [red]synonym errors: {synonyms_error_string}')
 
     # convert ṃ to ṁ
     text_data_full = re.sub('ṃ', 'ṁ', text_data_full)
@@ -216,7 +227,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     definition_data_list = _generate_definition_html(data, rsc)
 
     # roots > dataframe > json
-    rich.print(f'{timeis()} [green]generating json[/green]')
+    rich.print(f'{timeis()} [green]generating json')
 
     abbrev_data_df = pd.DataFrame(abbrev_data_list)
     abbrev_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
@@ -228,7 +239,7 @@ def generate_roots_html_and_json(data: DataFrames, rsc: ResourcePaths, html_data
     definition_data_df.columns = ["word", "definition_html", "definition_plain", "synonyms"]
     pali_data_df = pd.concat([pali_data_df, abbrev_data_df, help_data_df, definition_data_df])
 
-    rich.print(f'{timeis()} [green]saving html to json[/green]')
+    rich.print(f'{timeis()} [green]saving html to json')
 
     pali_data_df.to_json(rsc['gd_json_path'], force_ascii=False, orient="records", indent=6)
 
@@ -254,7 +265,7 @@ def _generate_abbreviations_html(data: DataFrames, rsc: ResourcePaths) -> List[L
         abbrev = abbrev_series[0]
         meaning = abbrev_series[1]
 
-        html_string = header_template.render(css=abbrev_css, js='')
+        html_string = header_template.render(css=abbrev_css)
         html_string += abbreviation_template.render(abbrev_series)
         html_string += '</html>'
 
@@ -272,7 +283,7 @@ def _generate_abbreviations_html(data: DataFrames, rsc: ResourcePaths) -> List[L
 
 
 def _generate_help_html(data: DataFrames, rsc: ResourcePaths) -> List[List[str]]:
-    rich.print(f'{timeis()} [green]generating help html[/green]')
+    rich.print(f'{timeis()} [green]generating help html')
 
     help_data_list = []
 
@@ -292,7 +303,7 @@ def _generate_help_html(data: DataFrames, rsc: ResourcePaths) -> List[List[str]]
         help_title = help_df.iloc[row, 0]
         meaning = help_df.iloc[row, 1]
 
-        html_string += header_template.render(css=help_css, js='')
+        html_string += header_template.render(css=help_css)
 
         html_string += "<body>"
 
@@ -316,7 +327,7 @@ def _generate_help_html(data: DataFrames, rsc: ResourcePaths) -> List[List[str]]
 
 def _generate_definition_html(data: DataFrames, rsc: ResourcePaths) -> List[List[str]]:
     kind = rsc['kind']
-    rich.print(f'{timeis()} [green]generating definition HTML[/green]')
+    rich.print(f'{timeis()} [green]generating definition HTML')
 
     df = data['words_df']
     df_length = data['words_df'].shape[0]
@@ -346,13 +357,15 @@ def _generate_definition_html(data: DataFrames, rsc: ResourcePaths) -> List[List
 
             for meaning in meanings_list:
                 if meaning in definition and w.case == '':
-                    definition[meaning] = f"{definition[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {meaning_data}"
-                if meaning in definition.keys() and w.case != '':
-                    definition[meaning] = f"{definition[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {meaning_data} ({w.case})"
-                if meaning not in definition and w.case == '':
-                    definition.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {meaning_data}"})
-                if meaning not in definition and w.case != '':
-                    definition.update({meaning: f"<b>{w.pali_clean}</b> {w.pos}. {meaning_data} ({w.case})"})
+                    definition[meaning] = f'{definition[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {meaning_data}'
+                elif meaning in definition and w.case != '':
+                    definition[meaning] = (
+                        f'{definition[meaning]}<br>'
+                        f'<b>{w.pali_clean}</b> {w.pos}. {meaning_data} ({w.case})')
+                elif meaning not in definition and w.case == '':
+                    definition.update({meaning: f'<b>{w.pali_clean}</b> {w.pos}. {meaning_data}'})
+                elif meaning not in definition and w.case != '':
+                    definition.update({meaning: f'<b>{w.pali_clean}</b> {w.pos}. {meaning_data} ({w.case})'})
 
     with open(rsc['definition_css_path'], 'r', encoding=ENCODING) as f:
         definition_css = f.read()

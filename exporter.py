@@ -7,6 +7,7 @@ import rich
 import typer
 
 from generate_html_and_json import generate_html_and_json
+from helpers import ENCODING
 from helpers import ResourcePaths
 from helpers import copy_goldendict
 from helpers import get_resource_paths_dps
@@ -47,7 +48,7 @@ def _run_generate_goldendict(rsc: ResourcePaths, ifo: 'StarDictIfo', move_to_des
 
     rich.print(f"{timeis()} [green]reading json[/green]")
 
-    with open(rsc['gd_json_path'], "r") as f:
+    with open(rsc['gd_json_path'], "r", encoding=ENCODING) as f:
         gd_data_read = json.load(f)
 
     rich.print(f"{timeis()} [green]parsing json[/green]")
@@ -105,4 +106,5 @@ def run_generate_goldendict_sbs(move_to_dest: bool = True):
 
 if __name__ == "__main__":
     # Process cli with typer.
+
     app()
