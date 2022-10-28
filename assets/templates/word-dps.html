@@ -49,6 +49,7 @@
     % if word.pos in declensions:
     ${button_template.format(target=f'declension_dps_{word.pali_}', name='склонения')}
     % endif
+    ${button_template.format(target=f'feedback_dps_{word.pali_}', name='о словаре')}
 </div>
 
 <div id="grammar_dps_${word.pali_}" class="content_dps hidden">
@@ -144,7 +145,7 @@ ${table_data_read}
         <br>
         <b>Помощь.</b> Чтобы увидеть подробное описание пожалуйста кликните на любое заглавие или сокращение.
         
-        Список литературы можно увидеть в статье <b>Источники</b>
+        Список литературы можно увидеть в статье <b>Источники</b>.
     </p>
   
     <p>
