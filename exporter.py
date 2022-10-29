@@ -43,15 +43,15 @@ def _run_generate_goldendict(rsc: ResourcePaths, ifo: 'StarDictIfo', move_to_des
     # importing Simsapa here so other commands don't have to load it and its numerous dependencies
     from simsapa.app.stardict import export_words_as_stardict_zip, DictEntry
 
-    rich.print(f"{timeis()} [yellow]generate goldendict[/yellow]")
+    rich.print(f"{timeis()} [yellow]generate goldendict")
     rich.print(f"{timeis()} {line()}")
 
-    rich.print(f"{timeis()} [green]reading json[/green]")
+    rich.print(f"{timeis()} [green]reading json")
 
     with open(rsc['gd_json_path'], "r", encoding=ENCODING) as f:
         gd_data_read = json.load(f)
 
-    rich.print(f"{timeis()} [green]parsing json[/green]")
+    rich.print(f"{timeis()} [green]parsing json")
 
     def item_to_word(x):
         return DictEntry(
@@ -63,7 +63,7 @@ def _run_generate_goldendict(rsc: ResourcePaths, ifo: 'StarDictIfo', move_to_des
 
     words = list(map(item_to_word, gd_data_read))
 
-    rich.print(f"{timeis()} [green]writing goldendict[/green]")
+    rich.print(f"{timeis()} [green]writing goldendict")
     export_words_as_stardict_zip(words, ifo, rsc['output_stardict_zip_path'], rsc['icon_path'])
 
     if move_to_dest:

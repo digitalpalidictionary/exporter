@@ -96,7 +96,7 @@ def parse_data_frames(rsc: ResourcePaths) -> DataFrames:
 def get_resource_paths_dps() -> ResourcePaths:
     s = os.getenv('DPS_DIR')
     if s is None:
-        rich.print(f"{timeis()} [red]ERROR! DPS_DIR is not set.[/red]")
+        rich.print(f"{timeis()} [red]ERROR! DPS_DIR is not set.")
         sys.exit(2)
     else:
         dps_dir = Path(s)
@@ -139,7 +139,7 @@ def get_resource_paths_dps() -> ResourcePaths:
 def get_resource_paths_sbs() -> ResourcePaths:
     s = os.getenv('DPS_DIR')
     if s is None:
-        rich.print(f"{timeis()} [red]ERROR! DPS_DIR is not set.[/red]")
+        rich.print(f"{timeis()} [red]ERROR! DPS_DIR is not set.")
         sys.exit(2)
     else:
         dps_dir = Path(s)
@@ -180,7 +180,7 @@ def get_resource_paths_sbs() -> ResourcePaths:
 
 
 def copy_goldendict(src_path: Path, dest_dir: Path):
-    rich.print(f"{timeis()} [green]copying goldendict to share[/green]")
+    rich.print(f"{timeis()} [green]copying goldendict to share")
 
     # file name without .zip suffix
     dest_base = src_path.name.replace(src_path.suffix, '')
