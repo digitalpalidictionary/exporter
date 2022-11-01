@@ -1,137 +1,50 @@
-import re
+import sys
 
-from datetime import date
-from typing import TypedDict
-from helpers import DpsWord
+from pathlib import Path
+
+import mako.exceptions
+import rich
+
 from mako.template import Template
+from mako.lookup import TemplateLookup
+from pandas.core.frame import Series
 
-header_tmpl = Template(filename='./assets/templates/header.html')
-feedback_tmpl = Template(filename='./assets/templates/feedback-dps.html')
-feedback_tmpl_sbs = Template(filename='./assets/templates/feedback-sbs.html')
-feedback_tmpl_test = Template(filename='./assets/templates/feedback-test.html')
-
-
-def render_header_tmpl(css: str, js: str) -> str:
-    return str(header_tmpl.render(css=css, js=js))
+import helpers
 
 
-def render_feedback_tmpl(w: DpsWord) -> str:
-    today = date.today()
-    return str(feedback_tmpl.render(w=w, today=today))
+class TemplateBase:
+    def __init__(self, template_path: Path):
+        module_dir = Path(__file__).parent
+        lookup = TemplateLookup(directories=[module_dir / 'assets/templates/'])  # TODO To rsc
+        self._template = Template(filename=str(template_path), lookup=lookup)
+
+    def _render_helper(self, **kwargs) -> str:
+        try:
+            return self._template.render(**kwargs)
+        except Exception:  # pylint: disable=broad-except
+            rich.print(f'{helpers.timeis()} [red]Template exception:')
+            rich.print(mako.exceptions.text_error_template().render())
+            sys.exit(1)
 
 
-def render_feedback_tmpl_sbs(w: DpsWord) -> str:
-    today = date.today()
-    return str(feedback_tmpl_sbs.render(w=w, today=today))
+class HeaderTemplate(TemplateBase):
+    def __init__(self):
+        super().__init__('./assets/templates/header.html')
+
+    def render(self, css: str, js='') -> str:
+        return self._render_helper(css=css, js=js)
 
 
-def render_feedback_tmpl_test(w: DpsWord) -> str:
-    today = date.today()
-    return str(feedback_tmpl_test.render(w=w, today=today))
+class WordTemplate(TemplateBase):
+    def render(self, word: helpers.DpsWord, table_data_read: str) -> str:
+        return self._render_helper(
+            conjugations=helpers.CONJUGATIONS,
+            declensions=helpers.DECLENSIONS,
+            indeclinables=helpers.INDECLINABLES,
+            table_data_read=table_data_read,
+            word=word)
 
 
-class RenderResult(TypedDict):
-    html: str
-    full: str
-    concise: str
-
-
-def render_word_meaning(w: DpsWord) -> RenderResult:
-    html_string = ""
-    text_full = ""
-    text_concise = ""
-
-    if w.russian == "":
-        html_string += f"""<div class="content_dps"><p>{w.pos}. <b>{w.meaning}</b> [в процессе]</p></div>"""
-        text_full += f"""{w.pali}. {w.pos}. {w.meaning}. [в процессе]"""
-        text_concise += f"""{w.pali}. {w.pos}. {w.meaning}."""
-
-    else:
-        html_string += f"""<div class="content_dps"><p>"""
-
-        if w.pos != "":
-            html_string += f"""{w.pos}."""
-            text_concise += f"{w.pali}. {w.pos}."
-
-        html_string += f""" <b>{w.russian}</b>"""
-        text_concise += f""" {w.russian}"""
-
-        html_string += f"""</p></div>"""
-
-    return RenderResult(
-        html = html_string,
-        full = text_full,
-        concise = text_concise,
-    )
-
-
-def render_word_meaning_sbs(w: DpsWord) -> RenderResult:
-    html_string = ""
-    text_full = ""
-    text_concise = ""
-
-    html_string += '<div class="content_sbs"><p>'
-    text_concise += f"{w.pali}."
-
-    if w.ex != "":
-        html_string += f"""<b>(cl.{w.ex}) | </b>"""
-
-    if w.pos != "":
-        html_string += f"{w.pos}."
-        text_concise += f"{w.pos}."
-
-    if w.sbs_meaning != "":
-        html_string += f" <b>{w.sbs_meaning}</b>"
-        text_concise += f" {w.sbs_meaning}"
-
-    if w.sbs_meaning == "":
-        html_string += f" <b>{w.meaning}</b>"
-        text_concise += f" {w.meaning}"
-
-    html_string += "</p></div>"
-
-    return RenderResult(
-        html=html_string,
-        full=text_full,
-        concise=text_concise,
-    )
-
-def render_word_meaning_test(w: DpsWord) -> RenderResult:
-    html_string = ""
-    text_full = ""
-    text_concise = ""
-
-    html_string += f"""<div class="content_test"><p>"""
-
-    if w.ex != "":
-        html_string += f"""<b>(ex.{w.ex}) | </b>"""
-
-        if w.count != "":
-            html_string += f"""#{w.count}. | """
-
-        html_string += f"""{w.pos}. <b>{w.meaning}</b>"""
-
-        if w.chapter2 != "":
-            html_string += f""" | <i>[sbs]</i>"""
-    
-    else:
-        if w.count != "":
-            html_string += f"""(cl.{w.cl}).#{w.count}. | """
-
-        html_string += f"""{w.pos}. <b>{w.meaning}</b>"""
-
-        if w.chapter2 != "":
-            html_string += f""" | <i>[sbs]</i>"""
-
-    html_string += f"""</p>"""
-
-    if w.russian != "":
-        html_string += f"""<p>{w.russian}</p>"""
-
-    html_string += f"""</div>"""
-
-    return RenderResult(
-        html = html_string,
-        full = text_full,
-        concise = text_concise,
-    )
+class AbbreviationTemplate(TemplateBase):
+    def render(self, abbreviation: Series) -> str:
+        return self._render_helper(abbreviation=abbreviation)

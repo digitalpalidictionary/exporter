@@ -1,20 +1,49 @@
-from datetime import date
-from pathlib import Path
-from typing import TypedDict
-
+import enum
 import os
 import re
 import subprocess
 import sys
 
+from datetime import datetime
+from pathlib import Path
+from typing import Any
+from typing import TypedDict
+
 import pandas as pd
+import rich
 
 from dotenv import load_dotenv
 from pandas.core.frame import DataFrame
-from timeis import timeis, green, red
+
+
+ENCODING = 'UTF-8'
+INDECLINABLES = {'abbrev', 'abs', 'ger', 'ind', 'inf', 'prefix', 'sandhi', 'idiom'}
+CONJUGATIONS = {'aor', 'cond', 'fut', 'imp', 'imperf', 'opt', 'perf', 'pr'}
+DECLENSIONS = {
+    'adj', 'card', 'cs', 'fem', 'letter', 'masc', 'nt', 'ordin', 'pp', 'pron',
+    'prp', 'ptp', 'root', 'suffix', 've'
+}
 
 
 load_dotenv()
+
+
+def timeis() -> str:
+    """ Returns rich formatted date and time
+    """
+    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return f'[blue]{current_time}[/blue]'
+
+
+def line(length=40) -> str:
+    return '-' * length
+
+
+class Kind(enum.Enum):
+    """ Marks type of building dict
+    """
+    SBS = enum.auto()
+    DPS = enum.auto()
 
 
 class DataFrames(TypedDict):
@@ -24,6 +53,7 @@ class DataFrames(TypedDict):
 
 
 class ResourcePaths(TypedDict):
+    kind: Kind
     output_dir: Path
     output_html_dir: Path
     output_help_html_dir: Path
@@ -35,25 +65,26 @@ class ResourcePaths(TypedDict):
     help_path: Path
     dict_words_css_path: Path
     dict_help_css_path: Path
-    epd_css_path: Path
-    rpd_css_path: Path
+    definition_css_path: Path
     buttons_js_path: Path
     gd_json_path: Path
     icon_path: Path
     output_stardict_zip_path: Path
+    abbreviation_template_path: Path
+    word_template_path: Path
 
 
 def parse_data_frames(rsc: ResourcePaths) -> DataFrames:
     """Parse csv files into pandas data frames"""
 
     words_df = pd.read_csv(rsc['words_path'], sep="\t", dtype=str)
-    words_df = words_df.fillna("")
+    words_df = words_df.fillna('')
 
     abbrev_df = pd.read_csv(rsc['abbrev_path'], sep="\t", dtype=str)
-    abbrev_df.fillna("", inplace=True)
+    abbrev_df.fillna('', inplace=True)
 
     help_df = pd.read_csv(rsc['help_path'], sep="\t", dtype=str)
-    help_df.fillna("", inplace=True)
+    help_df.fillna('', inplace=True)
 
     return DataFrames(
         words_df=words_df,
@@ -62,34 +93,37 @@ def parse_data_frames(rsc: ResourcePaths) -> DataFrames:
     )
 
 
-def get_resource_paths() -> ResourcePaths:
+def get_resource_paths_dps() -> ResourcePaths:
     s = os.getenv('DPS_DIR')
     if s is None:
-        print(f"{timeis()} {red}ERROR! DPS_DIR is not set.")
+        rich.print(f"{timeis()} [red]ERROR! DPS_DIR is not set.")
         sys.exit(2)
     else:
         dps_dir = Path(s)
 
     rsc = ResourcePaths(
+        kind=Kind.DPS,
         # Project output
-        output_dir=Path("./output/"),
-        output_html_dir=Path("./output/html/"),
-        output_help_html_dir=Path("./output/help html/"),
-        output_share_dir=Path("./share/"),
-        gd_json_path=Path("./output/gd.json"),
-        output_stardict_zip_path=Path("ru-pali-dictionary.zip"),
-        error_log_dir=Path("./errorlogs/"),
+        output_dir=Path('./output/'),
+        output_html_dir=Path('./output/html/'),
+        output_help_html_dir=Path('./output/help html/'),
+        output_share_dir=Path('./share/'),
+        gd_json_path=Path('./output/gd.json'),
+        output_stardict_zip_path=Path('ru-pali-dictionary.zip'),
+        error_log_dir=Path('./errorlogs/'),
         # Project assets
-        dict_words_css_path=Path("./assets/words-dps.css"),
-        dict_help_css_path=Path("./assets/help.css"),
-        rpd_css_path=Path("./assets/rpd.css"),
-        buttons_js_path=Path("./assets/buttons-dps.js"),
-        abbrev_path=Path("./assets/abbreviations.csv"),
-        help_path=Path("./assets/help.csv"),
+        dict_words_css_path=Path('./assets/words-dps.css'),
+        dict_help_css_path=Path('./assets/help.css'),
+        definition_css_path=Path('./assets/rpd.css'),
+        buttons_js_path=Path('./assets/buttons-dps.js'),
+        abbrev_path=Path('./assets/abbreviations.csv'),
+        help_path=Path('./assets/help.csv'),
         # Project input
-        inflections_dir=dps_dir.joinpath("inflection/"),
-        words_path=dps_dir.joinpath("spreadsheets/dps-full.csv"),
-        icon_path=Path("./logo/book.bmp"),
+        abbreviation_template_path=Path('./assets/templates/abbreviation-dps.html'),
+        inflections_dir=dps_dir.joinpath('inflection/'),
+        words_path=dps_dir.joinpath('spreadsheets/dps-full.csv'),
+        icon_path=Path('./logo/book.bmp'),
+        word_template_path=Path('./assets/templates/word-dps.html'),
     )
 
     # ensure write dirs exist
@@ -105,72 +139,34 @@ def get_resource_paths() -> ResourcePaths:
 def get_resource_paths_sbs() -> ResourcePaths:
     s = os.getenv('DPS_DIR')
     if s is None:
-        print(f"{timeis()} {red}ERROR! DPS_DIR is not set.")
+        rich.print(f"{timeis()} [red]ERROR! DPS_DIR is not set.")
         sys.exit(2)
     else:
         dps_dir = Path(s)
 
     rsc = ResourcePaths(
+        kind=Kind.SBS,
         # Project output
-        output_dir=Path("./output/"),
-        output_html_dir=Path("./output/html/"),
-        output_help_html_dir=Path("./output/help html/"),
-        output_share_dir=Path("./share/"),
-        gd_json_path=Path("./output/gd.json"),
-        output_stardict_zip_path=Path("sbs-pd.zip"),
-        error_log_dir=Path("./errorlogs/"),
+        output_dir=Path('./output/'),
+        output_html_dir=Path('./output/html/'),
+        output_help_html_dir=Path('./output/help html/'),
+        output_share_dir=Path('./share/'),
+        gd_json_path=Path('./output/gd.json'),
+        output_stardict_zip_path=Path('sbs-pd.zip'),
+        error_log_dir=Path('./errorlogs/'),
         # Project assets
-        dict_words_css_path=Path("./assets/words-sbs.css"),
-        dict_help_css_path=Path("./assets/help.css"),
-        epd_css_path=Path("./assets/epd.css"),
-        buttons_js_path=Path("./assets/buttons-sbs.js"),
-        abbrev_path=Path("./assets/abbreviations.csv"),
-        help_path=Path("./assets/help.csv"),
+        dict_words_css_path=Path('./assets/words-sbs.css'),
+        dict_help_css_path=Path('./assets/help.css'),
+        definition_css_path=Path('./assets/epd.css'),
+        buttons_js_path=Path('./assets/buttons-sbs.js'),
+        abbrev_path=Path('./assets/abbreviations.csv'),
+        help_path=Path('./assets/help.csv'),
         # Project input
-        inflections_dir=dps_dir.joinpath("inflection/"),
-        words_path=dps_dir.joinpath("spreadsheets/sbs-pd.csv"),
-        icon_path=Path("./logo/head_brown.bmp"),
-    )
-
-    # ensure write dirs exist
-    for d in [rsc['output_dir'],
-              rsc['output_html_dir'],
-              rsc['output_share_dir'],
-              rsc['error_log_dir']]:
-        d.mkdir(parents=True, exist_ok=True)
-
-    return rsc
-
-
-def get_resource_paths_test() -> ResourcePaths:
-    s = os.getenv('DPS_DIR')
-    if s is None:
-        print(f"{timeis()} {red}ERROR! DPS_DIR is not set.")
-        sys.exit(2)
-    else:
-        dps_dir = Path(s)
-
-    rsc = ResourcePaths(
-        # Project output
-        output_dir=Path("./output/"),
-        output_html_dir=Path("./output/html/"),
-        output_help_html_dir=Path("./output/help html/"),
-        output_share_dir=Path("./share/"),
-        gd_json_path=Path("./output/gd.json"),
-        output_stardict_zip_path=Path("dps-test.zip"),
-        error_log_dir=Path("./errorlogs/"),
-        # Project assets
-        dict_words_css_path=Path("./assets/words-test.css"),
-        dict_help_css_path=Path("./assets/help.css"),
-        epd_css_path=Path("./assets/epd.css"),
-        rpd_css_path=Path("./assets/rpd.css"),
-        buttons_js_path=Path("./assets/buttons-test.js"),
-        abbrev_path=Path("./assets/abbreviations.csv"),
-        help_path=Path("./assets/help.csv"),
-        # Project input
-        inflections_dir=dps_dir.joinpath("inflection/"),
-        words_path=dps_dir.joinpath("spreadsheets/dps-full.csv"),
-        icon_path=Path("./logo/dps_icon.bmp"),
+        inflections_dir=dps_dir.joinpath('inflection/'),
+        words_path=dps_dir.joinpath('spreadsheets/sbs-pd.csv'),
+        icon_path=Path('./logo/head_brown.bmp'),
+        abbreviation_template_path=Path('./assets/templates/abbreviation-sbs.html'),
+        word_template_path=Path('./assets/templates/word-sbs.html'),
     )
 
     # ensure write dirs exist
@@ -184,9 +180,7 @@ def get_resource_paths_test() -> ResourcePaths:
 
 
 def copy_goldendict(src_path: Path, dest_dir: Path):
-    print(f"{timeis()} {green}copying goldendict to share")
-
-    today = date.today()
+    rich.print(f"{timeis()} [green]copying goldendict to share")
 
     # file name without .zip suffix
     dest_base = src_path.name.replace(src_path.suffix, '')
@@ -198,7 +192,7 @@ def copy_goldendict(src_path: Path, dest_dir: Path):
             ['mv', '--backup=numbered', src_path, dest_path],
             check=True)
     except Exception as e:
-        print(f"{timeis()} {red}{e}")
+        rich.print(f'{timeis()} [red]{e}[/red]')
         sys.exit(2)
 
 
@@ -206,7 +200,7 @@ class DpsWord:
     def __init__(self, df: DataFrame, row: int):
         self.pali: str = df.loc[row, "Pāli1"]
         self.pali_: str = "_" + re.sub(" ", "_", self.pali)
-        self.pali_clean: str = re.sub(r" \d*$", "", self.pali)
+        self.pali_clean: str = re.sub(r" \d*$", '', self.pali)
         self.fin: str = df.loc[row, "Fin"]
         self.pos: str = df.loc[row, "POS"]
         self.grammar: str = df.loc[row, "Grammar"]
@@ -243,11 +237,29 @@ class DpsWord:
         self.chapter3: str = df.loc[row, "Chapter 3"]
         self.sbs_index: str = df.loc[row, "Index"]
         self.var: str = df.loc[row, "Variant"]
-        self.comm: str = df.loc[row, "Commentary"]  # FIXME Redefined on the next line
-        self.comm: str = re.sub(r"(.+)\.$", "\\1", self.comm)
+        self.comm: str = re.sub(r"(.+)\.$", "\\1", df.loc[row, "Commentary"])
         self.notes: str = df.loc[row, "Notes"]
         self.stem: str = df.loc[row, "Stem"]
         self.ex: str = df.loc[row, "ex"]
         self.cl: str = df.loc[row, "class"]
         self.count: str = df.loc[row, "count"]
 
+
+def string_if(condition: Any, string: str) -> str:
+    """ Get the second arg if the first is true, empty string otherwise
+    """
+    if condition:
+        return string
+    return ''
+
+
+def format_if(string: str, template: str) -> str:
+    """ Format the second arg with the first if not empty
+
+    :param string: any text
+    :param template: template in form of 'string with a placeholder {}'
+    :return: formatted template if the string is not empty or empty string
+    """
+    if len(string) > 0:
+        return template.format(string)
+    return ''

@@ -1,0 +1,41 @@
+<%page args='abbreviation'/>
+<%namespace file='/lib.mako' import='google_link_dps'/>
+<%
+    from datetime import date
+
+    today = date.today()
+
+    abbrev = abbreviation.iloc[0]
+    meaning = abbreviation.iloc[1]
+    pali_meaning = abbreviation.iloc[2]
+    ru_meaning = abbreviation.iloc[3]
+    examp = abbreviation.iloc[4]
+    expl = abbreviation.iloc[5]
+%>
+<body>
+    <div class="help">
+        <p>
+            abbreviation. <b>${abbrev}</b>. ${meaning}.\
+%if pali_meaning != '':
+ ${pali_meaning}.\
+%endif
+%if ru_meaning != '':
+ ${ru_meaning}.
+%endif
+            <br>
+            %if examp != '':
+            e.g. ${examp}.
+            %endif
+            <br>
+            %if expl != '':
+            ${expl}.
+            %endif
+        </p>
+    </div>
+
+    <p>
+        ${google_link_dps(entry='abbrev', text='Сообщить об ошибке.')}
+    </p>
+</body>
+
+## vi: syn=mako

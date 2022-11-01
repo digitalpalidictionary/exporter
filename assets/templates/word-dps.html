@@ -1,0 +1,176 @@
+<%page args='word, conjugations, declensions, indeclinables, table_data_read'/>
+<%namespace file='/lib.mako' import='google_link_dps, today'/>
+<%
+    mailto_href = (
+        'mailto:devamitta@sasanarakkha.org?subject='
+        'Участие&body=Пожалуйста, дайте мне знать, как я могу принять участие в развитии Словаря.')
+
+    button_template = (
+        '<a class="button_dps" href="javascript:void(0);" onclick="button_click(this)"'
+        ' data-target="{target}">{name}</a>')
+
+    examples = [i for i in [word.eg1, word.eg2, word.eg3] if i != '']
+
+    pos_string = ''
+    if word.pos != '':
+        pos_entries = [i for i in [word.pos, word.grammar, word.derived, word.neg, word.verb, word.trans] if i != '']
+        pos_string += ', '.join(pos_entries)
+        if word.case != '':
+            pos_string += f'({word.case})'
+%>
+
+<body>
+% if word.russian == '':
+<div class="content_dps"><p>${word.pos}. <b>${word.meaning}</b> [в процессе]</p></div>
+% else:
+<div class="content_dps">
+    <p>
+        % if word.pos != '':
+        ${word.pos}
+        % endif
+        <b>${word.russian}</b>
+    </p>
+</div>
+% endif
+
+
+<div class="button-box">
+    % if word.meaning != '':
+    ${button_template.format(target=f'grammar_dps_{word.pali_}', name='грамматика')}
+    % endif
+    % if len(examples) == 1:
+    ${button_template.format(target=f'example_dps_{word.pali_}', name="пример")}
+    % elif len(examples) > 1:
+    ${button_template.format(target=f'example_dps_{word.pali_}', name='примеры')}
+    % endif
+    % if word.pos in conjugations:
+    ${button_template.format(target=f'conjugation_dps_{word.pali_}', name='спряжения')}
+    % endif
+    % if word.pos in declensions:
+    ${button_template.format(target=f'declension_dps_{word.pali_}', name='склонения')}
+    % endif
+    ${button_template.format(target=f'feedback_dps_{word.pali_}', name='о словаре')}
+</div>
+
+<div id="grammar_dps_${word.pali_}" class="content_dps hidden">
+    <table class = "table1_dps">
+        % if word.pos != '':
+        <tr>
+            <th>часть речи</th>
+            <td>${pos_string}</td>
+        </tr>
+        % endif
+
+        <tr valign="top"><th>английский</th><td><b>${word.meaning}</b></td></tr>
+
+        % if word.russian != "":
+        <tr valign="top"><th>русский</th><td><b>${word.russian}</b></td></tr>
+        % endif
+
+        % if word.root != "":
+        <tr valign="top"><th>корень</th><td>${word.root}</td></tr>
+        % endif
+        % if word.base != "":
+        <tr valign="top"><th>основа</th><td>${word.base}</td></tr>
+        % endif
+        % if word.construction != "":
+        <tr valign="top"><th>образование</th><td>${word.construction}</td></tr>
+        % endif
+        % if word.var != "":
+        <tr valign="top"><th>вариант</th><td>${word.var}</td></tr>
+        % endif
+        % if word.comm != "":
+        <tr valign="top"><th>комментарий</th><td>${word.comm}</td></tr>
+        % endif
+        % if word.notes != "":
+        <tr valign="top"><th>заметки</th><td>${word.notes}</td></tr>
+        % endif
+        % if word.sk != "":
+        <tr valign="top"><th>санскрит</th><td><i>${word.sk}</i></td></tr>
+        % endif
+        % if word.sk_root != "":
+        <tr valign="top"><th>санск. корень</th><td><i>${word.sk_root}</i></td></tr>
+        % endif
+    </table>
+    <p>
+        ${google_link_dps(entry=word.pali, text='Пожалуйста, сообщите об ошибке')}.
+    </p>
+</div>
+
+<div id="example_dps_${word.pali_}" class="content_dps hidden">
+    % if word.eg1 != '':
+    <p>${word.eg1}<p class="sutta_dps">${word.source1} ${word.sutta1}</p></p>
+    % endif
+    % if word.eg2 != '':
+    <p>${word.eg2}<p class="sutta_dps">${word.source2} ${word.sutta2}</p></p>
+    % endif
+    % if word.eg3 != '' and word.chapter3 != 'SBS':  # FIXME Is a 'SBS' check should be here?
+    <p>${word.eg3}<p class="sutta_dps">${word.source3} ${word.sutta3}</p></p>
+    % endif
+
+    <p>
+    Пожалуйста, подскажите более подходящий ${google_link_dps(entry=word.pali, text='пример', args=['&entry.326955045=Пример2'])}.
+    </p>
+</div>
+
+% if word.pos not in indeclinables:
+    % if word.pos in declensions:
+<div id="declension_dps_${word.pali_}" class="content_dps hidden">
+    % elif word.pos in conjugations:
+<div id="conjugation_dps_${word.pali_}" class="content_dps hidden">
+    % endif
+${table_data_read}
+    % if word.pos != 'sandhi' and word.pos != 'idiom' and (word.pos in declensions or word.pos in conjugations):
+    <p>
+        У вас есть предложение? ${google_link_dps(entry=word.pali, text='Пожалуйста, сообщите об ошибке')}
+    </p>
+    % endif
+</div>
+% endif
+
+<div id="feedback_dps_${word.pali_}" class="content_dps hidden">
+    ## TODO Is this necessary?
+    <!-- <a
+      class="button_dps close"
+      href="javascript:void(0);"
+      onclick="button_click(this)"
+      data-target="feedback_dps_${word.pali_}">
+      закрыть
+    </a> -->
+
+    <p>
+        Это образовательный проект и находится на стадии тестирования и редактирования.
+        <br>
+        Словарь основывается на DPD <b>Электронный Словарь Пали (Дост. Бодхираса).</b>
+        <br>
+        <b>Помощь.</b> Чтобы увидеть подробное описание пожалуйста кликните на любое заглавие или сокращение.
+        
+        Список литературы можно увидеть в статье <b>Источники</b>.
+    </p>
+  
+    <p>
+        ${google_link_dps(entry=word.pali, text='Сообщить об ошибке')}.
+        <span>
+            Ваши предложения и комментарии будут неоценимой помощью в улучшении
+            качества данной работы и будут полезны всем пользователям словаря.
+        </span>
+    </p>
+
+    <p>
+      <span>Ваша версия словаря от <b>${today()}</b>. Пожалуйста, регулярно проверяйте наличие обновлений.</span>
+    </p>
+
+    <p>
+      <a class="link" href="https://devamitta.github.io/">Веб страница</a>.
+      <span>Можно найти свежую версию словаря; узнать больше о функциях, как установить и настроить.</span>
+    </p>
+  
+    <p>
+      <a class="link" href="${mailto_href}">Принять участие</a>.
+      <span>Если вы программист или хорошо знаете Пали или как-то хотите
+        поддержать проект, помощь приветствуется!</span>
+    </p>
+</div>
+</body>
+
+## vi: syn=mako
