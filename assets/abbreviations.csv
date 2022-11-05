@@ -11,10 +11,10 @@ abbrev	meaning	pāli	ru-meaning	example	explanation	ru-abbrev
 abbrev	abbreviation		сокращённая форма			
 ABD	Abhidhāna Dictionary		Словарь Абхидхана			
 ABHI	Abhidhamma Piṭaka				The third basket of the Tipiṭaka; lit. the higher doctrine	
-abl	ablative case	pañcamī, apādanavacana, avadhi, apādāna	отделительный падеж	tato - pron, <b>abl</b> sg of ta	from, away from (e.g. from that)	√
+abl	ablative case	pañcamī, apādanavacana, avadhi, apādāna	отделительный падеж	tato - pron, <b>abl</b> sg of ta	generally showing separation (from, away from)<br>(e.g. from that)	√
 abs	absolutive verb	avyaya, pubbakicca	деепричастие	upasaṅkamitvā; katvā	A verb, often a combination of having + pp, expressing completed action (e.g. having approached; having made)	√
 abstr	abstract noun		абстрактное существительное	abyāpāda - masc <b>abstr</b>	A concept or idea not associated with any specific instance or any concrete thing (e.g. friendliness)	√
-acc	accusative case	dutiyā, upayogavacana, kammavacana	винительный падеж	maṃ - pron, 1st <b>acc</b> sg	The object (e.g. me)	√
+acc	accusative case	dutiyā, upayogavacana, kammavacana	винительный падеж	maṃ - pron, 1st <b>acc</b> sg	the object of the sentence (e.g. me)	√
 act	action noun		существительное действие	pahāna - nt <b>act</b>	Noun describing a process (e.g) abandoning	√
 adj	adjective	guṇavacana	прилагательное	pāpaka; kalyāṇa; anicca	A word that expresses an attribute of something; usually qualify a noun (e.g. bad, good, impermanent)	√
 ADT	Abhidhammamātikāpāḷi					
@@ -48,7 +48,7 @@ Cone	Pali Dictionary Margaret Cone
 CP	Cariyā Piṭaka		Карийа Питака		Book 13 of the Khuddaka Nikāya; the Basket of Conduct	
 CPD	Critical Pāli Dictionary		Критический Словарь Пали			
 cs	conjugational sign		признак сопряжения			√
-dat	dative case	catutthī, sampadānavacana	дательный падеж	hitāya - noun, nt <b>dat</b> sg of hita	to; for (e.g. for the benefit)	√
+dat	dative case	catutthī, sampadānavacana	дательный падеж	hitāya - noun, nt <b>dat</b> sg of hita	howing the object or person to or for whom something is given or done. (to; for)<br>(e.g. for the benefit)	√
 deno	denominative verb		отымённое слово			√
 derog	derogatory		умаляющая форма			√
 desid	desiderative verb	tumicchattha	дезидеративная форма			√
@@ -68,7 +68,7 @@ EV	Elder's Verses by K.R.Norman
 excl	exclamation		восклицание	aho; abbhutaṃ; ambho	Expressing spontaneous feelings, reactions or make the sentences stronger. Sometimes used to attract attention. (e.g. oh no! most certainly! wonderful! hey!)	√
 fem	feminine noun	itthī; itthiliṅga	женский род	āpatti; vedanā; bhikkhunī		√
 fut	future tense	bhavissantī; anāgatakāla	будущее время	bhavissati; gamissati; assasissati	A verb tense that expresses actions or states in the future	√
-gen	genitive case	chaṭṭhī, sāmivacana, sambandha	родительный падеж	me - pron, 1st <b>gen</b> sg of ahaṃ	of; ‘s (e.g. my, mine)	√
+gen	genitive case	chaṭṭhī, sāmivacana, sambandha	родительный падеж	me - pron, 1st <b>gen</b> sg of ahaṃ	showing possession (of 's)<br>(e.g. my, mine)	√
 gen abs	genitive absolute construction		родительный падеж абсолютная конструкция	me sato; tassa jānato passato	When a noun or a pronoun in the genitive case is used with a participle in the same case as itself, the construction is called genitive absolute. It can be translated as when, while, since, or as. Sometimes it also has the meaning of since, although, even if, despite, in spite of, notwithstanding.	√
 ger	gerund	avyaya; bhāvapada	герундий	upasampajja; pahāya; ādāya	A verb (or verbal adjective), often ending in -ing, expressing ongoing action (eg. doing; making; going).	√
 gram	grammatical term, technical term		грамматический термин	padasandhi		√
@@ -79,7 +79,7 @@ impers	impersonal	bhāva	безличный глагол	paṭibhāti; kappati	N
 in comps	in compounds		в составе сложных слов	anupassī; paṭisaṃvedī	Usually act as part of compound	√
 ind	indeclinable word	nipāta; avyaya	несклоняемое слово	api; pana; atha	It does not have declensions or conjugations.	√
 inf	infinitive verb	tumanta; avyaya	инфинитив, неопределённая форма глагола	kātuṃ; pahātuṃ; carituṃ	The uninflected form of the verb. It most commonly expresses a purpose.	√
-instr	instrumental case	tatiyā, karaṇavacana	творительный, инструментальный падеж	mayā - pron 1st <b>instr</b> sg of ahaṃ	by, with or through (e.g. by me, with me)	√
+instr	instrumental case	tatiyā, karaṇavacana	творительный, инструментальный падеж	mayā - pron 1st <b>instr</b> sg of ahaṃ	shows the object or person with or by whom something is performed. (by, with or through)<br>(e.g. by me, with me)	√
 intens	intensive verb		усилительный глагол	caṅkamati; jaṅgamati	Also called Frequentative Verbs, express the frequent repetition or the intensification of the action denoted by the simple root.	√
 interr	interrogative particle	pucchāsabhāva	вопросительное слово	kiṃ; kissa; kittaka	Has the nature of asking a question. (who? how? perhaps? how many?)	√
 intrans	intransitive verb	akammaka; akammagāhī	непереходный глагол	hoti; ujjhāyati; vijjati	A verb (or verb construction) that does not take an object in the accusative case. sometimes they take what appears to be an object in another case. (e.g. there is; is conducive to)	√
@@ -92,7 +92,7 @@ KVa	Kaṅkhāvitaraṇīaṭṭhakathā		Канкхавитараниаттха�
 KVt	Kaṅkhāvitaraṇīpurāṇaṭīkā					
 LDA	The Law of Dependent Arising by Kaṭukurunde Ñāṇananda					
 lit	literal meaning		буквальный, дословный смысл		Limited to the explicit meaning of a word or parts from which the word has been constructed.	
-loc	locative case	sattamī, bhummavacana, okāsa, ādhāra	местный падеж	amhesu - pron, 1st <b>loc</b> pl of ahaṃ	in, on, at, among (e.g. in us; among us)	√
+loc	locative case	sattamī, bhummavacana, okāsa, ādhāra	местный падеж	amhesu - pron, 1st <b>loc</b> pl of ahaṃ	showing place (in, on, at, among)<br>(e.g. in us; among us)	√
 loc abs	locative absolute construction		местный падеж абсолютная конструкция	asante hārake; atthaṅgate sūriye	When a noun or a pronoun in the locative case is used with a participle in the same case as itself, the construction is called locative absolute. It can be translated as when, while, since, or as.	√
 masc	masculine noun	puma; pulliṅga	мужской род	bhikkhu; dhamma; loka		√
 matr	matronymic		указывающий на происхождение	sāriputta; mantāṇiputta; vedehiputta	Pointing on the origin of the name. Very often name derived from the name of the mother or a maternal ancestor (e.g. son of Sāri; son of Mantāṇī; son of Vedehi)	√
