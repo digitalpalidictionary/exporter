@@ -39,20 +39,20 @@ ${result}
 
 <div class="button-box">
     % if word.meaning != '':
-    ${button_template.format(target=f'grammar_sbs_{word.pali_}', name='grammar')}
+${button_template.format(target=f'grammar_sbs_{word.pali_}', name='grammar')}\
     % endif
     % if len(examples) == 1:
-    ${button_template.format(target=f'example_sbs_{word.pali_}', name='example')}
+${button_template.format(target=f'example_sbs_{word.pali_}', name='example')}\
     % elif len(examples) > 1:
-    ${button_template.format(target=f'example_sbs_{word.pali_}', name='examples')}
+${button_template.format(target=f'example_sbs_{word.pali_}', name='examples')}\
     % endif
     % if word.pos in conjugations:
-    ${button_template.format(target=f'conjugation_sbs_{word.pali_}', name='conjugation')}
+${button_template.format(target=f'conjugation_sbs_{word.pali_}', name='conjugation')}\
     % endif
     % if word.pos in declensions:
-    ${button_template.format(target=f'declension_sbs_{word.pali_}', name='declensions')}
+${button_template.format(target=f'declension_sbs_{word.pali_}', name='declensions')}\
     % endif
-    ${button_template.format(target=f'feedback_sbs_{word.pali_}', name='feedback')}
+${button_template.format(target=f'feedback_sbs_{word.pali_}', name='feedback')}
 </div>
 
 <div id="grammar_sbs_${word.pali_}" class="content_sbs hidden">

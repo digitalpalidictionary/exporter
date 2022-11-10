@@ -36,20 +36,20 @@
 
 <div class="button-box">
     % if word.meaning != '':
-    ${button_template.format(target=f'grammar_dps_{word.pali_}', name='грамматика')}
+${button_template.format(target=f'grammar_dps_{word.pali_}', name='грамматика')}\
     % endif
     % if len(examples) == 1:
-    ${button_template.format(target=f'example_dps_{word.pali_}', name="пример")}
+${button_template.format(target=f'example_dps_{word.pali_}', name="пример")}\
     % elif len(examples) > 1:
-    ${button_template.format(target=f'example_dps_{word.pali_}', name='примеры')}
+${button_template.format(target=f'example_dps_{word.pali_}', name='примеры')}\
     % endif
     % if word.pos in conjugations:
-    ${button_template.format(target=f'conjugation_dps_{word.pali_}', name='спряжения')}
+${button_template.format(target=f'conjugation_dps_{word.pali_}', name='спряжения')}\
     % endif
     % if word.pos in declensions:
-    ${button_template.format(target=f'declension_dps_{word.pali_}', name='склонения')}
+${button_template.format(target=f'declension_dps_{word.pali_}', name='склонения')}\
     % endif
-    ${button_template.format(target=f'feedback_dps_{word.pali_}', name='о словаре')}
+${button_template.format(target=f'feedback_dps_{word.pali_}', name='о словаре')}
 </div>
 
 <div id="grammar_dps_${word.pali_}" class="content_dps hidden">
@@ -129,14 +129,6 @@ ${table_data_read}
 % endif
 
 <div id="feedback_dps_${word.pali_}" class="content_dps hidden">
-    ## TODO Is this necessary?
-    <!-- <a
-      class="button_dps close"
-      href="javascript:void(0);"
-      onclick="button_click(this)"
-      data-target="feedback_dps_${word.pali_}">
-      закрыть
-    </a> -->
 
     <p>
         Это образовательный проект и находится на стадии тестирования и редактирования.
