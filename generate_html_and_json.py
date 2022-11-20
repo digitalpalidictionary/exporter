@@ -116,16 +116,19 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
     word_template = WordTemplate(rsc['word_template_path'])
 
     for row in range(df_length):
-        w = DpsWord(df, row)
+        word = DpsWord(df, row)
+
+        if rsc['kind'] is Kind.DPS:
+            word.translate_abbreviations()
 
         if row % 5000 == 0 or row % df_length == 0:
-            rich.print(f'{timeis()} {row}/{df_length}\t{w.pali}')
+            rich.print(f'{timeis()} {row}/{df_length}\t{word.pali}')
 
         html_string = ''
         if kind is Kind.DPS:
-            text_full = _full_text_dps_entry(word=w)
+            text_full = _full_text_dps_entry(word=word)
         elif kind is Kind.SBS:
-            text_full = _full_text_sbs_entry(word=w)
+            text_full = _full_text_sbs_entry(word=word)
 
         text_concise = ''
 
@@ -134,58 +137,58 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
 
         # summary
         if kind is Kind.DPS:
-            if w.russian == '':
-                text_concise += f'{w.pali}. {w.pos}. {w.meaning}.'
+            if word.russian == '':
+                text_concise += f'{word.pali}. {word.pos}. {word.meaning}.'
             else:
-                if w.pos != '':
-                    text_concise += f"{w.pali}. {w.pos}."
-                text_concise += f' {w.russian}'
+                if word.pos != '':
+                    text_concise += f"{word.pali}. {word.pos}."
+                text_concise += f' {word.russian}'
 
         elif kind is Kind.SBS:
-            text_concise = f'{w.pali}.'
+            text_concise = f'{word.pali}.'
 
-            if w.pos != '':
-                text_concise += f"{w.pos}."
+            if word.pos != '':
+                text_concise += f"{word.pos}."
 
-            if w.sbs_meaning != '':
-                text_concise += f" {w.sbs_meaning}"
+            if word.sbs_meaning != '':
+                text_concise += f" {word.sbs_meaning}"
 
-            if w.sbs_meaning == '':
-                text_concise += f" {w.meaning}"
+            if word.sbs_meaning == '':
+                text_concise += f" {word.meaning}"
 
         # inflection table
-        if w.pos not in INDECLINABLES:
-            table_path = rsc['inflections_dir'].joinpath("output/html tables/").joinpath(w.pali + ".html")
+        if word.pos not in INDECLINABLES:
+            table_path = rsc['inflections_dir'].joinpath("output/html tables/").joinpath(word.pali + ".html")
 
             table_data_read = ''
             try:
                 with open(table_path, encoding=ENCODING) as f:
                     table_data_read = f.read()
             except FileNotFoundError:
-                inflection_table_error_string += w.pali + ", "
-                error_log += f'error reading inflection table: {w.pali}.html\n'
+                inflection_table_error_string += word.pali + ", "
+                error_log += f'error reading inflection table: {word.pali}.html\n'
 
-        html_string += word_template.render(w, table_data_read=table_data_read)
+        html_string += word_template.render(word, table_data_read=table_data_read)
         html_string += '</html>'
 
-        inflections_path = rsc['inflections_dir'].joinpath("output/inflections translit/").joinpath(w.pali)
+        inflections_path = rsc['inflections_dir'].joinpath("output/inflections translit/").joinpath(word.pali)
 
         if inflections_path.exists():
             with open(inflections_path, "rb") as syn_file:
                 synonyms = pickle.load(syn_file)
         else:
-            synonyms_error_string += w.pali + ', '
-            error_log += f'error reading synonyms - {w.pali}\n'
+            synonyms_error_string += word.pali + ', '
+            error_log += f'error reading synonyms - {word.pali}\n'
             synonyms = ''
 
         # data compiling
-        html_data_list += [[w.pali, html_string, '', synonyms]]
+        html_data_list += [[word.pali, html_string, '', synonyms]]
         text_data_full += text_full
         text_data_concise += f"{text_concise}\n"
 
         if row % 100 == 0:
-            p = rsc['output_html_dir'].joinpath(f"{w.pali} (sample).html")
-            with open(p, "w", encoding="utf-8") as f:
+            p = rsc['output_html_dir'].joinpath(f"{word.pali} (sample).html")
+            with open(p, 'w', encoding=ENCODING) as f:
                 f.write(html_string)
 
     error_log_path = rsc['error_log_dir'].joinpath("exporter errorlog.txt")
@@ -204,11 +207,11 @@ def generate_html_and_json(rsc, generate_roots: bool = True):
 
     # write text versions
     p = rsc['output_share_dir'].joinpath('dps_full.txt')
-    with open(p, 'w', encoding='UTF-8') as f:
+    with open(p, 'w', encoding=ENCODING) as f:
         f.write(text_data_full)
 
     p = rsc['output_share_dir'].joinpath('dps_concise.txt')
-    with open(p, 'w', encoding='UTF-8') as f:
+    with open(p, 'w', encoding=ENCODING) as f:
         f.write(text_data_concise)
 
     if generate_roots:
@@ -336,15 +339,19 @@ def _generate_definition_html(data: DataFrames, rsc: ResourcePaths) -> List[List
     definition = {}
 
     for row in range(df_length):
-        w = DpsWord(df, row)
+        word = DpsWord(df, row)
+
+        if rsc['kind'] is Kind.DPS:
+            word.translate_abbreviations()
+
         meanings_list = []
-        meaning_data = w.russian if kind is Kind.DPS else w.meaning
+        meaning_data = word.russian if kind is Kind.DPS else word.meaning
         meaning_data = re.sub(r'\?\?', '', meaning_data)
 
         if row % 10000 == 0:
-            rich.print(f'{timeis()} {row}/{df_length}\t{w.pali}')
+            rich.print(f'{timeis()} {row}/{df_length}\t{word.pali}')
 
-        if meaning_data != '' and w.pos not in pos_exclude_list:
+        if meaning_data != '' and word.pos not in pos_exclude_list:  # FIXME Condition for translated
 
             meanings_clean = re.sub(r' \(.+?\)', '', meaning_data)              # remove all space brackets
             meanings_clean = re.sub(r'\(.+?\) ', '', meanings_clean)            # remove all brackets space
@@ -356,16 +363,16 @@ def _generate_definition_html(data: DataFrames, rsc: ResourcePaths) -> List[List
             meanings_list = meanings_clean.split(';')
 
             for meaning in meanings_list:
-                if meaning in definition and w.case == '':
-                    definition[meaning] = f'{definition[meaning]}<br><b>{w.pali_clean}</b> {w.pos}. {meaning_data}'
-                elif meaning in definition and w.case != '':
+                if meaning in definition and word.case == '':
+                    definition[meaning] = f'{definition[meaning]}<br><b>{word.pali_clean}</b> {word.pos}. {meaning_data}'
+                elif meaning in definition and word.case != '':
                     definition[meaning] = (
                         f'{definition[meaning]}<br>'
-                        f'<b>{w.pali_clean}</b> {w.pos}. {meaning_data} ({w.case})')
-                elif meaning not in definition and w.case == '':
-                    definition.update({meaning: f'<b>{w.pali_clean}</b> {w.pos}. {meaning_data}'})
-                elif meaning not in definition and w.case != '':
-                    definition.update({meaning: f'<b>{w.pali_clean}</b> {w.pos}. {meaning_data} ({w.case})'})
+                        f'<b>{word.pali_clean}</b> {word.pos}. {meaning_data} ({word.case})')
+                elif meaning not in definition and word.case == '':
+                    definition.update({meaning: f'<b>{word.pali_clean}</b> {word.pos}. {meaning_data}'})
+                elif meaning not in definition and word.case != '':
+                    definition.update({meaning: f'<b>{word.pali_clean}</b> {word.pos}. {meaning_data} ({word.case})'})
 
     with open(rsc['definition_css_path'], 'r', encoding=ENCODING) as f:
         definition_css = f.read()

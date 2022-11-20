@@ -244,6 +244,16 @@ class DpsWord:
         self.cl: str = df.loc[row, "class"]
         self.count: str = df.loc[row, "count"]
 
+    def translate_abbreviations(self) -> None:
+        # TODO Translate
+        self.pos
+        self.grammar
+        self.neg
+        self.verb
+        self.trans
+        self.case
+        self.base
+
 
 def string_if(condition: Any, string: str) -> str:
     """ Get the second arg if the first is true, empty string otherwise
