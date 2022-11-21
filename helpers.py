@@ -202,16 +202,23 @@ def copy_goldendict(src_path: Path, dest_dir: Path):
 
 def _load_abbrebiations_ru(rsc: ResourcePaths) -> Dict[str, str]:
     result = {}
+    sorted_result = {}
 
     with open('./assets/abbreviations.csv', 'r', encoding=ENCODING) as abbrev_csv:
         reader = csv.reader(abbrev_csv, delimiter='\t')
+        header = next(reader)  # Skip header
+        _LOGGER.debug('Skipping abbreviations header %s', header)
         for row in reader:
             assert len(row) == 7, f'Expected 7 items in a row {row}'
             if row[6]:
                 result[row[0]] = row[6]
 
-    _LOGGER.debug('Got En-Ru abbreviations dict: %s', result)
-    return result
+    # Sort resulting dict from longer to shorter keys to match then long lexems first
+    for key in sorted(result, key=lambda lex: len(lex), reverse=True):
+        sorted_result[key] = result[key]
+
+    print('Got En-Ru abbreviations dict: %s', sorted_result)
+    return sorted_result
 
 
 class DpsWord:
@@ -265,6 +272,7 @@ class DpsWord:
         self.count: str = df.loc[row, "count"]
 
     def translate_abbreviations(self) -> None:
+        # TODO Cache
         targets = [
             'pos',
             'grammar',
@@ -279,12 +287,6 @@ class DpsWord:
             for abbrev, translation in self.abbreviations_ru.items():
                 val = getattr(self, field)
                 setattr(self, field, val.replace(abbrev, translation))
-
-        if self.grammar:
-            print(self.grammar)
-            ...
-
-        # TODO Check remaining latin and notify
 
 
 def string_if(condition: Any, string: str) -> str:
