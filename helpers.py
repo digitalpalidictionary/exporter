@@ -1,4 +1,6 @@
+import csv
 import enum
+import logging
 import os
 import re
 import subprocess
@@ -7,6 +9,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any
+from typing import Dict
 from typing import TypedDict
 
 import pandas as pd
@@ -24,6 +27,7 @@ DECLENSIONS = {
     'prp', 'ptp', 'root', 'suffix', 've'
 }
 
+_LOGGER = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -196,7 +200,23 @@ def copy_goldendict(src_path: Path, dest_dir: Path):
         sys.exit(2)
 
 
+def _load_abbrebiations_ru(rsc: ResourcePaths) -> Dict[str, str]:
+    result = {}
+
+    with open('./assets/abbreviations.csv', 'r', encoding=ENCODING) as abbrev_csv:
+        reader = csv.reader(abbrev_csv, delimiter='\t')
+        for row in reader:
+            assert len(row) == 7, f'Expected 7 items in a row {row}'
+            if row[6]:
+                result[row[0]] = row[6]
+
+    _LOGGER.debug('Got En-Ru abbreviations dict: %s', result)
+    return result
+
+
 class DpsWord:
+    abbreviations_ru = _load_abbrebiations_ru(rsc=get_resource_paths_dps())  # TODO Pass rsc
+
     def __init__(self, df: DataFrame, row: int):
         self.pali: str = df.loc[row, "Pāli1"]
         self.pali_: str = "_" + re.sub(" ", "_", self.pali)
@@ -253,6 +273,7 @@ class DpsWord:
         self.trans
         self.case
         self.base
+        # TODO Check remaining latin and notify
 
 
 def string_if(condition: Any, string: str) -> str:
