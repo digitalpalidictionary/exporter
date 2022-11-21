@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
+import io
 import json
 
 import rich
@@ -13,6 +14,7 @@ from helpers import copy_goldendict
 from helpers import get_resource_paths_dps
 from helpers import get_resource_paths_sbs
 from helpers import timeis, line  # TODO Use logging with the rich.logging.RichHandler for messages
+
 
 
 app = typer.Typer()
@@ -104,7 +106,26 @@ def run_generate_goldendict_sbs(move_to_dest: bool = True):
     return _run_generate_goldendict(rsc, ifo, move_to_dest)
 
 
-if __name__ == "__main__":
-    # Process cli with typer.
+def _exit_callback(profile: 'cProfile.Profile') -> None:
+    """ Print profiling statistics on exit """
+    profile.disable()
+    stat_stream = io.StringIO()
+    stats = pstats.Stats(profile, stream=stat_stream).sort_stats('tottime').reverse_order()
+    stats.print_stats()
+    print(stat_stream.getvalue())
 
+
+@app.callback()
+def main(profiling: bool = False):
+    """ The main() callback uses to define additional CLI options """
+    if profiling:
+        profile = cProfile.Profile()
+        profile.enable()
+        atexit.register(_exit_callback, profile)
+
+
+if __name__ == "__main__":
+    import atexit
+    import cProfile
+    import pstats
     app()
