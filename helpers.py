@@ -18,6 +18,7 @@ import rich
 from dotenv import load_dotenv
 from pandas.core.frame import DataFrame
 
+_LOGGER = logging.getLogger(__name__)
 
 ENCODING = 'UTF-8'
 INDECLINABLES = {'abbrev', 'abs', 'ger', 'ind', 'inf', 'prefix', 'sandhi', 'idiom'}
@@ -26,8 +27,6 @@ DECLENSIONS = {
     'adj', 'card', 'cs', 'fem', 'letter', 'masc', 'nt', 'ordin', 'pp', 'pron',
     'prp', 'ptp', 'root', 'suffix', 've'
 }
-
-_LOGGER = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -217,14 +216,17 @@ def _load_abbrebiations_ru(rsc: ResourcePaths) -> Dict[str, str]:
     for key in sorted(result, key=lambda lex: len(lex), reverse=True):
         sorted_result[key] = result[key]
 
-    print('Got En-Ru abbreviations dict: %s', sorted_result)
+    _LOGGER.debug('Got En-Ru abbreviations dict: %s', sorted_result)
     return sorted_result
 
 
 class DpsWord:
-    abbreviations_ru = _load_abbrebiations_ru(rsc=get_resource_paths_dps())  # TODO Pass rsc
+    abbreviations_ru = None
 
     def __init__(self, df: DataFrame, row: int):
+        if DpsWord.abbreviations_ru is None:
+            DpsWord.abbreviations_ru = _load_abbrebiations_ru(rsc=get_resource_paths_dps())  # TODO Pass rsc
+
         self.pali: str = df.loc[row, "Pāli1"]
         self.pali_: str = "_" + re.sub(" ", "_", self.pali)
         self.pali_clean: str = re.sub(r" \d*$", '', self.pali)
@@ -274,6 +276,7 @@ class DpsWord:
 
     def translate_abbreviations(self) -> None:
         # TODO Cache
+        # TODO Process by lexems
         targets = [
             'pos',
             'grammar',

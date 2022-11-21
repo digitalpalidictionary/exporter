@@ -3,8 +3,10 @@
 
 import io
 import json
+import logging
 
 import rich
+import rich.logging
 import typer
 
 from generate_html_and_json import generate_html_and_json
@@ -33,7 +35,6 @@ def run_generate_html_and_json(generate_roots: bool = True):
 @app.command()
 def run_generate_html_and_json_sbs(generate_roots: bool = True):
     rsc = get_resource_paths_sbs()
-    # TODO Recheck rsc
     generate_html_and_json(
         rsc=rsc,
         generate_roots=generate_roots)
@@ -116,8 +117,18 @@ def _exit_callback(profile: 'cProfile.Profile') -> None:
 
 
 @app.callback()
-def main(profiling: bool = False):
+def main(log_level: str = 'info', profiling: bool = False):
     """ The main() callback uses to define additional CLI options """
+    handler = rich.logging.RichHandler()
+    formatter = logging.Formatter(
+        fmt='%(asctime)s %(levelname)s %(message)s',
+        style='%',
+        datefmt='%Y-%m-%d %H:%M:%S')
+    handler.setFormatter(formatter)
+    logger = logging.getLogger()
+    logger.setLevel(log_level.upper())
+    logger.addHandler(handler)
+
     if profiling:
         profile = cProfile.Profile()
         profile.enable()
@@ -128,4 +139,5 @@ if __name__ == "__main__":
     import atexit
     import cProfile
     import pstats
+
     app()
