@@ -230,6 +230,7 @@ class DpsWord:
         self.pali_clean: str = re.sub(r" \d*$", '', self.pali)
         self.fin: str = df.loc[row, "Fin"]
         self.pos: str = df.loc[row, "POS"]
+        self.pos_orig: str = self.pos
         self.grammar: str = df.loc[row, "Grammar"]
         self.derived: str = df.loc[row, "Derived from"]
         self.neg: str = df.loc[row, "Neg"]

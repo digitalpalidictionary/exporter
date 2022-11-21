@@ -351,7 +351,7 @@ def _generate_definition_html(data: DataFrames, rsc: ResourcePaths) -> List[List
         if row % 10000 == 0:
             rich.print(f'{timeis()} {row}/{df_length}\t{word.pali}')
 
-        if meaning_data != '' and word.pos not in pos_exclude_list:  # FIXME Condition for translated
+        if meaning_data != '' and word.pos_orig not in pos_exclude_list:
 
             meanings_clean = re.sub(r' \(.+?\)', '', meaning_data)              # remove all space brackets
             meanings_clean = re.sub(r'\(.+?\) ', '', meanings_clean)            # remove all brackets space
