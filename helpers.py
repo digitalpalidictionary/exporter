@@ -265,14 +265,25 @@ class DpsWord:
         self.count: str = df.loc[row, "count"]
 
     def translate_abbreviations(self) -> None:
-        # TODO Translate
-        self.pos
-        self.grammar
-        self.neg
-        self.verb
-        self.trans
-        self.case
-        self.base
+        targets = [
+            'pos',
+            'grammar',
+            'neg',
+            'verb',
+            'trans',
+            'case',
+            'base',
+        ]
+
+        for field in targets:
+            for abbrev, translation in self.abbreviations_ru.items():
+                val = getattr(self, field)
+                setattr(self, field, val.replace(abbrev, translation))
+
+        if self.grammar:
+            print(self.grammar)
+            ...
+
         # TODO Check remaining latin and notify
 
 
