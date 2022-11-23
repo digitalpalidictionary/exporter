@@ -43,10 +43,10 @@ ${button_template.format(target=f'example_dps_{word.pali_}', name="пример"
     % elif len(examples) > 1:
 ${button_template.format(target=f'example_dps_{word.pali_}', name='примеры')}\
     % endif
-    % if word.pos in conjugations:
+    % if word.pos_orig in conjugations:
 ${button_template.format(target=f'conjugation_dps_{word.pali_}', name='спряжения')}\
     % endif
-    % if word.pos in declensions:
+    % if word.pos_orig in declensions:
 ${button_template.format(target=f'declension_dps_{word.pali_}', name='склонения')}\
     % endif
 ${button_template.format(target=f'feedback_dps_{word.pali_}', name='о словаре')}
@@ -113,14 +113,14 @@ ${button_template.format(target=f'feedback_dps_{word.pali_}', name='о слов�
     </p>
 </div>
 
-% if word.pos not in indeclinables:
-    % if word.pos in declensions:
+% if word.pos_orig not in indeclinables:
+    % if word.pos_orig in declensions:
 <div id="declension_dps_${word.pali_}" class="content_dps hidden">
-    % elif word.pos in conjugations:
+    % elif word.pos_orig in conjugations:
 <div id="conjugation_dps_${word.pali_}" class="content_dps hidden">
     % endif
 ${table_data_read}
-    % if word.pos != 'sandhi' and word.pos != 'idiom' and (word.pos in declensions or word.pos in conjugations):
+    % if word.pos_orig != 'sandhi' and word.pos_orig != 'idiom' and (word.pos_orig in declensions or word.pos_orig in conjugations):
     <p>
         У вас есть предложение? ${google_link_dps(entry=word.pali, text='Пожалуйста, сообщите об ошибке')}
     </p>
