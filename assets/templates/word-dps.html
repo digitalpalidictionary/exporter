@@ -13,7 +13,8 @@
 
     pos_string = ''
     if word.pos != '':
-        pos_entries = [i for i in [word.pos, word.grammar, word.derived, word.neg, word.verb, word.trans] if i != '']
+        derived_entry = f'от {word.derived}' if word.derived else ''
+        pos_entries = [i for i in [word.pos, word.grammar, derived_entry, word.neg, word.verb, word.trans] if i != '']
         pos_string += ', '.join(pos_entries)
         if word.case != '':
             pos_string += f'({word.case})'
