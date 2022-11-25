@@ -13,7 +13,7 @@
 
     pos_string = ''
     if word.pos != '':
-        derived_entry = f'от {word.derived}' if word.derived else ''
+        derived_entry = f'<i>от {word.derived}</i>' if word.derived else ''
         pos_entries = [i for i in [word.pos, word.grammar, derived_entry, word.neg, word.verb, word.trans] if i != '']
         pos_string += ', '.join(pos_entries)
         if word.case != '':
