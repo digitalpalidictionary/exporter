@@ -7,7 +7,6 @@ import pandas as pd
 import rich
 
 from helpers import DataFrames
-from helpers import DpsWord
 from helpers import ENCODING
 from helpers import INDECLINABLES
 from helpers import Kind
@@ -19,6 +18,8 @@ from helpers import timeis, line
 from html_components import AbbreviationTemplate
 from html_components import HeaderTemplate
 from html_components import WordTemplate
+from word import AbbreviationEntry
+from word import DpsWord
 
 
 # TODO Merge with sbs version (use a dict for lang-specific entries)
@@ -265,22 +266,21 @@ def _generate_abbreviations_html(data: DataFrames, rsc: ResourcePaths) -> List[L
 
     for row in range(abbrev_df_length):
         abbrev_series = abbrev_df.iloc[row]
-        abbrev = abbrev_series[0]
-        meaning = abbrev_series[1]
+        abbrev_entry = AbbreviationEntry(rsc['kind'], abbrev_series)
 
         html_string = header_template.render(css=abbrev_css)
-        html_string += abbreviation_template.render(abbrev_series)
+        html_string += abbreviation_template.render(abbrev_entry)
         html_string += '</html>'
 
-        part_file = rsc['output_help_html_dir'].joinpath(f'{abbrev}.html')
+        part_file = rsc['output_help_html_dir'].joinpath(f'{abbrev_entry}.html')
 
         with open(part_file, 'w', encoding=ENCODING) as file:
             file.write(html_string)
 
         # compile root data into list
-        synonyms = [abbrev, meaning]
+        synonyms = [abbrev_entry.abbrev, abbrev_entry.meaning]
 
-        abbrev_data_list += [[abbrev, html_string, '', synonyms]]
+        abbrev_data_list += [[abbrev_entry.abbrev, html_string, '', synonyms]]
 
     return abbrev_data_list
 
