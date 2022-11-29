@@ -21,13 +21,13 @@
 %>
 
 <body>
-% if word.russian == '':
+% if not word.russian:
 <div class="content_dps"><p>${word.pos}. <b>${word.meaning}</b> [в процессе]</p></div>
 % else:
 <div class="content_dps">
     <p>
-        % if word.pos != '':
-        ${word.pos}
+        % if word.pos:
+        ${word.pos}.
         % endif
         <b>${word.russian}</b>
     </p>
