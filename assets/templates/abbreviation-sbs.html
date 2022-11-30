@@ -3,21 +3,24 @@
 <body>
     <div class="help">
         <p>
-            abbreviation. <b>${abbreviation}</b>. ${abbreviation.meaning}.\
+            abbreviation. <b>${abbreviation.meaning}</b>.\
 %if abbreviation.pali_meaning != '':
- ${abbreviation.pali_meaning}.\
+<br>Pāli: ${abbreviation.pali_meaning}.\
 %endif
-            <br>
             %if abbreviation.example != '':
+            <br>
             e.g. ${abbreviation.example}.
             %endif
             <br>
             %if abbreviation.explanation != '':
             ${abbreviation.explanation}.
             %endif
+        </p>
+    </div>
 
     <p>
         ${google_link_sbs(entry=abbreviation, text='Report a mistake.')}
     </p>
+</body>
 
 ## vi: syn=mako

@@ -3,16 +3,20 @@
 <body>
     <div class="help">
         <p>
-            сокращ. <b>${abbreviation}.</b> — ${abbreviation.meaning}.\
+            сокращение. <b>${abbreviation.meaning}</b>.\
 %if abbreviation.pali_meaning != '':
- Пали: ${abbreviation.pali_meaning}.\
+<br>Пали: ${abbreviation.pali_meaning}.\
 %endif
+            %if abbreviation.example != '':
             <br>
-            %if abbreviation.example:
-            прим.: ${abbreviation.example}.
+            Прим.: ${abbreviation.example}.
             %endif
             <br>
-            %if abbreviation.explanation:
+            <b>${abbreviation.en_abbrev}</b>.
+            %if abbreviation.en_meaning != '':
+            ${abbreviation.en_meaning}.
+            %endif
+            %if abbreviation.explanation != '':
             ${abbreviation.explanation}.
             %endif
         </p>

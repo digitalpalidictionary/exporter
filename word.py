@@ -91,7 +91,9 @@ class DpsWord:
 class AbbreviationEntry:
     def __init__(self, kind: Kind, series: Series):
         self.abbrev = series.iloc[0]
+        self.en_abbrev = series.iloc[0]
         self.meaning = series.iloc[1]
+        self.en_meaning = series.iloc[1]
         self.pali_meaning = series.iloc[2]
         ru_meaning = series.iloc[3]
         self.example = series.iloc[4]
@@ -101,6 +103,7 @@ class AbbreviationEntry:
         if kind == Kind.DPS:
             if ru_abbrev:
                 self.abbrev = ru_abbrev
+
             if ru_meaning:
                 self.meaning = ru_meaning
 
