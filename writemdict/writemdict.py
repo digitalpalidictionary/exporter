@@ -26,6 +26,11 @@ Simple usage example:
 """
 
 from __future__ import unicode_literals
+import re
+import string
+import struct
+import functools
+import locale
 
 import struct, zlib, operator, sys, datetime
 
@@ -278,11 +283,42 @@ class MDictWriter(object):
 		#  e.record_null: encoded version of the record, null-terminated
 		#
 		# Also sets self._total_record_len to the total length of all record fields.
+		def mdict_cmp(item1, item2):
+			# sort following mdict standard
+
+			key1 = item1[0].lower()
+			key2 = item2[0].lower()
+			if not self._is_mdd:
+				key1 = regex_strip.sub('', key1)
+				key2 = regex_strip.sub('', key2)
+			# locale key
+			key1 = locale.strxfrm(key1)
+			key2 = locale.strxfrm(key2)
+			if key1 > key2:
+				return 1
+			elif key1 < key2:
+				return -1
+			# reverse
+			if len(key1) > len(key2):
+				return -1
+			elif len(key1) < len(key2):
+				return 1
+			key1 = key1.rstrip(string.punctuation)
+			key2 = key2.rstrip(string.punctuation)
+			if key1 > key2:
+				return -1
+			elif key1 < key2:
+				return 1
+			return 0
+
+		pattern = '[%s ]+' % string.punctuation
+		regex_strip = re.compile(pattern)
+
 		if isinstance(d, dict):
 			items = list(d.items())
 		else:
 			items = list(d)
-		items.sort(key=operator.itemgetter(0))
+		items.sort(key=functools.cmp_to_key(mdict_cmp))
 		
 		self._offset_table = []
 		offset = 0
