@@ -1,13 +1,14 @@
 import os
 import sys
+import subprocess
+import re
+
 from pathlib import Path
 from typing import TypedDict
 from datetime import date
 from datetime import datetime
 from timeis import timeis, green, red, line
-import subprocess
-import re
-
+from superscripter import superscripter
 
 from dotenv import load_dotenv
 
@@ -34,6 +35,7 @@ class ResourcePaths(TypedDict):
     compound_families_dir: Path
     frequency_dir: Path
     root_families_dir: Path
+    word_families_dir: Path
     inflections_dir: Path
     sets_dir: Path
     words_path: Path
@@ -51,6 +53,7 @@ class ResourcePaths(TypedDict):
     icon_path: Path
     icon_bmp_path: Path
     output_stardict_zip_path: Path
+    output_stardict_light_zip_path: Path
     all_inflections_dict_path: Path
 
 
@@ -95,6 +98,7 @@ def get_resource_paths() -> ResourcePaths:
         output_share_dir = Path("./share/"),
         gd_json_path = Path("./output/gd.json"),
         output_stardict_zip_path = Path("dpd.zip"),
+        output_stardict_light_zip_path=Path("dpd light.zip"),
         error_log_dir = Path("./errorlogs/"),
         # Project assets
         dpd_words_css_path = Path("./assets/dpd-words.css"),
@@ -104,13 +108,14 @@ def get_resource_paths() -> ResourcePaths:
         sandhi_css_path=Path("./assets/sandhi.css"),
         tpp_css_path = Path("./assets/tpp.css"),
         buttons_js_path = Path("./assets/buttons.js"),
-        abbrev_path = Path("./assets/abbreviations.csv"),
+        abbrev_path = Path("./assets/abbreviations.tsv"),
         help_path = Path("./assets/help.csv"),
         
         # Project input
         compound_families_dir = dpd_dir.joinpath("compound families generator/"),
         frequency_dir = dpd_dir.joinpath("frequency maps/"),
         root_families_dir = dpd_dir.joinpath("root families generator/"),
+        word_families_dir=dpd_dir.joinpath("word families/"),
         inflections_dir = dpd_dir.joinpath("inflection generator/"),
         sets_dir = dpd_dir.joinpath("sets/"),
         words_path = dpd_dir.joinpath("csvs/dpd-full.csv"),
@@ -130,15 +135,15 @@ def get_resource_paths() -> ResourcePaths:
 
     return rsc
 
-def copy_goldendict(src_path: Path, dest_dir: Path):
-    print(f"{timeis()} {green}copying goldendict to share")
+def copy_goldendict(src_path: Path, dest_dir: Path, name):
+    print(f"{timeis()} {green}copying {name} to share")
 
     today = date.today()
 
     # file name without .zip suffix
     dest_base = src_path.name.replace(src_path.suffix, '')
 
-    dest_path = dest_dir.joinpath(f"{dest_base}-{today}.zip")
+    dest_path = dest_dir.joinpath(f"{dest_base}-goldendict.zip")
 
     try:
         subprocess.run(
@@ -154,8 +159,9 @@ class DpdWord:
     def __init__(self, df: DataFrame, row: int):
         self.pali: str = df.loc[row, "Pāli1"]
         self.pali_: str = "_" + re.sub(" ", "_", self.pali)
+        self.pali_super = superscripter(self.pali)
         self.pali2: str = df.loc[row, "Pāli2"]
-        self.pali_clean: str = re.sub(r" \d*$", "", self.pali)
+        self.pali_clean: str = re.sub(" \\d.*$", "", self.pali)
         self.pos: str = df.loc[row, "POS"]
         self.grammar: str = df.loc[row, "Grammar"]
         self.neg: str = df.loc[row, "Neg"]
@@ -171,6 +177,7 @@ class DpdWord:
         self.sk_root_mn: str = df.loc[row, "Sk Root Mn"]
         self.sk_root_cl: str = df.loc[row, "Cl"]
         self.root: str = df.loc[row, "Pāli Root"]
+        self.root_clean: str = re.sub(" \\d*$", "", self.root)
         self.root_in_comps: str = df.loc[row, "Root In Comps"]
         self.root_verb: str = df.loc[row, "V"]
         self.root_grp: str = df.loc[row, "Grp"]
@@ -178,6 +185,7 @@ class DpdWord:
         self.root_meaning: str = df.loc[row, "Root Meaning"]
         self.base: str = df.loc[row, "Base"]
         self.family: str = df.loc[row, "Family"]
+        self.word_family = df.loc[row, "Word Family"]
         self.family2: str = df.loc[row, "Family2"]
         self.construction: str =  df.loc[row, "Construction"]
         self.derivative: str = df.loc[row, "Derivative"]
@@ -188,13 +196,16 @@ class DpdWord:
         self.source1: str = df.loc[row, "Source1"]
         self.sutta1: str = df.loc[row, "Sutta1"]
         self.eg1: str = df.loc[row, "Example1"]
+        # self.eg1: str = re.sub(r"'", "", self.eg1)
         self.source2: str = df.loc[row, "Source 2"]
         self.sutta2: str = df.loc[row, "Sutta2"]
         self.eg2: str = df.loc[row, "Example 2"]
+        # self.eg2: str = re.sub(r"'", "", self.eg2)
         self.ant: str = df.loc[row, "Antonyms"]
         self.syn: str = df.loc[row, "Synonyms – different word"]
         self.var: str = df.loc[row, "Variant – same constr or diff reading"]
         self.comm: str = df.loc[row, "Commentary"]
+        # self.comm: str = re.sub(r"'", "", self.comm)
         self.comm: str = re.sub(r"(.+)\.$", "\\1", self.comm)
         self.notes: str = df.loc[row, "Notes"]
         self.cognate: str = df.loc[row, "Cognate"]

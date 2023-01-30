@@ -10,24 +10,28 @@ body {
 
 p {
     line-height: 150%;
-    margin: 3px 5px;
+    margin: 0px;
     vertical-align: middle;
+    text-align: left;
 }
 
 p.heading {
-    border-radius: 5px;
-    margin: 2px;
-    padding: 2px 5px;
-    user-select: none;
+    margin: 3px 0px 7px 0px;
 }
 
 p.heading b {
     font-weight: 700;
+    color: #00A4CC;
 }
 
 p.sutta {
     color: #00A4CC;
     font-style: italic;
+    padding: 0px 0px 7px 0px;
+}
+
+p.family {
+    margin: 0px 0px 7px 0px;
 }
 
 p.family b {
@@ -35,53 +39,87 @@ p.family b {
     font-weight: 700;
 }
 
+p.family b2 {
+    font-weight: 700;
+}
+
+table {
+    margin: 0 0 5px 0;
+}
+
 table.table1 {
-    border: 1px solid transparent;
+    border: 0px solid transparent;
     border-collapse: collapse;
+    width: 100%;
 }
 
 table.table1 td, table.table1 th {
-    border: 1px solid transparent;
-    border-collapse: collapse;
-    line-height: 150%;
-    margin: 0px 0px;
-    padding: 1px 5px;
-    text-align: left;
-    transition-duration: .2s;
-    vertical-align: top;
+        border: 0px solid transparent;
+        border-collapse: collapse;
+        line-height: 150%;
+        padding: 0px 5px 0px 0px;
+        text-align: left;
+        vertical-align: top;
 }
 
 table.table1 th {
     color: #00A4CC;
     font-weight: 700;
-    white-space: nowrap;
+    /* white-space: nowrap; */
+}
+
+table.table1 th.cfpali {
+    white-space: normal;
+    min-width: 34ch;
+}
+
+table.table1 td.cfpos {
+    font-weight: 700;
+    white-space: normal;
+}
+
+table.table1 td.cfeng {
+    white-space: normal;
+}
+
+table.table1 b {
+    font-weight: 700;
 }
 
 table.dataframe {
-    border: 1px solid #E2FFFF;
-    border-collapse: collapse;
+    width: 100%;
+    padding: 0 0 5px 0px;
 }
 
-table.dataframe td,table.dataframe th {
-    border: 1px solid #E2FFFF;
-    border-collapse: collapse;
+table.dataframe td,
+table.dataframe th {
+    border: 1px solid gray;
+    border-radius: 5px;
     line-height: 150%;
-    padding: 1px 5px;
     text-align: center;
-    transition-duration: .2s;
+    padding:2px 3px;
     vertical-align: middle;
 }
 
-/* table.dataframe td {
-    background-color: #00A4CC;
-    color: black;
-} */
-
 table.dataframe th {
+    border: 1px solid #00A4CC;
     color: #00A4CC;
     font-weight: 700;
-    white-space: nowrap;
+    /* white-space: nowrap; */
 }
+
+span.g1 {
+    color: gray
+}
+
+span.g2, span.gray {
+    color: gray
+}
+
+span.g3 {
+    color: gray
+}
+
 
 input {
     display: none;
@@ -92,6 +130,7 @@ div.content {
     border-radius: 5px;
     line-height: 150%;
     overflow: auto;
+    padding: 3px 5px;
     text-align: left;
 }
 
@@ -107,7 +146,6 @@ a.button {
     font-weight: 400;
     margin: 1px 1px 2px 0px;
     padding: 2px 5px;
-    transition-duration: .2s;
     user-select: none;
 }
 
@@ -136,4 +174,102 @@ a.button.active {
     background-color: #00A4CC;
     color: white;
     user-select: none;
+}
+
+span.colour {
+    color: #00A4CC;
+    font-weight: 700;
+}
+
+table.freq thead th {
+    text-align: center;
+}
+
+table.freq tbody th {
+    text-align: left;
+}
+
+table.freq th,
+td {
+    vertical-align: middle;
+}
+
+table.freq td {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 7px;
+    text-align: center;
+    width: 12%;
+}
+
+td.void {
+    border: 0px solid transparent;
+}
+
+td.gr0 {
+    border: 1px solid #dbdbff;
+}
+
+td.gr1 {
+    background-color: #ddecfa;
+    border-color: #ddecfa;
+    color: #000;
+}
+
+td.gr2 {
+    background-color: #d2e2ff;
+    border-color: #d2e2ff;
+    color: #000;
+}
+
+td.gr3 {
+    background-color: #b0dbff;
+    border-color: #b0dbff;
+    color: #000;
+}
+
+td.gr4 {
+    background-color: #9dc3fd;
+    border-color: #9dc3fd;
+    color: #000;
+}
+
+td.gr5 {
+    background-color: #668efc;
+    border-color: #668efc;
+    color: #000;
+}
+
+td.gr6 {
+    background-color: #4668ff;
+    border-color: #4668ff;
+    color: #fff;
+}
+
+td.gr7 {
+    background-color: #314ffc;
+    border-color: #314ffc;
+    color: #fff;
+}
+
+td.gr8 {
+    background-color: #003cff;
+    border-color: #003cff;
+    color: #fff;
+}
+
+td.gr9 {
+    background-color: #0000bb;
+    border-color: #0000bb;
+    color: #fff;
+}
+
+td.gr10 {
+    background-color: #00008f;
+    border-color: #00008f;
+    color: #fff;
+}
+
+tr.line th {
+    border-top: 1px solid #00A4CC;
 }

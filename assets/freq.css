@@ -1,0 +1,87 @@
+table.freq thead th {
+	text-align: center;
+}
+
+table.freq tbody th {
+	text-align: left;
+}
+
+table.freq th, td {
+	vertical-align: middle;
+}
+
+table.freq td {
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 7px;
+	text-align: center;
+	width: 12%;
+}
+
+td.void {
+	border: 0px solid transparent;
+}
+
+td.gr0 {
+	border: 1px solid #dbdbff;
+}
+
+td.gr1 {
+	background-color: #ddecfa;
+	border-color: #ddecfa;
+	color: #000;
+}
+
+td.gr2 {
+	background-color: #d2e2ff;
+	border-color: #d2e2ff;
+	color: #000;
+}
+
+td.gr3 {
+	background-color: #b0dbff;
+	border-color: #b0dbff;
+	color: #000;
+}
+
+td.gr4 {
+	background-color: #9dc3fd;
+	border-color: #9dc3fd;
+	color: #000;
+}
+
+td.gr5 {
+	background-color: #668efc;
+	border-color: #668efc;
+	color: #000;
+}
+
+td.gr6 {
+	background-color: #4668ff;
+	border-color: #4668ff;
+	color: #fff;
+}
+
+td.gr7 {
+	background-color: #314ffc;
+	border-color: #314ffc;
+	color: #fff;
+}
+
+td.gr8 {
+	background-color: #003cff;
+	border-color: #003cff;
+	color: #fff;
+}
+
+td.gr9 {
+	background-color: #0000bb;
+	border-color: #0000bb;
+	color: #fff;
+}
+
+td.gr10 {
+	background-color: #00008f;
+	border-color: #00008f;
+	color: #fff;
+}

@@ -40,8 +40,12 @@ def run_generate_goldendict(move_to_dest: bool = True):
     print(f"{timeis()} {green}loading pickle")
     with open("output/dpd data", "rb") as f:
         pali_data_df = pickle.load(f)
+
+    with open("output/dpd light data", "rb") as f:
+        pali_light_data_df = pickle.load(f)
     
     gd_data_read = pali_data_df.to_dict(orient="records")
+    gd_light_data_read = pali_light_data_df.to_dict(orient="records")
 
     print(f"{timeis()} {green}parsing")
     def item_to_word(x):
@@ -53,6 +57,7 @@ def run_generate_goldendict(move_to_dest: bool = True):
         )
 
     words = list(map(item_to_word, gd_data_read))
+    words_light = list(map(item_to_word, gd_light_data_read))
 
     ifo = ifo_from_opts(
         {
@@ -63,8 +68,18 @@ def run_generate_goldendict(move_to_dest: bool = True):
         }
     )
 
+    ifo_light = ifo_from_opts(
+        {
+            "bookname": "Digital Pāḷi Dictionary (Light)",
+            "author": "Bodhirasa",
+            "description": "A light version of Digital Pāḷi Dictionary for older devices",
+            "website": "https://digitalpalidictionary.github.io",
+        }
+    )
+
     print(f"{timeis()} {green}writing goldendict")
     export_words_as_stardict_zip(words, ifo, rsc['output_stardict_zip_path'], rsc['icon_path'])
+    export_words_as_stardict_zip(words_light, ifo_light, rsc['output_stardict_light_zip_path'], rsc['icon_path'])
 
     zipfilepath = rsc['output_stardict_zip_path']
     with zipfile.ZipFile(zipfilepath, 'a') as zipf:
@@ -73,7 +88,8 @@ def run_generate_goldendict(move_to_dest: bool = True):
         zipf.write(source_path, destination)
 
     if move_to_dest:
-        copy_goldendict(rsc['output_stardict_zip_path'], rsc['output_share_dir'])
+        copy_goldendict(rsc['output_stardict_zip_path'], rsc['output_share_dir'], "goldendict")
+        copy_goldendict(rsc['output_stardict_light_zip_path'], rsc['output_share_dir'], "goldendict light")
     
     toc()
 

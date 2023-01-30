@@ -17,7 +17,7 @@ body {
 
 p {
     line-height: 150%;
-    margin: 5px 5px;
+    margin: 0px;
     vertical-align: middle;
 }
 b.epd {
@@ -30,6 +30,7 @@ div.epd {
     border-radius: 5px;
     line-height: 150%;
     overflow: auto;
+    padding: 3px 5px;
     text-align: left;
 }
 

@@ -10,7 +10,7 @@ body {
 
 p {
     line-height: 150%;
-    margin: 3px 5px;
+    margin: 0px;
     vertical-align: middle;
 }
 
@@ -19,5 +19,44 @@ div.help {
     border-radius: 5px;
     line-height: 150%;
     overflow: auto;
+    padding: 3px 5px;
     text-align: left;
+}
+
+span.colour{color:#00A4CC}
+
+span.g1,
+span.g2,
+span.g3,
+span.gray {
+    color: gray
+}
+
+table {
+    margin: 0 0 5px 0;
+}
+
+table.help {
+    border: 0px solid transparent;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table.help td,
+table.help th {
+    border: 0px solid transparent;
+    border-collapse: collapse;
+    line-height: 150%;
+    padding: 0px 5px 0px 0px;
+    text-align: left;
+    vertical-align: top;
+}
+
+table.help th {
+    color: #0ab33d;
+    font-weight: 700;
+}
+
+table.help b {
+    font-weight: 700;
 }
